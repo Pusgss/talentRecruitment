@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <title>人才招聘</title>
+    <style>
+        .el-header {
+            background-color: #B3C0D1;
+            color: #333;
+            line-height: 60px;
+          }
+        .el-aside {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="positions">
+        <el-container style=" border: 1px solid #eee">
+            <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+                 <el-menu background-color="#111111"
+              text-color="white"
+              active-text-color="#C0C0C0"
+                 default-active="2"
+      class="el-menu-vertical-demo">
+                    <el-submenu index="1">
+                        <template slot="title"><i class="el-icon-message"></i><el-link href="/api/users/">会员信息管理</el-link></template>
+                        <el-menu-item-group>
+{#                          <template slot="title">待处理事务</template>#}
+
+                            <el-menu-item index="1-1"><el-link href="/api/admin_index/" color="yellow">待处理事务</el-link></el-menu-item>
+
+                        </el-menu-item-group>
+
+                    </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title"><i class="el-icon-menu"></i><el-link href="/api/positions/">招聘信息管理</el-link></template>
+
+                      </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title"><i class="el-icon-setting"></i><el-link href="/api/news/">网站公告管理</el-link></template>
+
+                    </el-submenu>
+                     <el-submenu index="4">
+                         <template slot="title"><i class="el-icon-platform-eleme"></i><el-link href="/api/echarts/">数据分析</el-link></template>
+
+                    </el-submenu>
+                        <el-submenu index="5">
+                         <template slot="title"><i class="el-icon-guide"></i><el-link href="/api/logout/">登出</el-link></template>
+
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+
+            <el-container>
+                <el-header style="text-align: right; font-size: 12px">
+                       <el-button  @click="newss_del" type="danger" icon="el-icon-delete" :disabled="disable==0?true:false">删除</el-button>
+
+{#                    <el-dropdown>#}
+                        <i class="el-icon-setting" style="margin-right: 15px"></i>
+{#                        <el-dropdown-menu slot="dropdown">#}
+{#                          <el-dropdown-item>查看</el-dropdown-item>#}
+{#                          <el-dropdown-item>新增</el-dropdown-item>#}
+{#                          <el-dropdown-item>删除</el-dropdown-item>#}
+{#                        </el-dropdown-menu>#}
+
+{#                     </el-dropdown>#}
+                  <span style="text-align: right; font-size: 18px">新闻</span>
+                </el-header>
+
+                <el-main>
+                    <el-table ref="multipleTable"
+                        :data="news_list"
+                        tooltip-effect="dark"
+                        style="width: 100%"
+                        @selection-change="handleSelectionChange" stripe style="width:100%" v-loading="listLoading">
+                        <el-table-column type="selection" width="55"></el-table-column>
+                        <el-table-column prop="title" label="标题" width="140" sortable></el-table-column>
+                        <el-table-column prop="content" label="内容" width="500" sortable></el-table-column>
+                        <el-table-column prop="time" label="发布时间" width="180" sortable></el-table-column>
+                        <el-table-column prop="user_email" label="管理员邮箱" width="180" sortable></el-table-column>
+                          <el-table-column label="操作">
+                            <template slot-scope="scope" min-width="200">
+                                <el-button size="small" type="success" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
+                                <el-button type="danger" size="small" @click="handleDel(scope.$index,scope.row)">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <span class="demonstration"></span>
+                    <el-dialog :visible.sync="centerDialogVisible">
+                        <el-form  :model="newsForm" :rules="rules" ref="newsForm">
+                            <el-form-item label="编号" prop="id" v-show="false">
+                                 <el-input type="text" v-model="newsForm.id" autocomplete="off"  clearable></el-input>
+                             </el-form-item>
+                             <el-form-item label="标题" prop="title">
+                                 <el-input type="text" v-model="newsForm.title" autocomplete="off"  clearable></el-input>
+                             </el-form-item>
+                            <el-form-item label="内容" prop="content">
+                                <el-input type="text" v-model="newsForm.content" autocomplete="off"  clearable></el-input>
+                             </el-form-item>
+                             <el-form-item label="发布时间" prop="time">
+                                <el-date-picker   v-model="newsForm.time"  :picker-options="pickerOptions" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  placeholder="选择日期时间">
+                                </el-date-picker>
+                             </el-form-item>
+                        </el-form>
+                        <div>
+                            <el-button @click="closeDialog()">取消</el-button>
+                            <el-button type="primary" @click="sumbitEditRow('newsForm')">确定</el-button>
+                        </div>
+		            </el-dialog>
+
+                    <el-pagination v-show="total>0"
+                          @size-change="handleSizeChange"
+                          @current-change="handleCurrentChange"
+                          :current-page="currentPage"
+
+                          :page-size="pageSize"
+                          layout="total, sizes, prev, pager, next, jumper"
+                          :total="total">
+                    </el-pagination>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+    <script>
+        var newsVue=new Vue(
+        {
+            el:'#positions',
+            data() {
+                  return {
+                      centerDialogVisible: false,
+                       newsForm:{
+                    time:'',
+                    title:'',
+                    content:'',
+                },
+                rules:
+                {
+                    time:[{required: true, message: '请选择发布时间', trigger: 'change'},],
+                    title:[{required: true, message: '请填写新闻主题', trigger: 'blur'},],
+                    content:[{required: true, message: '请填写具体内容', trigger: 'blur'},],
+                },
+                      pickerOptions: {
+                          disabledDate(time) {
+                              return time.getTime() < Date.now() - 8.64e7;
+                          }
+                      },
+                      news_list:[],
+                      total:0,
+                      pageSize:20,
+                      listLoading:false,
+                      currentPage: 1,
+                      multipleSelection: [],
+                      disable:0,
+                      id_list:[],
+                  };
+            },
+            created()
+            {
+                this.showTable(this.currentPage,this.pageSize);
+                if (this.multipleSelection.length==0){
+                         this.disable=0;
+                     }
+            },
+            methods:
+            {
+                toggleSelection(rows) {
+                    if (rows) {
+                      rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                      });
+                    }
+                    else {
+                      this.$refs.multipleTable.clearSelection();
+                    }
+                },
+                handleSelectionChange(val) {
+                    this.multipleSelection = val;
+                    console.log(this.multipleSelection);
+                    if(this.multipleSelection.length==0)
+                    {
+                        this.disable=0;
+                    }
+                    else
+                    {
+                        this.disable=1;
+                    }
+                },
+                handleSizeChange(size) {
+                    this.pageSize = size;
+                    this.showTable(this.currentPage,this.pageSize);
+                },
+                handleCurrentChange(currentpage) {
+                    this.currentPage = currentPage;
+                    console.log(this.currentPage);  //点击第几页
+                    this.showTable(this.currentPage,this.pageSize);
+                },
+                showTable(currentPage,pageSize){
+                    this.listLoading = true;
+                    console.log(pageSize);
+                    $.ajax({
+                        url: "/api/news/",
+                        type: "post",
+                        headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                        data: {'page':currentPage,'pageSize':pageSize },
+                        success: function (data) {
+                            newsVue.listLoading = false;
+                            var news_list = JSON.parse(data.news_list);
+                            var user_list = JSON.parse(data.user_list);
+                            newsVue.total=data.total
+                            newsVue.news_list = [];
+                            for (let i = 0; i < news_list.length; i++) {
+                                newsVue.news_list.push({
+                                    id: news_list[i].pk,
+                                    title: news_list[i].fields.title,
+                                    content: news_list[i].fields.content,
+                                    time:news_list[i].fields.time.replace('T',' '),
+                                    user_email: user_list[i].fields.user_email,
+                                })
+                            }
+                        }
+                    })
+                },
+                newss_del(){
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+
+                    }
+                    console.log(this.id_list);
+                    $.ajax({
+                         url: "/api/newssDel/",
+                         type: "post",
+                         headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                         data:{"id_list":JSON.stringify(newsVue.id_list)},
+                         success: function (data) {
+                             if(data.status=="successful"){
+                                 newsVue.$message({type: 'success',message: "删除成功!"});
+                                 newsVue.showTable(newsVue.currentPage,newsVue.pageSize);
+                              }
+                              newsVue.toggleSelection()
+                         }
+                     })
+                },
+                handleDel(index, row){
+                    var r=confirm("您确定要删除?")
+                    if (r==true)
+                    {
+                       $.ajax({
+                           url: "/api/newsDel/" + row.id,
+                           type: "POST",
+                           headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                           error: function (xhr, err) {
+                                alert('请求失败，请检查，' + err + '!')
+                           },
+                           success: function (data) {
+                               if (data.status === 'successful') {
+                                   toastr.success("删除成功")
+                                   newsVue.news_list.splice(index,1);
+                                        //调用方式
+                                   {#location.reload(true)#}
+                               } else if (data.status === 'fail') {
+                                   toastr.error("删除失败");
+                               }
+                           }
+                       })
+                    }
+                    else {
+                        return;
+                    }
+                 },
+                handleEdit(index, row) {
+                    this.centerDialogVisible = true;
+                    this.newsForm = Object.assign({}, row);//重置对象
+                    _index = index;
+                },
+                sumbitEditRow(formName){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        $.ajax({
+                            url: "/api/newsEdit/" + newsVue.newsForm.id,
+                            type: "POST",
+                            headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                            data: {
+                                "title": this.newsForm.title,
+                                "content": this.newsForm.content,
+                                "time": this.newsForm.time
+                            },
+                            dataType: 'JSON',
+                            success: function (data) {
+                                if (data.status === "successful") {
+                                    var editData = _index;
+                                    newsVue.news_list[editData].title = newsVue.newsForm.title;
+                                    newsVue.news_list[editData].content = newsVue.newsForm.content;
+                                    newsVue.news_list[editData].time = newsVue.newsForm.time;
+                                    newsVue.news_list[editData].user_email = newsVue.newsForm.user_email;
+                                    newsVue.centerDialogVisible = false;
+                                    newsVue.$message({type: 'success', message: "保存成功!"});
+
+                                } else {
+                                    var error_list = JSON.parse(data.errs);
+                                    console.log(error_list)
+                                    var msg = ''
+                                    for (let key in error_list) {
+                                        msg = msg + key + error_list[key][0].message + ";"
+                                    }
+                                    newsVue.$message.warning(msg);
+                                }
+                            }
+                        })
+                    }})
+                },
+                closeDialog(){
+                    this.centerDialogVisible=false;
+                },
+            },
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+        })
+    </script>
+</body>
+</html>

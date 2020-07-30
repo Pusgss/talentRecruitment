@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <div class="container">
+            <div class="col">
+                <form class="form-register" action="/api/register" method="post">
+
+
+
+                  {% csrf_token %}
+                  <h3 class="text-center">个人信息</h3>
+                <p>
+
+                </p>
+
+                  <div class="form-group">
+                      {{ user_form.user_name.label_tag }}
+                      {{ user_form.user_name}}
+                      {{error.user_name.0}}<!--获取第一个错误-->
+                  </div>
+                  <div class="form-group">
+                      {{ user_form.user_type.label_tag }}
+                      {{ user_form.user_type }}
+{#                      {{ user_form.get_user_type_display }}#}
+                      {{error.user_type.0}}
+                    </div>
+                    <div class="form-group">
+                      {{ user_form.user_password.label_tag }}
+                      {{ user_form.user_password }}
+                      {{error.user_password.0}}
+                  </div>
+
+
+
+                  <div class="form-group">
+                      {{ user_form.user_email.label_tag }}
+                      {{ user_form.user_email }}
+                      {{ error.user_email.0 }}
+                  </div>
+                 <div class="form-group">
+                      {{ user_form.user_phone.label_tag }}
+                      {{ user_form.user_phone }}
+                      {{ error.user_phone.0 }}
+
+                  </div>
+{#                 <select name="sel_value">#}
+                    {# 这里我们遍历form表单中的SELVALUE这个字典,然后把key,value成对取出  #}
+{#                    {% for key,value in register_form.user_type_choices %}#}
+{#                        <option value="{{ key }}">{{ value }}</option>#}
+{#                    {% endfor %}#}
+{#                 </select>#}
+
+
+
+
+
+                  <div>
+                      <a href="/api/login"  ><ins>直接登录</ins></a>
+                      <button type="submit" class="btn btn-primary float-right">注册</button>
+                  </div>
+                </form>
+            </div>
+    </div> <!-- /container -->
+
+</body>
+</html>

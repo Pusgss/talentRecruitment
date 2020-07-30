@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>人才招聘</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script type="text/javascript" src="/static/qrcode.min.js"></script>
+     <style>
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 120px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
+       .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+      }
+      .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+      }
+
+    </style>
+
+	</head>
+    <body>
+	<div class="box-wrap">
+		<header role="banner" id="fh5co-header">
+			<div class="container">
+				<nav class="navbar navbar-default">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="fh5co-navbar-brand">
+								<a class="fh5co-logo" href="index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+							</div>
+						</div>
+						<div class="col-md-6">
+                            <div id="nav">
+                                <el-menu
+                              :default-active="activeIndex2"
+                              class="el-menu-demo"
+                              mode="horizontal"
+                              @select="handleSelect"
+                              background-color="#ffffff"
+                              text-color="#000000"
+                              active-text-color="#6F00D2">
+                                <el-menu-item index="1"><el-link href="/api/index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+                                <el-menu-item index="2" ><el-link href="/api/allPositionSearch" icon="el-icon-search">职位搜索</el-link></el-menu-item>
+                                <el-menu-item index="3" > <el-link href="/api/resumeCenter" icon="el-icon-document">简历中心</el-link></el-menu-item>
+                                <el-menu-item index="4" ><el-link href="/api/myDeliver/" icon="el-icon-s-promotion">投递反馈</el-link></el-menu-item>
+                                <el-menu-item index="5" > <el-link href="/api/myCollect" icon="el-icon-star-on">我的收藏</el-link></el-menu-item>
+
+                            </el-menu>
+                        </div>
+						</div>
+						<div class="col-md-3">
+                             <ul class="social">
+                                <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                <li><a href="/api/resumeCenter/"><i class="el-icon-s-custom"></i></a></li>
+                                <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                             </ul>
+						</div>
+					</div>
+				</nav>
+		  </div>
+		</header>
+		<!-- END: header -->
+		<section id="position">
+
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+                          <div class="webBannerTable J_webBannerTable">
+			<div class="fk-moduleZoneWrap">
+
+
+					<div id="webBanner" class="webBanner">
+						<div class="bannerTable">
+                            <div class="bannerLeft"></div>
+                            <div class="bannerCenter">
+
+                                        <div style="visibility:hidden;" class="fk-inBannerListZone-tmp forms">
+
+
+                                        </div>
+                                <div class="bannerTop"></div>
+<div id="bannerV2" class="banner extBanner" fbheight="450" defaultwidth="0" style="height: 450px; background: none; overflow: hidden;">
+<div class="imageSwitchShowName"><span class="spanHiddenName spanShowName"></span></div><div class="imageSwitchBtnArea clearFix" style="position: absolute; z-index: 3; display: none; width: 19px;"><a class="imageSwitchBtn imageSwitchBtnSel"><span>1</span></a></div><div></div><div class="switchGroup switchGroup_bannerV2 " style="width: 100%; position: relative; height: 450px; overflow: hidden; margin: 0px auto;"><div class="J_billboardItem numImg" id="numImg0" style="position: absolute; width: 1420px;">
+<div class="J_bannerItem f-bannerItem" title="" style="width: 1420px; height: 450px; cursor: default; background-position: 50% 50%; background-repeat: no-repeat; overflow: hidden; display: block; outline: none; margin: 0px auto; position: relative; z-index: 1; background-size: cover; background-image: url('/static/image/company.jpg');">
+<div id="fk-inBannerListZone-0" _sys="1" _banid="AD0I467fCBACGAAggbqL4QUooLL1DzCADzjCAw" style="text-align: left;" class="elemZone elemZoneModule fk-moduleZone fk-inBannerListZone forms sideForms J_moduleZone ">
+<div class="fk-inBannerListZoneBg fk-elemZoneBg J_zoneContentBg elemZoneBg"></div>
+</div>
+</div>
+</div>
+</div></div>
+
+                            </div>
+                            <div class="bannerRight"></div>
+						</div>
+					</div>
+	    		</div>
+	    	</div>
+
+<div id="webContainerTable" class="webContainerTable">
+            <div id="webContainer" class="webContainer">
+                <div id="container" class="container">
+    <div class="containerTop">
+        <div class="left"></div>
+        <div class="center"></div>
+        <div class="right"></div>
+    </div>
+
+    <div class="containerMiddle">
+        <div id="containerMiddleLeft" class="containerMiddleLeft">
+
+
+
+
+        </div>
+
+        <div class="containerMiddleCenter">
+            <div id="containerMiddleCenterTop" class="containerMiddleCenterTop">
+
+            </div>
+
+            <div id="containerForms" class="containerForms">
+                <div id="topForms" class="column forms mainForms topForms" style="display:none">
+
+                </div>
+
+                <table class="containerFormsMiddle" cellpadding="0" cellspacing="0">
+                    <tbody><tr>
+                        <td valign="top" id="containerFormsLeft" class="containerFormsLeft" style="display:none">
+                            <div class="containerFormsLeftTop">
+                            </div>
+                            <div id="leftForms" class="column forms sideForms leftForms">
+
+                            </div>
+                            <div class="containerFormsLeftBottom">
+                            </div>
+                        </td>
+
+                        <td valign="top" id="containerFormsCenter" class="containerFormsCenter">
+
+                            <div id="centerTopForms" class="column forms mainForms centerTopForms">
+                                <div id="module12" _indexclass="formIndex1" _moduletype="12" _modulestyle="103" _moduleid="12" class="form form12 formIndex1 formStyle103" title="" _sys="0" _banid="" style="" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="0" _intabpack="0" _autoheight="1" _global="false" _independent="false" data-scrollbar="0">
+<div class="formTop formTop12"><div class="left"></div><div class="center"></div><div class="right"></div></div>
+<div class="formBanner formBanner12" style="">
+<div class="left left12"></div>
+<div class="center center12" valign="top">
+<div class="formBannerTitle formBannerTitle12">
+<span class="titleLeft titleLeft12" valign="top">
+</span>
+<div class="titleCenter titleCenter12" valign="top">
+<div class="titleText titleText12">
+    <span  style="font-weight:bold; font-size:34px">Job Details
+</span></div>
+</div>
+<span class="titleRight titleRight12" valign="top">
+</span>
+</div>
+</div>
+<div class="right right12"></div>
+</div>
+<div class=" formMiddle formMiddle12" style="">
+<div class="formMiddleLeft formMiddleLeft12"></div>
+<div class="formMiddleCenter formMiddleCenter12 " valign="top">
+<div class="formMiddleContent formMiddleContent12 fk-formContentOtherPadding" tabstyle="0">
+    <div ref="er">
+<div class="newsDetail newsDetailV2" newsid="6" ref="'text">
+<h1 class="title"><a href={% url "companyDetailPost" company.id %}> {{company.company_name}}</a> -{{position.position_name}}
+</h1><div style="position: absolute;
+    right: 0px;
+    width: 150px;
+    background-color: #b0e0e6;
+text-align: center;
+"><a  href={% url "companyDetailPost" company.id %}>查看所有职位</a></div>
+
+<div class="newsInfoWrap"><div class="leftInfo"><span class="newsInfo" style="max-width: 100%;font-size: 14px;color:#52d3aa">发布时间：{{position.release_time}}</span></div></div>
+<div class="line1"><br></div>
+<div class="richContent  richContent0" style="font-size: 16px">
+<p>　　· 职位月薪：{{position.pay}}</p><p>　　· 所属行业： {{company.industry}}</p><p>　　· 企业性质：{{company.quality}}</p><p>　　· 企业规模：{{company.scale}}</p>
+    <p>　　· 工作地点：{{position.workplace}}</p><p>　　· 人数需求：{{position.count}}</p><p>　　· 性别要求：{{position.sex}}</p><p>　　· 学历要求：{{position.education_requirement}}</p><p>　　工作职责：</p><p>　{{position.description}}</p><p><br></p></div>
+<div class="line2" >
+       <el-button  @click="positionCollect" type="primary" >收藏</el-button>
+                    <el-button  @click="toPositionDeliver" type="primary">申请</el-button>
+ <el-dialog :visible.sync="centerDialogVisible">
+                             <h3>请选择投递的简历</h3>
+                                        <el-form :model="ResumeForm" :rules="rules" ref="ResumeForm" label-width="80px" >
+
+                                           <el-form-item label="简历" prop="resume_id">
+                                          <el-select v-model="ResumeForm.resume_id"  placeholder="请选择简历" >
+                                        <el-option v-for="item in resume_list" :key="item.resume_name" :label="item.resume_name" :value="item.id">
+                                        </el-option>
+                                      </el-select>
+
+                                    </el-form-item >
+                                        <el-form-item>
+                                            <el-button @click="closeDialog()">取消</el-button>
+                                            <el-button type="primary" @click="positionDeliver('ResumeForm')">立即申请</el-button>
+                                       </el-form-item>
+                                            </el-form>
+                                    </el-dialog>
+</div>
+</div>
+    </div>
+<div class="middlePanel" style="height: 32px;">
+<div class="shareInfo">
+    <div class="shareListPanel"  style="float:left">
+        <span class="shareTag">分享到：</span>
+        <a @click="dialogVisible = true" target="-blank" title="源码家园">
+    <img src="/static/image/weiXin.jpg" style="width: 30px;height: 30px">
+</a>&nbsp;&nbsp;&nbsp;
+         <a class="shareIcon sina_weibo" hidefocus="true" title="分享到 新浪微博" href="javascript:;" onclick="window.open('http://service.weibo.com/share/share.php?title=%E3%80%90%E6%9D%AD%E5%B7%9E%E7%8C%8E%E5%A4%B4%E5%85%AC%E5%8F%B8%E8%81%8C%E4%BD%8D+%E9%A3%8E%E6%8E%A7%E6%94%BF%E7%AD%96%E7%BB%8F%E7%90%86+-+%E6%88%91%E7%9A%84%E7%BD%91%E7%AB%99%E3%80%91&amp;url=https%3A%2F%2Ffkrlzy07.icoc.bz%2Fnd.jsp%3F_sc%3D2%26id%3D6&amp;pic=http%3A');"> <img src="/static/image/weiBo.jpg" style="width: 30px;height: 30px"></a>
+        &nbsp;&nbsp;&nbsp;<a class="shareIcon qq_share" hidefocus="true" title="分享到 QQ分享" href="javascript:;" onclick="window.open('http://connect.qq.com/widget/shareqq/index.html?url=https%3A%2F%2Ffkrlzy07.icoc.bz%2Fnd.jsp%3F_sc%3D2%26id%3D6&amp;pics=http%3A&amp;title=%E3%80%90%E6%9D%AD%E5%B7%9E%E7%8C%8E%E5%A4%B4%E5%85%AC%E5%8F%B8%E8%81%8C%E4%BD%8D+%E9%A3%8E%E6%8E%A7%E6%94%BF%E7%AD%96%E7%BB%8F%E7%90%86+-+%E6%88%91%E7%9A%84%E7%BD%91%E7%AB%99%E3%80%91');"><img src="/static/image/qq.jpg" style="width: 30px;height: 30px"></a>
+        &nbsp;&nbsp;&nbsp;<a class="shareIcon qq_zone" hidefocus="true" title="分享到 QQ空间" href="javascript:;" onclick="window.open('http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?summary=https%3A%2F%2Ffkrlzy07.icoc.bz%2Fnd.jsp%3F_sc%3D2%26id%3D6&amp;url=https%3A%2F%2Ffkrlzy07.icoc.bz%2Fnd.jsp%3F_sc%3D2%26id%3D6&amp;pics=http%3A&amp;title=%E3%80%90%E6%9D%AD%E5%B7%9E%E7%8C%8E%E5%A4%B4%E5%85%AC%E5%8F%B8%E8%81%8C%E4%BD%8D+%E9%A3%8E%E6%8E%A7%E6%94%BF%E7%AD%96%E7%BB%8F%E7%90%86+-+%E6%88%91%E7%9A%84%E7%BD%91%E7%AB%99%E3%80%91');"></a>
+        <a class="shareIcon douban" hidefocus="true" title="分享到 豆瓣网" href="javascript:;" onclick="window.open('http://shuo.douban.com/!service/share?name=%E3%80%90%E6%9D%AD%E5%B7%9E%E7%8C%8E%E5%A4%B4%E5%85%AC%E5%8F%B8%E8%81%8C%E4%BD%8D+%E9%A3%8E%E6%8E%A7%E6%94%BF%E7%AD%96%E7%BB%8F%E7%90%86+-+%E6%88%91%E7%9A%84%E7%BD%91%E7%AB%99%E3%80%91https%3A%2F%2Ffkrlzy07.icoc.bz%2Fnd.jsp%3F_sc%3D2%26id%3D6&amp;text=https%3A%2F%2Ffkrlzy07.icoc.bz%2Fnd.jsp%3F_sc%3D2%26id%3D6&amp;image=http%3A');"></a>
+        <a hidefocus="true" title="分享到 百度贴吧" href="javascript:;" onclick="Fai.ing('该域名无法进行分享，请联系网站管理员',true);return false;"><span class="shareIcon baidu_tieba"></span></a>
+    </div></div><div class="clearfloat"></div></div>
+</div>
+</div>
+
+<div class="formMiddleRight formMiddleRight12"></div>
+</div>
+<div class="formBottom formBottom12"><div class="left left12"></div><div class="center center12"></div><div class="right right12"></div></div>
+<div class="clearfloat clearfloat12"></div>
+</div>
+
+
+                            </div>
+                            <div class="containerFormsCenterMiddle J_containerFormsCenterMiddle">
+                                <div id="middleLeftForms" class="column forms mainForms middleLeftForms" style="display:none">
+
+                                </div>
+                                <div id="middleRightForms" class="column forms mainForms middleRightForms" style="display:none">
+
+                                </div>
+                                <div class="clearfloat"></div>
+                            </div>
+                            <div id="centerBottomForms" class="column forms mainForms centerBottomForms" style="display:none">
+
+                            </div>
+                        </td>
+
+                        <td valign="top" id="containerFormsRight" class="containerFormsRight" style="display:none">
+                            <div class="containerFormsRightTop">
+                            </div>
+                            <div id="rightForms" class="column forms sideForms rightForms">
+
+                            </div>
+                            <div class="containerFormsRightBottom">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody></table>
+
+                <div id="bottomForms" class="column forms mainForms bottomForms" style="display:none">
+
+                </div>
+
+                <div id="containerPlaceholder" class="containerPlaceholder" style="height: 0px;"></div>
+
+            </div>
+
+            <div id="containerMiddleCenterBottom" class="containerMiddleCenterBottom">
+            </div>
+
+        </div>
+
+        <div id="containerMiddleRight" class="containerMiddleRight"></div>
+    </div>
+
+    <div class="containerBottom">
+            <div class="left"></div>
+            <div class="center"></div>
+            <div class="right"></div>
+    </div>
+</div>
+            </div>
+{#                        <el-button type="text" @click="all">点击打开 Dialog</el-button>#}
+<div id="qrcode" ref="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+<el-dialog
+  title="微信分享"
+  :visible.sync="dialogVisible"
+  width="40%"
+  :before-close="handleClose" @opened="ShowQRCode()">
+
+    <p>------------------------------------------------------------------------------------------</p>
+    <p>打开微信扫一扫，打开网页后点击屏幕右上角分享按钮</p>
+
+<div id="qrcode" ref="qrcode" style="width:300px; height:300px; margin-top:15px;margin:0 auto;"></div>
+
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="ShowQRCodeDialog()">确 定</el-button>
+  </span>
+</el-dialog>
+		</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+    <script>
+
+
+    var navVue= new Vue({
+        el:'#nav',
+        data() {
+            return {
+
+            activeIndex2: '2',
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+
+        },
+    })
+    var initVue=new Vue({
+            el:'#position',
+
+
+            data() {
+                return {
+
+                    position:[],
+                    multipleSelection: [],
+                    dialogVisible: false,
+                    content:'',
+                    id_list:[],
+                    centerDialogVisible: false,
+                    resume_list:[],//数组
+                    ResumeForm:{resume_id:'',},
+                    rules:
+                    {
+                        resume_id:[{required: true, message: '请选择简历', trigger: 'change'},],
+                    },
+
+                }
+            },
+        created(){
+                this.getMyResume();
+        }
+        ,
+        mounted(){
+                    console.log(this.$refs.er.innerText);
+                    this.content=this.$refs.er.innerText;
+                },
+
+            methods: {
+
+ closeDialog(){
+                    this.centerDialogVisible=false;
+                },
+                ShowQRCodeDialog()
+                {
+
+                   this.dialogVisible = true;
+                   document.getElementById("qrcode").innerHTML = "";
+                },
+                ShowQRCode()
+                {
+                     document.getElementById("qrcode").innerHTML = "";
+                      {#var e =document.getElementById("er").innerHTML;#}
+                      {#console.log(e);#}
+                    var qrcode = new QRCode(this.$refs.qrcode, {
+                        width : 300,
+                        height : 300,
+                          render: 'table',
+                        correctLevel: 3
+                    });
+                    {#let getMenuText = this.$refs.er;#}
+
+
+                        qrcode.makeCode(this.constent+'更多详情请访问http://localhost:8000/api/login');
+                },
+                handleClose(done) {
+                    this.$confirm('确认关闭？')
+                      .then(_ => {
+                        done();
+                      })
+                      .catch(_ => {});
+                  },
+                 getMyResume() {
+                     $.ajax({
+                         url: "/api/resumeCenter/",
+                         type: "post",
+                         headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                         success: function (data) {
+                             var resume_list = JSON.parse(data.resume_list);
+                             initVue.resume_list = [];
+                             for (let i = 0; i < resume_list.length; i++) {
+                                 initVue.resume_list.push({
+                                     id: resume_list[i].pk,
+                                     resume_name: resume_list[i].fields.resume_name,
+
+
+                                 })
+                             }
+                             ;
+                         }
+                     })
+                 },
+getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+},
+                positionCollect()
+                {
+                    console.log(this.getQueryVariable("id") );
+                        this.id_list.push(parseInt(this.getQueryVariable("id")));
+
+                     $.ajax({
+                          url:"/api/positionCollect/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                         data:{'id_list':JSON.stringify(initVue.id_list)},
+                          success:function (data) {
+                              if(data.status=="successful"){
+                                 initVue.$message({type: 'success',message: "收藏成功!"});
+
+                              }
+                              else if(data.status === "warning"){
+                                    initVue.$message.warning(data.errs);
+                              }
+
+                          }
+                     })
+                },
+                    toPositionDeliver(){
+                     this.centerDialogVisible = true;
+                },
+                 positionDeliver(formName) {
+                this.$refs[formName].validate((valid) => {
+                  if (valid) {
+                        this.id_list.push(parseInt(this.getQueryVariable("id")));
+
+                     $.ajax({
+                          url:"/api/positionDeliver/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                         data:{'id_list':JSON.stringify(initVue.id_list),'resume_id':initVue.ResumeForm.resume_id},
+                          success:function (data) {
+                              if(data.status=="successful"){
+                                  initVue.centerDialogVisible = false;
+                                  initVue.$message({type: 'success',message: "申请成功!"});
+                              }
+                              else if(data.status === "warning"){
+                                    initVue.$message.warning(data.errs);
+                              }
+
+                          }
+                     })
+                  } else {
+                    console.log('error submit!!');
+                    return false;
+                  }
+                });
+
+            },
+
+            },
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+    </script>
+
+</body>
+</html>

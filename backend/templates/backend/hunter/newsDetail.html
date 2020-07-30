@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>人才招聘</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/share.css">
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+     <style>
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 120px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
+       .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+      }
+      .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+      }
+
+    </style>
+	</head>
+    <body>
+	<div class="box-wrap">
+		<header role="banner" id="fh5co-header">
+			<div class="container">
+				<nav class="navbar navbar-default">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="fh5co-navbar-brand">
+								<a class="fh5co-logo" href="../hunter/index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+							</div>
+						</div>
+						<div class="col-md-6">
+                            <div id="nav">
+                                <el-menu
+                              :default-active="activeIndex2"
+                              class="el-menu-demo"
+                              mode="horizontal"
+                              @select="handleSelect"
+                              background-color="#ffffff"
+                              text-color="#000000"
+                              active-text-color="#6F00D2">
+                  <el-menu-item index="1"><el-link href="/api/index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+                                <el-menu-item index="2" ><el-link href="/api/allPositionSearch" icon="el-icon-search">职位搜索</el-link></el-menu-item>
+                                <el-menu-item index="3" > <el-link href="/api/resumeCenter" icon="el-icon-document">简历中心</el-link></el-menu-item>
+                                <el-menu-item index="4" ><el-link href="/api/myDeliver/" icon="el-icon-s-promotion">投递反馈</el-link></el-menu-item>
+                                <el-menu-item index="5" > <el-link href="/api/myCollect" icon="el-icon-star-on">我的收藏</el-link></el-menu-item>
+
+                            </el-menu>
+                        </div>
+						</div>
+						<div class="col-md-3">
+                               <ul class="social">
+                                <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                <li><a href="/api/resumeCenter/"><i class="el-icon-s-custom"></i></a></li>
+                                <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                             </ul>
+						</div>
+					</div>
+				</nav>
+		  </div>
+		</header>
+		<!-- END: header -->
+
+		<section id="work">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+
+                        <div id="news" >
+                         <div class="formMiddleCenter formMiddleCenter12 " valign="top">
+                            <div class="formMiddleContent formMiddleContent12 fk-formContentOtherPadding" tabstyle="0">
+                            <div class="newsDetail" newsid="6">
+                            <h1 class="title">   {{news.title}}</h1>
+
+                            <div class="shareInfo"><div class="shareCtrl shareto">分享到：</div>
+                                 <div class="shareCtrl sharePanel" >
+{#                                    <a hidefocus="true" title="分享到 微信" ><img src="/static/image/weiXin.jpg" style="width: 30px;height: 30px"><div class="shareCtrl">微信</div></a>#}
+                                     <a href=" http://service.weibo.com/share/share.php?title={{news.title }}&url={{ request.build_absolute_uri }}"  ><img src="/static/image/weiBo.jpg"  style="width: 30px;height: 30px"/>  <div class="shareIcon sina_weibo"></div><div class="shareCtrl">微博</div></a>
+{#                                <a hidefocus="true" title="分享到 新浪微博" href="javascript:;" onclick="window.open('http://service.weibo.com/share/share.php?title={{  news.title}}&url=http://localhost:8000/api/login&pic=http%3A')"><img src="/static/image/weiBo.jpg"  style="width: 30px;height: 30px"/>  <div class="shareIcon sina_weibo"></div><div class="shareCtrl">微博</div></a>#}
+{#                                         <a href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?title={{news.title}}"  ><img src="/static/image/qq.jpg"  style="width: 30px;height: 30px"/>  <div class="shareIcon sina_weibo"></div><div class="shareCtrl">QQ</div></a>#}
+
+                                     <a hidefocus="true" title="分享到 QQ空间" href="javascript:;" onclick="window.open('http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?summary=https%3A%2F%2Ffkrlzy04.icoc.me%2Fnd.jsp%3F_sc%3D2%26id%3D6&amp;url=https%3A%2F%2Ffkrlzy04.icoc.me%2Fnd.jsp%3F_sc%3D2%26id%3D6&amp;pics=http%3A&amp;title={{ news.title }}')"><img src="/static/image/qq.jpg" style="width: 30px;height: 30px">
+                                <div class="shareIcon qq_zone"></div><div class="shareCtrl">QQ</div></a>
+
+                                </div>
+                            </div>
+                                <div class="clearfloat" style="height:5px;"></div><div class="g_border line"></div>
+                            <div class="richContent  richContent3">
+                            <p>     <span style="font-family:微软雅黑;font-size:14px;">  &nbsp&nbsp&nbsp&nbsp{{news.content}}</span></p></div>
+                            <div style="width:100%;margin-top:30px;margin-left:10px;" id="prevAndNextDiv"><div id="singleNewspagenation12" style="display:block;">
+                            <div class="pagenation3" id="newsNextBtn">
+                                   {% if nextNews %}
+                                      <div class="sourceInfo" style="font-size: 10px;"> 发表于：{{news.time}}</div>
+                                <b>下一篇： &nbsp;</b>
+
+
+                                    <a hidefocus="true"  style="font-weight: normal;font-size: 24px;" href={% url 'newsDetail1' nextNews.id %}>{{  nextNews.title}}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                            <div id="newsCommentDiv">
+
+                            </div>
+                            <div id="newsCommentDiv">
+
+                            </div></div>
+                        </div>
+                        </div>
+
+					</div>
+				</div>
+
+			</div>
+            </div>
+		</section>
+	</div>
+        <script>
+    var navVue= new Vue({
+        el:'#nav',
+        data() {
+            return {
+            activeIndex: '1',
+            activeIndex2: '1',
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+
+        },
+    })
+
+
+    </script>
+</body>
+</html>

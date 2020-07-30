@@ -1,0 +1,313 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+ <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+	</head>
+    <body>
+	    <div class="box-wrap">
+            <header role="banner" id="fh5co-header">
+                <div class="container">
+                    <nav class="navbar navbar-default">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="fh5co-navbar-brand">
+                                    <a class="fh5co-logo" href="/api/index/"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="nav">
+                                    <el-menu
+                                          :default-active="activeIndex2"
+                                          class="el-menu-demo"
+                                          mode="horizontal"
+                                          @select="handleSelect"
+                                          background-color="#ffffff"
+                                          text-color="#000000"
+                                          active-text-color="#6F00D2">
+                                        <el-menu-item index="1"><el-link href="/api/index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+                                        <el-menu-item index="2" ><el-link href="/api/allPositionSearch" icon="el-icon-search">职位搜索</el-link></el-menu-item>
+                                        <el-menu-item index="3" > <el-link href="/api/resumeCenter" icon="el-icon-document">简历中心</el-link></el-menu-item>
+                                        <el-menu-item index="4" ><el-link href="/api/myDeliver/" icon="el-icon-s-promotion">投递反馈</el-link></el-menu-item>
+                                        <el-menu-item index="5" > <el-link href="/api/myCollect" icon="el-icon-star-on">我的收藏</el-link></el-menu-item>
+
+                                    </el-menu>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <ul class="social">
+                                    <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                    <li><a href="/api/resumeCenter/"><i class="el-icon-s-custom"></i></a></li>
+                                    <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                                 </ul>
+                            </div>
+                        </div>
+                    </nav>
+              </div>
+            </header>
+            <!-- END: header -->
+            <section id="intro">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 text-center">
+                            <div class="intro animate-box fadeInUp animated">
+                                <h2>In the past Bo Le learned a sage, now bo wen recommended a scholar.</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="work">
+                <div class="container">
+                    <div class="row">
+{#                        <div class="col-md-6">#}
+{#                            <div class="fh5co-grid animate-box fadeInUp animated" style="background-image: url(/static/image/111.jpg);">#}
+{#                                <a class="image-popup text-center" href="#">#}
+{#                                    <div class="work-title">#}
+{#                                        <h3>Don’t Just Stand There</h3>#}
+{#                                        <span>Illustration, Print</span>#}
+{#                                    </div>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+
+                        <div class="col-md-8">
+                            <div class="fh5co-grid animate-box" style="background-image: url(/static/image/333.png);">
+                                <a class="image-popup text-center" href="#">
+                                    <div class="work-title">
+                                        <h3>Don’t Just Stand There</h3>
+                                        <span>Illustration, Print</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="fh5co-grid animate-box" style="background-image: url(/static/image/555.png);">
+                                <a class="image-popup text-center" href="#">
+                                    <div class="work-title">
+                                        <h3>Don’t Just Stand There</h3>
+                                        <span>Illustration, Print</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="fh5co-grid animate-box" style="background-image: url(/static/image/444.png);">
+                                <a class="image-popup text-center" href="#">
+                                    <div class="work-title">
+                                        <h3>Ampersand</h3>
+                                        <span>Illustration, Print</span>
+                                    </div>
+                                </a>
+                            </div>
+                                 <div id="news" class="J_lineBody lineBody newsListLineBody1">
+                            <ul style="list-style:none;">
+                                 <li v-for='item in news_list' >
+                                    <div class="J_titleLine fk-titleLine">
+                                        <div class="J_newsTitle newsTitle J_noChangeStyle newsListNewsTitle3" style="width: 75%;">
+                                            <div class="J_newsListTopFlag ">
+                                            </div>
+                                            <a class="fk-newsListTitle" hidefocus="true" :href="'/api/newsDetail?id='+item.id" target="_blank" style="font-weight: normal;font-size: 24px;">[[item.title]]</a>
+                                        </div>
+                                         <div>
+                                        <p class="pic-mixNewsStyleSummary fk-newsListSummary" style="font-size:18px;white-space: nowrap;     overflow: hidden;
+                    text-overflow: ellipsis;">[[item.content]]
+                                        </p>
+                                    </div>
+                                        <div class="J_newsCalendar newsCalendar J_noChangeStyle newsListCalendar1" style="width: 23.5%;">
+                                         发表于:[[item.time]]
+                                        </div>
+                                        <div class="clearfloat"></div>
+                                    </div>
+
+                                    <el-divider></el-divider>
+                                 </li>
+                            </ul>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+          <p style="font-weight:bold; font-size:34px">   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RECOMMEND</p>
+       <div style="height: 20px"> </div>
+            <section id="position">
+
+                <div class="container">
+                    <div class="row">
+                        <div v-for="item in position_list">
+
+
+                        <div class="col-md-4 animate-box">
+                            <div class="service">
+                                <div class="service-icon">
+{#                                    <i class="el-icon-eleme" style="align:center"></i>#}
+                                </div>
+                                <h3><a :href="'/api/positionDetail?id='+item.id">[[item.position_name]] </a></h3>
+                                <p> [[item.company_name]] [[ item.release_time]] [[ item.workplace]] [[ item.pay]] .</p>
+                            </div>
+                        </div>
+                        </div>
+
+{#                        <div class="col-md-4 animate-box">#}
+{#                            <div class="service">#}
+{#                                <div class="service-icon">#}
+{#                                    <i class="icon-drop2"></i>#}
+{#                                </div>#}
+{#                                <h2>Web Design &amp; UI</h2>#}
+{#                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="col-md-4 animate-box">#}
+{#                            <div class="service">#}
+{#                                <div class="service-icon">#}
+{#                                    <i class="icon-anchor"></i>#}
+{#                                </div>#}
+{#                                <h2>Development &amp; CMS</h2>#}
+{#                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                </div>
+            </section>
+
+            <footer id="footer" role="contentinfo">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center ">
+                            <div class="footer-widget border">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+	    </div>
+        <script>
+           var navVue= new Vue({
+            el:'#nav',
+             data() {
+          return {
+            activeIndex: '1',
+            activeIndex2: '1',
+
+              };
+            },
+            methods: {
+              handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+              },
+            },
+
+        })
+             var newsVue=new Vue({
+        el:'#news',
+        data(){
+            return{
+                news_list:[],
+            }
+
+        },
+        created: function () {
+            this.getNews();
+        },
+        methods: {
+
+            getNews() {
+                $.ajax({
+                    url: "/api/newsShow/",
+                    type: "post",
+                    headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                    success: function (data) {
+                        var news_list = JSON.parse(data.news_list);
+                        newsVue.news_list = [];
+                        for (let i = 0; i < news_list.length; i++) {
+                            newsVue.news_list.push({
+                                id: news_list[i].pk,
+                                content: news_list[i].fields.content,
+                                title: news_list[i].fields.title,
+                                time: news_list[i].fields.time.replace('T',' '),
+                            })
+                        }
+                        ;
+                        console.log(newsVue.news_list);
+
+                    }
+                })
+            },
+
+        }       ,
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+                   var positionVue=new Vue({
+        el:'#position',
+        data(){
+            return{
+                position_list:[],
+            }
+
+        },
+        created: function () {
+            this.getPosition();
+        },
+        methods: {
+
+            getPosition()
+                        {
+                             $.ajax({
+                                  url:"/api/recommendPosition/",
+                                  type:"post",
+                                  headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                                  success:function (data) {
+                                      var position_list=JSON.parse(data.position_list);
+                                      positionVue.position_list=[];
+                                      for(let i = 0; i < position_list.length; i++) {
+                                          positionVue.position_list.push({
+                                              id:position_list[i].pk,
+                                              position_name:position_list[i].fields.position_name,
+                                              company_name:position_list[i].fields.company_name,
+                                              release_time:position_list[i].fields.release_time,
+                                              workplace:position_list[i].fields.workplace,
+                                              pay:position_list[i].fields.pay,
+                                              count:position_list[i].fields.count,
+                                              sex:position_list[i].fields.sex,
+                                              education_requirement:position_list[i].fields.education_requirement,
+                                              description:position_list[i]})
+                                      };
+                                  }
+                             })
+                        },
+
+        }       ,
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+    </script>
+
+</body>
+</html>

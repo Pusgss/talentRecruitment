@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Title</title>
+
+</head>
+<body>
+
+ {% if user_list %}
+        <ul>
+            {%for user in user_list%}
+                <li><a href={% url 'user_detail' user.id %}>{{ user.user_name }}</a>
+                </li>
+{#                <a href={% url 'user_del' user.id %}>删除</a>#}
+
+               <input type="button" id="a" onclick="user_del({{ user.id }})" value="1">删除</input>
+                <a href={% url 'user_edit' user.id %}>编辑</a>
+            {%endfor%}
+        </ul>
+ {% else %}
+        <p>No users</p>
+ {% endif %}
+<button class="send_Ajax">send_Ajax</button>
+<script>
+
+       $(".send_Ajax").click(function(){
+    daalert("chu")
+           $.ajax({
+               url:"/api/index/",
+               type:"POST",
+               data:{username:"Yuan",password:123},
+               success:function(data){
+                   console.log(data)
+               },
+         　　　　　　
+               error: function (jqXHR, textStatus, err) {
+                        console.log(arguments);
+                    },
+
+               complete: function (jqXHR, textStatus) {
+                        console.log(textStatus);
+                },
+
+               statusCode: {
+                    '403': function (jqXHR, textStatus, err) {
+                          console.log(arguments);
+                     },
+
+                    '400': function (jqXHR, textStatus, err) {
+                        console.log(arguments);
+                    }
+                }
+           })
+       })
+</script>
+</body>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type = "text/tiscript">
+
+
+function user_del(id) {
+
+    if (window.confirm("您确认删除该条记录吗？")) {
+        var post_data = {
+            "userid": id
+        };
+        $.ajax({
+            url: '/user_del',
+            type: 'POST',
+            data: post_data,
+            dataType: 'json',
+            success: function (data) {
+                alert(data["status"]);
+                window.location.reload(true);//数据删除后，进行页面刷新
+            }
+        });
+    } else {
+        alert("删除失败");
+    }
+}
+
+</script>
+</html>

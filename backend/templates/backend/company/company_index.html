@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+ <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <style>
+        .calendar-day{
+        text-align: center;
+        color: #202535;
+        line-height: 30px;
+        font-size: 18px;
+    }
+    .is-selected{
+        color: #F8A535;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    </style>
+	</head>
+    <body>
+	    <div class="box-wrap">
+            <header role="banner" id="fh5co-header">
+                <div class="container">
+                    <nav class="navbar navbar-default">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="fh5co-navbar-brand">
+                                    <a class="fh5co-logo" href="index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="nav">
+                                    <el-menu
+                                          :default-active="activeIndex2"
+                                          class="el-menu-demo"
+                                          mode="horizontal"
+                                          @select="handleSelect"
+                                          background-color="#ffffff"
+                                          text-color="#000000"
+                                          active-text-color="#6F00D2">
+                                      <el-menu-item ><el-link href="/api/company_index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+              <el-menu-item index="2" ><el-link href="/api/company_show/" icon="el-icon-document">职位管理</el-link></el-menu-item>
+              <el-menu-item index="3" ><el-link href="/api/resumeManage/" icon="el-icon-s-promotion">简历管理</el-link></el-menu-item>
+              <el-menu-item index="4" ><el-link href="/api/getAllResume/" icon="el-icon-search">人才搜索</el-link></el-menu-item>
+              <el-menu-item index="5">  <el-link href="/api/getResumeCollect/" icon="el-icon-star-on">人才库</el-link>  </el-menu-item>
+
+                                    </el-menu>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                 <ul class="social">
+                                    <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                    <li><a href="/api/company_show/"><i class="el-icon-s-custom"></i></a></li>
+                                    <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                                 </ul>
+                            </div>
+                        </div>
+                    </nav>
+              </div>
+            </header>
+            <!-- END: header -->
+            <section id="intro">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 text-center">
+                            <div class="intro animate-box fadeInUp animated">
+                                <h2>In the past Bo Le learned a sage, now bo wen recommended a scholar.</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="work">
+                <div class="container">
+                    <div class="row">
+{#                        <div class="col-md-6">#}
+{#                            <div class="fh5co-grid animate-box fadeInUp animated" style="background-image: url(/static/image/111.jpg);">#}
+{#                                <a class="image-popup text-center" href="#">#}
+{#                                    <div class="work-title">#}
+{#                                        <h3>Don’t Just Stand There</h3>#}
+{#                                        <span>Illustration, Print</span>#}
+{#                                    </div>#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+
+                        <div class="col-md-8">
+                            <div class="fh5co-grid animate-box" style="background-image: url(/static/image/333.png);">
+                                <a class="image-popup text-center" href="#">
+                                    <div class="work-title">
+                                        <h3>Don’t Just Stand There</h3>
+                                        <span>Illustration, Print</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="fh5co-grid animate-box" style="background-image: url(/static/image/555.png);">
+                                <a class="image-popup text-center" href="#">
+                                    <div class="work-title">
+                                        <h3>Don’t Just Stand There</h3>
+                                        <span>Illustration, Print</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div id="calendar">
+                                <el-calendar>
+                                  <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
+                                  <template
+                                    slot="dateCell"
+                                    slot-scope="{date, data}">
+                                     <!--这里原本有动态绑定的class，去掉[[ data.day.split('-').slice(1).join('-') ]]-->
+                                      <div class="calendar-day">[[ data.day.split('-').slice(2).join('-') ]]</div>
+                                      <div class="is-selected"> [[dealMyDate(data.day)]]</div>
+
+                                  </template>
+                                </el-calendar>
+                            </div>
+
+
+                            <div id="news" class="J_lineBody lineBody newsListLineBody1">
+                                <ul style="list-style:none;">
+                                 <li v-for='item in news_list' >
+                                    <div class="J_titleLine fk-titleLine">
+                                        <div class="J_newsTitle newsTitle J_noChangeStyle newsListNewsTitle3" style="width: 75%;">
+                                            <div class="J_newsListTopFlag ">
+                                            </div>
+                                            <a class="fk-newsListTitle" hidefocus="true" :href="'/api/newsDetail?id='+item.id" target="_blank" style="font-weight: normal;font-size: 24px;">[[item.title]]</a>
+                                        </div>
+                                         <div>
+                                        <p class="pic-mixNewsStyleSummary fk-newsListSummary" style="font-size:18px;white-space: nowrap;     overflow: hidden;
+                    text-overflow: ellipsis;">[[item.content]]
+                                        </p>
+                                    </div>
+                                        <div class="J_newsCalendar newsCalendar J_noChangeStyle newsListCalendar1" style="width: 23.5%;">
+                                         发表于:[[item.time]]
+                                        </div>
+                                        <div class="clearfloat"></div>
+                                    </div>
+
+                                    <el-divider></el-divider>
+                                 </li>
+                            </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+             <p style="font-weight:bold; font-size:34px">   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RECOMMEND</p>
+       <div style="height: 20px"> </div>
+            <section id="resume">
+
+                <div class="container">
+                    <div class="row">
+                        <div v-for="item in resume_list">
+
+
+                        <div class="col-md-4 animate-box">
+                            <div class="service">
+                                <div class="service-icon">
+{#                                    <i class="el-icon-eleme" style="align:center"></i>#}
+                                </div>
+                                <h3><a :href="'/api/resumeDetail?id='+item.id" target="_blank">[[item.resume_name]]</a></h3>
+                                <p> [[item.user_name]] [[ item.sex]] [[ item.age]] [[ item.city]] [[ item.education_background]]  [[ item.desired_position]] [[ item.expected_salary]]  .</p>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <footer id="footer" role="contentinfo">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center ">
+                            <div class="footer-widget border">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+	    </div>
+      <script>
+
+         var navVue= new Vue({
+            el:'#nav',
+             data() {
+          return {
+            activeIndex2: '1',
+
+          };
+        },
+        methods: {
+          handleSelect(key, keyPath) {
+            console.log(key, keyPath);
+          },
+
+        },
+
+                delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+           var calendarVue= new Vue({
+            el:'#calendar',
+             data() {
+          return {
+              interview_list:[],
+
+
+          };
+        },
+
+               created: function () {
+                this.getInterview();
+
+
+            },
+        methods: {
+
+            dealMyDate(v) {
+                {#console.log(v);#}
+                let len = this.interview_list.length;
+                console.log(len);
+                var res = ""
+                for(let i=0; i<len; i++){
+                    if(this.interview_list[i].date == v) {
+                        res = this.interview_list[i].content;
+                        break;
+                    }
+                }
+                return res;
+            },
+             getInterview() {
+                     $.ajax({
+                         url: "/api/getInterview/",
+                         type: "post",
+                         headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                         success: function (data) {
+                             var interview_list = JSON.parse(data.interview_list);
+                             calendarVue.interview_list = [];
+                             for (let i = 0; i < interview_list.length; i++) {
+                                 calendarVue.interview_list.push({
+                                     id: interview_list[i].pk,
+                                     date: interview_list[i].fields.time.substr(0,10),
+                                     content:interview_list[i].fields.time.substr(11)+ interview_list[i].fields.title,
+                                 })
+                             };
+                         }
+                     })
+                 },
+
+        },
+
+                delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+              var newsVue=new Vue({
+        el:'#news',
+        data(){
+            return{
+                news_list:[],
+            }
+
+        },
+        created: function () {
+            this.getNews();
+        },
+        methods: {
+
+            getNews() {
+                $.ajax({
+                    url: "/api/newsShow/",
+                    type: "post",
+                    headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                    success: function (data) {
+                        var news_list = JSON.parse(data.news_list);
+                        newsVue.news_list = [];
+                        for (let i = 0; i < news_list.length; i++) {
+                            newsVue.news_list.push({
+                                id: news_list[i].pk,
+                                content: news_list[i].fields.content,
+                                title: news_list[i].fields.title,
+                                time: news_list[i].fields.time.replace('T',' '),
+                            })
+                        }
+                        ;
+
+                    }
+                })
+            },
+
+        }       ,
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+           var resumeVue=new Vue({
+        el:'#resume',
+        data(){
+            return{
+                resume_list:[],
+            }
+
+        },
+        created: function () {
+            this.getResume();
+        },
+        methods: {
+            getResume()
+                        {
+                             $.ajax({
+                                  url:"/api/recommendResume/",
+                                  type:"post",
+                                  headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                                  success:function (data) {
+                                      var resume_list=JSON.parse(data.resume_list);
+                                      var hunter_list=JSON.parse(data.hunter_list);
+
+                                      resumeVue.resume_list=[];
+                                      for(let i = 0; i < resume_list.length; i++) {
+                                          resumeVue.resume_list.push({
+                                              id:resume_list[i].pk,
+                                              user_name:hunter_list[i].fields.user_name,
+                                              {#sex:hunter_list[i].fields.sex,#}
+                                              age:resumeVue.getAge(hunter_list[i].fields.birthday),
+                                              city:hunter_list[i].fields.city,
+                                              Correspondence_address:hunter_list[i].fields.Correspondence_address,
+                                              registered_permanent_residence:hunter_list[i].fields.registered_permanent_residence,
+                                              education_background:hunter_list[i].fields.education_background,
+                                              qq:hunter_list[i].fields.qq,
+                                              resume_name:resume_list[i].fields.resume_name,
+                                              desired_position:resume_list[i].fields.desired_position,
+                                              expected_salary:resume_list[i].fields.expected_salary,
+                                              expected_work_city:resume_list[i].fields.expected_work_city,
+                                          })
+                                           if(hunter_list[i].fields.sex=='0'){
+                                                resumeVue.resume_list[i].sex="男";
+
+                                            }
+                                            else if(hunter_list[i].fields.sex=='1'){
+                                                resumeVue.resume_list[i].sex="女";
+
+                                            }
+
+                                      };
+                                  }
+                             })
+                        },
+            getAge(strAge) {
+                var birArr = strAge.split("-");
+                var birYear = birArr[0];
+                var birMonth = birArr[1];
+                var birDay = birArr[2];
+
+                d = new Date();
+                var nowYear = d.getFullYear();
+                var nowMonth = d.getMonth() + 1; //记得加1
+                var nowDay = d.getDate();
+                var returnAge;
+
+                if (birArr == null) {
+                    return false
+                };
+                var d = new Date(birYear, birMonth - 1, birDay);
+                if (d.getFullYear() == birYear && (d.getMonth() + 1) == birMonth && d.getDate() == birDay) {
+                    if (nowYear == birYear) {
+                        returnAge = 0; //
+                    } else {
+                        var ageDiff = nowYear - birYear; //
+                        if (ageDiff > 0) {
+                            if (nowMonth == birMonth) {
+                                var dayDiff = nowDay - birDay; //
+                                if (dayDiff < 0) {
+                                    returnAge = ageDiff - 1;
+                                } else {
+                                    returnAge = ageDiff;
+                                }
+                            } else {
+                                var monthDiff = nowMonth - birMonth; //
+                                if (monthDiff < 0) {
+                                    returnAge = ageDiff - 1;
+                                } else {
+                                    returnAge = ageDiff;
+                                }
+                            }
+                        } else {
+                            return  "出生日期晚于今天，数据有误"; //返回-1 表示出生日期输入错误 晚于今天
+                        }
+                    }
+                    return returnAge;
+                } else {
+                    return ("输入的日期格式错误！");
+                }
+        },
+
+        }       ,
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+    </script>
+
+</body>
+</html>

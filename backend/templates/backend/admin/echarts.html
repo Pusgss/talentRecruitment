@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <title>人才招聘</title>
+    <style>
+        .el-header {
+            background-color: #B3C0D1;
+            color: #333;
+            line-height: 60px;
+          }
+        .el-aside {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="positions">
+        <el-container style=" border: 1px solid #eee">
+            <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+               <el-menu background-color="#111111"
+              text-color="white"
+              active-text-color="#C0C0C0"
+                 default-active="2"
+      class="el-menu-vertical-demo">
+                    <el-submenu index="1">
+                        <template slot="title"><i class="el-icon-message"></i><el-link href="/api/users/">会员信息管理</el-link></template>
+                        <el-menu-item-group>
+{#                          <template slot="title">待处理事务</template>#}
+
+                            <el-menu-item index="1-1"><el-link href="/api/admin_index/" color="yellow">待处理事务</el-link></el-menu-item>
+
+                        </el-menu-item-group>
+
+                    </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title"><i class="el-icon-menu"></i><el-link href="/api/positions/">招聘信息管理</el-link></template>
+
+                      </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title"><i class="el-icon-setting"></i><el-link href="/api/news/">网站公告管理</el-link></template>
+
+                    </el-submenu>
+                     <el-submenu index="4">
+                         <template slot="title"><i class="el-icon-platform-eleme"></i><el-link href="/api/echarts/">数据分析</el-link></template>
+
+                    </el-submenu>
+                        <el-submenu index="5">
+                         <template slot="title"><i class="el-icon-guide"></i><el-link href="/api/logout/">登出</el-link></template>
+
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+
+            <el-container>
+                <el-header style="text-align: right; font-size: 12px">
+
+                </el-header>
+
+                <el-main>
+                     <div id="Echarts" >
+                         <el-card style=" position: absolute; top: 100px; left: 255px;">
+                          <div id="main" style="width: 300px;height:250px;" ></div>
+       </el-card>
+
+    <div id="Echarts" >
+                         <el-card style=" position: absolute; top: 100px; left:650px;">
+                          <div id="sex" style="width: 300px;height:250px;" ></div>
+       </el-card>
+
+
+                         <el-card style=" position: absolute; top: 100px; left:1045px;">
+                          <div id="educationAndSalary" style="width: 350px;height:250px;" ></div>
+       </el-card>
+
+                         <el-card style=" position: absolute; top: 400px; left:255px;">
+                          <div id="user" style="width: 600px;height:400px;"></div>
+       </el-card>
+
+   <el-card style=" position: absolute; top: 400px; left:900px;">
+                          <div id="cityDistribute" style="width: 495px;height:400px;"></div>
+       </el-card>
+
+   <el-card style=" position: absolute; top: 900px; left:255px;">
+                          <div id="educationRequirement" style="width: 400px;height:400px;"></div>
+       </el-card>
+<el-card style=" position: absolute; top: 900px; left:705px;">
+                          <div id="logintime" style="width: 695px;height:400px;"></div>
+       </el-card>
+
+</div></div>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+    <script>
+        var positionsVue=new Vue(
+        {
+            el:'#positions',
+            data() {
+                  return {
+                      msg: 'Welcome to Your Vue.js App',
+                      centerDialogVisible: false,
+                      positionForm: [],
+                      pickerOptions: {
+                          disabledDate(time) {
+                              return time.getTime() > Date.now();
+                          }
+                      },
+                      position_list:[],
+                      total:0,
+                      pageSize:20,
+                      listLoading:false,
+                      currentPage: 1,
+                      multipleSelection: [],
+                      disable:0,
+                      id_list:[],
+                  };
+            },
+
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+        })
+        var userNumVue=new Vue({
+            el: '#Echarts',
+
+                data(){
+                     return{
+                         data:[],
+                         sex:[],
+                         month:[],
+                         userNum:[],
+                         hunterNum:[],
+                         companyNum:[],
+                         educationRequirement:[],
+                         city:[],
+                         city_num_list:[],
+                         salary:[],
+                         logintimeCount:[],
+                     }
+                },
+                methods:{
+                      myEcharts(){
+                          // 基于准备好的dom，初始化echarts实例
+                          var myChart =echarts.init(document.getElementById('main'));
+                          // 指定图表的配置项和数据
+                          var option = {
+                              title: {
+                                  text: '目前用户数量'
+                              },
+                              toolbox:{
+                                show:true,
+                                orient:"horizontal",                        //工具栏 icon 的布局朝向'horizontal' 'vertical'
+                                itemSize:15,
+                                 left:"right",                              //组件离容器左侧的距离,'left', 'center', 'right','20%'
+                                top:"top",                                   //组件离容器上侧的距离,'top', 'middle', 'bottom','20%'
+                                right:"auto",                               //组件离容器右侧的距离,'20%'
+                                bottom:"auto",                              //组件离容器下侧的距离,'20%'
+                                width:"auto",                               //图例宽度
+                                height:"auto",                              //图例高度
+                                feature:{
+                                    saveAsImage:{
+                                         show: true,                         //是否显示该工具。
+            type:"png",                         //保存的图片格式。支持 'png' 和 'jpeg'。
+            name:"pic1",                        //保存的文件名称，默认使用 title.text 作为名称
+            backgroundColor:"#ffffff",        //保存的图片背景色，默认使用 backgroundColor，如果backgroundColor不存在的话会取白色
+            title:"Download",
+            pixelRatio:1                        //保存图片的分辨率比例，默认跟容器相同大小，如果需要保存更高分辨率的，可以设置为大于 1 的值，例如 2
+                                    }
+                                }
+                            },
+                              tooltip: {},
+                              legend: {
+                                  data:['数量']
+                              },
+                              xAxis: {
+                                  data: ["求职者","企业","管理员"],
+                                  // 修改文本的颜色
+                            axisLabel: {
+                              color: "#000000",
+                              fontSize: 10
+                            },
+                            // 修改轴线的颜色
+                            axisLine: {
+                              lineStyle: {
+                                color: "#000000"
+                              }
+                            }
+
+                              },
+                              yAxis: {
+                                  axisLabel: {
+                              color: "#000000",
+                              fontSize: 10
+                            },
+                            // 修改y轴横向分割线的颜色
+                            splitLine: {
+                              lineStyle: {
+                                color: "#C0C0C0"
+                              }
+                            },
+                            axisLine: {
+                              lineStyle: {
+                                color: "#000000"
+                              }
+                            }
+
+                              },
+                              series: [{
+                                  name: '数量',
+                                  type: 'bar',
+                                  data:this.data,
+                                  itemStyle: {
+                                    normal: {
+                        　　　　　　　　//这里是重点
+                                        color: function(params) {
+                                            //注意，如果颜色太少的话，后面颜色不会自动循环，最好多定义几个颜色
+                                            var colorList = ['CornflowerBlue','Turquoise', 'Gold', 'DarkOrchid', '#91c7ae','#749f83', '#ca8622'];
+                                            return colorList[params.dataIndex]
+                                        }
+                                    }
+                                }
+                              }]
+                          };
+
+                          // 使用刚指定的配置项和数据显示图表。
+                          myChart.setOption(option);
+                          },
+                    sexDistributeEcharts(){
+                          var myChart = echarts.init(document.getElementById('sex'),'light');
+
+                        myChart.setOption({
+                              title: {
+                                    text: '求职者性别分布',
+                                    x: 'left'
+                                },
+                            toolbox:{
+                                show:true,
+                                feature:{
+                                    saveAsImage:{
+                                        show:true
+                                    }
+                                }
+                            },
+                            series : [
+                                {
+                                    name: '访问来源',
+                                    type: 'pie',    // 设置图表类型为饼图
+                                    radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
+                                    data: this.sex,         // 数据数组，name 为数据项名称，value 为数据项值
+                                    color: ['CornflowerBlue', '#EE82EE'],
+                                }
+
+                            ]
+                        })
+                          },
+                    user(){
+                          //初始化ehcharts实例
+                        var myChart=echarts.init(document.getElementById("user"));
+                        //指定图表的配置项和数据
+                        var option={
+                            //标题
+                            title:{
+                              text:'用户情况按月统计'
+                            },
+                            //工具箱
+                            //保存图片
+                            toolbox:{
+                                show:true,
+                                feature:{
+                                    saveAsImage:{
+                                        show:true
+                                    }
+                                }
+                            },
+                            //图例-每一条数据的名字叫销量
+                            legend:{
+                                data:['总计人数','求职者','企业']
+                            },
+                            //x轴
+                            xAxis:{
+                                data:this.month,
+                            },
+                            //y轴没有显式设置，根据值自动生成y轴
+                            yAxis:{},
+                            //数据-data是最终要显示的数据
+                            series:[{
+                                name:'总计人数',
+                                type:'line',
+                                data:this.userNum,
+                                {#symbol: 'circle', // 拐点类型#}
+                                smooth: true, // 当为true时，就是光滑的曲线（默认为true）；当为false，就是折线不是曲线的了，那这个设为true，下面的（吃饭）数据中设置smooth为false，这个就不是光滑的曲线了。
+                                symbolSize:9,   //拐点圆的大小
+                                color:['Turquoise'],  //折线条的颜色
+
+                                itemStyle:{
+                                    normal:{
+                                        lineStyle:{
+                                            width:3,
+
+                                        }
+                                    }
+                                },
+
+
+
+                                         emphasis: {
+                    color: '#000000'//hover拐点颜色定义
+                },
+
+
+
+
+                               // areaStyle: {
+                                 //            normal: {
+                                //    color:'#999999'//折线下面区块的颜色
+                               // }
+                               // },
+
+                            },
+                                {
+                                    name:'求职者',
+                                    type:'line',
+                                    data:this.hunterNum,
+                                    color:'#4169E1',  //折线条的颜色
+                                    smooth: true, // 当为true时，就是光滑的曲线（默认为true）；当为false，就是折线不是曲线的了，那这个设为true，下面的（吃饭）数据中设置smooth为false，这个就不是光滑的曲线了。
+                                    symbolSize:9,   //拐点圆的大小
+
+
+                                    itemStyle:{
+                                        normal:{
+                                            lineStyle:{
+                                                width:3,
+
+                                            }
+                                        }
+                                    },
+                                },
+                                {
+                                    name:'企业',
+                                    type:'line',
+                                    data:this.companyNum,
+                                    smooth: true,
+                                    color:'Gold',  //折线条的颜色
+                                    symbolSize:9,   //拐点圆的大小
+
+
+                                    itemStyle:{
+                                        normal:{
+                                            lineStyle:{
+                                                width:3,
+
+                                            }
+                                        }
+                                    },
+                                }
+                    ]
+                        };
+                        //使用刚刚指定的配置项和数据项显示图表
+                        myChart.setOption(option);
+                    },
+                    loginCharts(){
+                          //初始化ehcharts实例
+                        var myChart=echarts.init(document.getElementById("logintime"));
+                        //指定图表的配置项和数据
+                        var option={
+                            //标题
+                            title:{
+                              text:'负载'
+                            },
+                            //工具箱
+                            //保存图片
+                            toolbox:{
+                                show:true,
+                                feature:{
+                                    saveAsImage:{
+                                        show:true
+                                    }
+                                }
+                            },
+                            //图例-每一条数据的名字叫销量
+                            legend:{
+                                data:['登录人数']
+                            },
+                            //x轴
+                            xAxis:{
+                                data:['1:00','2:00','3:00','4:00','5:00','6:00','7:00','8:00','9:00','10:00','11:00',
+                                    '12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00',
+                                    '23:00','24:00'],
+                            },
+                            //y轴没有显式设置，根据值自动生成y轴
+                            yAxis:{},
+                            //数据-data是最终要显示的数据
+                            series:[{
+                                name:'登录人数',
+                                type:'line',
+                                data:this.logintimeCount,
+                                {#symbol: 'circle', // 拐点类型#}
+                                smooth: true, // 当为true时，就是光滑的曲线（默认为true）；当为false，就是折线不是曲线的了，那这个设为true，下面的（吃饭）数据中设置smooth为false，这个就不是光滑的曲线了。
+                                symbolSize:9,   //拐点圆的大小
+                                color:['Turquoise'],  //折线条的颜色
+
+                                itemStyle:{
+                                    normal:{
+                                        lineStyle:{
+                                            width:3,
+
+                                        }
+                                    }
+                                },
+
+
+
+                                         emphasis: {
+                    color: '#000000'//hover拐点颜色定义
+                },
+
+
+
+
+                               // areaStyle: {
+                                 //            normal: {
+                                //    color:'#999999'//折线下面区块的颜色
+                               // }
+                               // },
+
+                            },
+
+                    ]
+                        };
+                        //使用刚刚指定的配置项和数据项显示图表
+                        myChart.setOption(option);
+                    },
+                    educationRequirementDistributeEcharts(){
+                          var myChart = echarts.init(document.getElementById('educationRequirement'),'light');
+
+                        myChart.setOption({
+                              title: {
+                                    text: '职位学历要求',
+                                    x: 'left'
+                                },
+                            toolbox:{
+                                show:true,
+                                feature:{
+                                    saveAsImage:{
+                                        show:true
+                                    }
+                                }
+                            },
+                            series : [
+                                {#{#}
+                                {#    name: '访问来源',#}
+                                {#    type: 'pie',    // 设置图表类型为饼图#}
+                                {#    radius: '55%',  // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。#}
+                                {#    data:this.educationRequirement,         // 数据数组，name 为数据项名称，value 为数据项值#}
+                                {#    itemStyle: {#}
+                                {#        normal: {#}
+                                {#        color: function(params) {#}
+                                {#                //自定义颜色#}
+                                {#                var colorList = ['CornflowerBlue','Turquoise', 'Gold',  '#9932CC','LavenderBlush'];#}
+                                {#                return colorList[params.dataIndex]#}
+                                {#            }#}
+                                {#        }#}
+                                {#    }#}
+                                {##}
+
+                                {
+		                        radius: ['30%', '61%'],
+		                        center: ['50%', '50%'],
+		                        type: 'pie',
+
+		                        labelLine: {
+		                            normal: {
+		                                show: true,
+		                                length: 20,
+		                                length2: 35
+		                            },
+		                            emphasis: {
+		                                show: true
+		                            }
+		                        },
+		                        name: "访问来源",
+		                        data:this.educationRequirement,
+                                    itemStyle: {
+                                        normal: {
+                                        color: function(params) {
+                                                //自定义颜色
+                                                var colorList = ['CornflowerBlue','Turquoise', 'Gold',  '#EE82EE','LavenderBlush'];
+                                                return colorList[params.dataIndex]
+                                            }
+                                        }
+                                    }
+		                    },
+		                    // 边框的设置
+		                    {
+														name: '内边框',
+		                        radius: ['30%', '34%'],
+		                        center: ['50%', '50%'],
+		                        type: 'pie',
+		                        label: {
+		                            normal: {
+		                                show: false
+		                            },
+		                            emphasis: {
+		                                show: false
+		                            }
+		                        },
+		                        labelLine: {
+		                            normal: {
+		                                show: false
+		                            },
+		                            emphasis: {
+		                                show: false
+		                            }
+		                        },
+		                        animation: false,
+		                        tooltip: {
+		                            show: false
+		                        },
+		                        data: [{
+		                            value: 1,
+		                            itemStyle: {
+		                                color: "rgba(255, 255, 255, 255)",
+		                            },
+		                        }],
+		                    }, {
+		                        name: '外边框',
+		                        type: 'pie',
+		                        clockWise: false, //顺时加载
+		                        hoverAnimation: false, //鼠标移入变大
+		                        center: ['50%', '50%'],
+		                        radius: ['65%', '65%'],
+		                        label: {
+		                            normal: {
+		                                show: false
+		                            }
+		                        },
+		                        data: [{
+		                            value: 9,
+		                            name: '',
+		                            itemStyle: {
+		                                normal: {
+		                                    borderWidth: 2,
+		                                    borderColor: '#61bad3'
+		                                }
+		                            }
+		                        }]
+		                    },
+                            ]
+                        })
+                          },
+                       cityDistributeEcharts(){
+                          // 基于准备好的dom，初始化echarts实例
+                          var myChart =echarts.init(document.getElementById('cityDistribute'));
+                          // 指定图表的配置项和数据
+                          var option = {
+                              title: {
+                                  text: '职位地域分布'
+                              },
+                              toolbox:{
+                                show:true,
+                                feature:{
+                                    saveAsImage:{
+                                        show:true
+                                    }
+                                }
+                            },
+                              tooltip: {},
+                              legend: {
+                                  data:['数量']
+                              },
+                              xAxis: {
+                                  data: this.city_list,
+                                  // 修改文本的颜色
+                            axisLabel: {
+                              color: "#C0C0C0",
+                              fontSize: 10
+                            },
+                            // 修改轴线的颜色
+                            axisLine: {
+                              lineStyle: {
+                                color: "#C0C0C0"
+                              }
+                            }
+
+                              },
+                              yAxis: {
+                                  axisLabel: {
+                              color: "#C0C0C0",
+                              fontSize: 10
+                            },
+                            // 修改y轴横向分割线的颜色
+                            splitLine: {
+                              lineStyle: {
+                                color: ["#C0C0C0"]
+                              }
+                            },
+                            axisLine: {
+                              lineStyle: {
+                                color: "#C0C0C0"
+                              }
+                            }
+
+                              },
+                              series: [{
+                                  name: '数量',
+                                  type: 'bar',
+                                  data:this.city_num_list,
+                                  color:'Gold',
+                              }]
+                          };
+
+                          // 使用刚指定的配置项和数据显示图表。
+                          myChart.setOption(option);
+                          },
+                    educationAndSalary(){
+                          // 基于准备好的dom，初始化echarts实例
+                          var myChart =echarts.init(document.getElementById('educationAndSalary'));
+                          // 指定图表的配置项和数据
+                          var option = {
+                              title: {
+                                  text: '学历与薪资关系'
+                              },
+                              toolbox:{
+                                show:true,
+                                feature:{
+                                    saveAsImage:{
+                                        show:true
+                                    }
+                                }
+                            },
+                              tooltip: {},
+                              legend: {
+                                  data:['数量']
+                              },
+                              xAxis: {
+                                  data: ['专科','本科','硕士','博士'],
+                                  // 修改文本的颜色
+                            axisLabel: {
+                              color: "#C0C0C0",
+                              fontSize: 10
+                            },
+                            // 修改轴线的颜色
+                            axisLine: {
+                              lineStyle: {
+                                color: "#C0C0C0"
+                              }
+                            }
+
+                              },
+                              yAxis: {
+                                  axisLabel: {
+                              color: "#C0C0C0",
+                              fontSize: 10
+                            },
+                            // 修改y轴横向分割线的颜色
+                            splitLine: {
+                              lineStyle: {
+                                color: "#C0C0C0"
+                              }
+                            },
+                            axisLine: {
+                              lineStyle: {
+                                color: "#C0C0C0"
+                              }
+                            }
+
+                              },
+                              series: [{
+                                  name: '数量',
+                                  type: 'bar',
+                                  data:this.salary,
+                                  color:'CornflowerBlue',  //折线条的颜色
+                              }]
+                          };
+
+                          // 使用刚指定的配置项和数据显示图表。
+                          myChart.setOption(option);
+                          },
+
+                },
+                mounted() {
+
+                       $.ajax({
+                           url: "/api/getUserNum/",
+                           type: "POST",
+                           headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                           dataType: 'JSON',
+                           success: function (data) {
+
+                               if (data.status == "successful") {
+                                   for (let i = 0; i < data.num_list.length; i++) {
+                                       console.log(data.num_list[i]);
+                                       userNumVue.data.push(data.num_list[i]);
+                                   }
+                                   userNumVue.myEcharts();
+                               }
+
+                           }
+                       });
+                        $.ajax({
+                              url:"/api/getUserSex/",
+                              type:"POST",
+                              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                             dataType:'JSON',
+                              success:function (data) {
+                                  if (data.status == "successful") {
+
+                                         userNumVue.sex.push({
+                                             name: "女",
+                                             value: data.num_list[0]
+                                         });
+                                         userNumVue.sex.push({
+                                             name: "男",
+                                             value: data.num_list[1]
+                                         });
+                                    userNumVue.sexDistributeEcharts();
+
+                                    }
+
+                                  }
+                            });
+                         $.ajax({
+                              url:"/api/userStatistics/",
+                              type:"POST",
+                              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                             dataType:'JSON',
+                              success:function (data) {
+                                  if (data.status == "successful") {
+                                    console.log(data.month_list);
+                                    userNumVue.month=data.month_list;
+                                    userNumVue.userNum=data.num_list;
+                                    userNumVue.hunterNum=data.hunter_list;
+                                    userNumVue.companyNum=data.company_list;
+                                    userNumVue.user();
+
+
+
+                                    }
+
+                                  }
+                            });
+                    $.ajax({
+                              url:"/api/educationRequirement/",
+                              type:"POST",
+                              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                             dataType:'JSON',
+                              success:function (data) {
+                                  if (data.status == "successful") {
+                                       userNumVue.educationRequirement.push({
+                                             name: "专科",
+                                             value: data.num_list[0]
+                                         });
+                                         userNumVue.educationRequirement.push({
+                                             name: "本科",
+                                             value: data.num_list[1]
+                                         });
+                                         userNumVue.educationRequirement.push({
+                                             name: "硕士",
+                                             value: data.num_list[2]
+                                         });
+                                         userNumVue.educationRequirement.push({
+                                             name: "博士",
+                                             value: data.num_list[3]
+                                         });
+                                         userNumVue.educationRequirement.push({
+                                             name: "不限",
+                                             value: data.num_list[4]
+                                         });
+
+
+                                    userNumVue.educationRequirementDistributeEcharts();
+
+
+
+                                    }
+
+                                  }
+                            });
+                     $.ajax({
+                              url:"/api/cityDistribute/",
+                              type:"POST",
+                              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                             dataType:'JSON',
+                              success:function (data) {
+                                  if (data.status == "successful") {
+                                      console.log(data.city_list);
+                                      userNumVue.city_num_list=data.num_list;
+                                      userNumVue.city_list=data.city_list;
+                                    userNumVue.cityDistributeEcharts();
+
+
+
+                                    }
+
+                                  }
+                            })
+                     $.ajax({
+                              url:"/api/educationAndSalary/",
+                              type:"POST",
+                              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                             dataType:'JSON',
+                              success:function (data) {
+                                  if (data.status == "successful") {
+                                      console.log(data);
+                                      userNumVue.salary=data.salary;
+                                      userNumVue.educationAndSalary();
+
+
+
+
+                                    }
+
+                                  }
+                            })
+                      $.ajax({
+                           url: "/api/loginTime/",
+                           type: "POST",
+                           headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                           dataType: 'JSON',
+                           success: function (data) {
+                               console.log(data.count);
+                               if (data.status == "successful") {
+                                   for (let i = 0; i < data.count.length; i++) {
+                                       userNumVue.logintimeCount.push(data.count[i]);
+                                   }
+                                    console.log(userNumVue.logintimeCount);
+                                   userNumVue.loginCharts();
+                               }
+
+                           }
+                       });
+
+                },
+
+
+
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+        })
+
+    </script>
+</body>
+</html>

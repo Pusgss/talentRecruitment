@@ -1,0 +1,378 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+ <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <title>公司信息完善</title>
+<style>
+    <!-- css代码 -->
+.pannel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1502;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.pannel-inner {
+  position: absolute;
+  background-color: white;
+  left: 40%;
+  top: 30%;
+  width: 20%;
+  /* border: solid #409eff 1px; */
+  padding: 0 17px 17px 17px;
+  font-size: 18px;
+}
+.pannel-header {
+  margin-bottom: 7px;
+  text-align: center;
+}
+     .text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .box-card {
+    width: 480px;
+  }
+    .box-card{
+            position: fixed;
+            width: 800px;
+            height: 200px;
+            {#background: blue;#}
+            top:50%;
+            left: 50%;
+            margin-top: -200px;
+            margin-left:-450px ;
+
+        }
+
+</style>
+</head>
+<body>
+<div id="active">
+  <el-steps :active="active" finish-status="success">
+  <el-step title="公司基本信息"></el-step>
+  <el-step title="完成注册"></el-step>
+
+</el-steps>
+</div>
+   <div id="company" v-show="isShowCompany">
+{#<el-button style="margin-top: 12px;" @click="next">下一步</el-button>#}
+    <el-row>
+      <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="8">
+        <h3 style="text-align: center;">公司基本信息</h3>
+        <el-form :model="companyForm"  :rules="rules" ref="companyForm" label-width="100px" id="demo-loginForm" class="demo-loginForm">
+             <el-form-item label="公司名称" prop="company_name">
+            <el-input  v-model="companyForm.company_name" autocomplete="off" placeholder="请填写公司名称" clearable>
+            </el-input>
+          </el-form-item><el-form-item label="性质" prop="quality">
+                        <el-select v-model="companyForm.quality" placeholder="请选择公司性质">
+                            <el-option label="外资（欧美）" value="外资（欧美）"></el-option>
+                            <el-option label="外资（非欧美）" value="外资（非欧美）"></el-option>
+                            <el-option label="合资" value="合资"></el-option>
+                            <el-option label="国企" value="国企"></el-option>
+                            <el-option label="民营公司" value="民营公司"></el-option>
+                          <el-option label="上市公司" value="上市公司"></el-option>
+                            <el-option label="创业公司" value="创业公司"></el-option>
+                        </el-select>
+                    </el-form-item >
+             <el-form-item label="行业：" prop="industry">
+            <el-input  v-model="companyForm.industry" autocomplete="off" placeholder="请填写公司行业" clearable>
+            </el-input>
+          </el-form-item>
+            <el-form-item label="规模" prop="scale">
+                        <el-select v-model="companyForm.scale" placeholder="请选择公司规模">
+                            <el-option label="少于50人" value="少于50人"></el-option>
+                            <el-option label="50-150人" value="50-150人"></el-option>
+                            <el-option label="150-500人" value="150-500人"></el-option>
+                            <el-option label="500-1000人" value="500-1000人"></el-option>
+                            <el-option label="1000-5000人" value="1000-5000人"></el-option>
+                          <el-option label="5000-10000人" value="5000-10000人"></el-option>
+                            <el-option label="10000人以上" value="10000人以上"></el-option>
+                        </el-select>
+                    </el-form-item >
+            <el-form-item label="地址" prop="address">
+            <el-input  v-model="companyForm.address" autocomplete="off" clearable>
+            </el-input>
+            </el-form-item>
+                <el-form-item label="公司介绍" prop="description">
+            <el-input type="textarea" v-model="companyForm.description" autocomplete="off" clearable>
+            </el-input>
+                </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('companyForm')">提交审核</el-button>
+            <el-button @click="resetForm('companyForm')">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-row>
+  </div>
+<div>
+
+   <div id="position" v-show="isShowPosition">
+    <el-row>
+      <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="8">
+          <el-card  class="box-card" style="text-align: center">
+  <div  class="text item">
+    您的企业信息已经提交审核，我们将会在2个工作日内审核完毕，并审核结果发送邮件通知您，请耐心等待。
+  </div>
+
+</el-card>
+      </el-col>
+    </el-row>
+   </div>
+    {#        <el-form :model="positionForm"  :rules="rules" ref="positionForm" label-width="100px" id="demo-positionForm" class="demo-positionForm">#}
+{#      <el-form-item label="职位名称" prop="position_name">#}
+{#            <el-input type="text" v-model="positionForm.position_name" autocomplete="off"  clearable></el-input>#}
+{#          </el-form-item>#}
+{#          <el-form-item label="工作地点" prop="workplace">#}
+{#            <el-input type="text" v-model="positionForm.workplace" autocomplete="off"  clearable></el-input>#}
+{#          </el-form-item>#}
+{#            <el-form-item label="人数" prop="count">#}
+{#            <el-input type="text" v-model="positionForm.count" autocomplete="off"  clearable></el-input>#}
+{#          </el-form-item>#}
+{#         <el-form-item label="发布时间" prop="release_time">#}
+{#               <el-date-picker v-model="positionForm.release_time"  type="date" placeholder="选择日" value-format="yyyy-MM-dd"></el-date-picker>#}
+{#        </el-form-item >#}
+{#            <el-form-item label="薪资(元/月)" prop="pay">#}
+{#                        <el-select v-model="positionForm.pay" placeholder="请选择薪资">#}
+{#                            <el-option label="3000-3999" value="3000-3999"></el-option>#}
+{#                            <el-option label="4000-5999" value="4000-5999"></el-option>#}
+{#                            <el-option label="6000-7999" value="6000-7999"></el-option>#}
+{#                            <el-option label="8000-9999" value="8000-9999"></el-option>#}
+{#                            <el-option label="10000-150000" value="10000-150000"></el-option>#}
+{#                      </el-select>#}
+{#          </el-form-item >#}
+{#            <el-form-item label="学历要求" prop="education_requirement">#}
+{#                        <el-select v-model="positionForm.education_requirement" placeholder="请选择类型">#}
+{#                            <el-option label="专科" value="专科"></el-option>#}
+{#                            <el-option label="本科" value="本科"></el-option>#}
+{#                            <el-option label="硕士" value="硕士"></el-option>#}
+{#                            <el-option label="博士" value="博士"></el-option>#}
+{#                            <el-option label="其他" value="其他"></el-option>#}
+{#                      </el-select>#}
+{#          </el-form-item >#}
+{#          <el-form-item>#}
+{#            <el-button type="primary" @click="positionAdd('positionForm')">下一步</el-button>#}
+{#            <el-button @click="resetPositionForm('positionForm')">重置</el-button>#}
+{#              <a href="{% url 'company_index' %}">跳过</a>#}
+{#          </el-form-item>#}
+{#        </el-form>#}
+      </el-col>
+    </el-row>
+  </div>
+
+<script>
+ var activeVue=new Vue(
+    {
+        el:'#active',
+        data() {
+            return{
+                active:0,
+            }
+        }
+        ,
+        methods:{
+               next() {
+                    if (this.active++ > 2) this.active = 0;
+                       this.active++;
+                    companyVue.isShowCompany=false;
+                    positionVue.isShowPosition=true;
+            },
+        }
+     })
+
+    var companyVue=new Vue(
+    {
+        el:'#company',
+        data()
+        {
+              return{
+                 companyForm:
+                 {
+                     company_name:'',
+                      quality: '',
+                      industry: '',
+                     scale:'',
+                     address:'',
+                     description:'',
+                 },
+                rules:
+                {
+                    company_name:[{ required: true, message: '请填写公司名称', trigger: 'blur' }],
+                    quality:[{ required: true, message: '请选择公司性质', trigger: 'change' }],
+                    industry: [{ required: true, message: '请填写密码', trigger: 'blur' }],
+                    scale:[{ required: true, message: '请选择公司规模', trigger: 'change' }],
+                    address:[{ required: true, message: '请填写公司地址', trigger: 'blur' }],
+                    description:[{  max: 200, message: '最多输入200位字符', trigger: 'blur' },
+                        { required: true, message: '请填写公司介绍', trigger: 'blur' }],
+                },
+                isShowCompany:true,
+
+
+            }
+        },
+    methods: {
+             next() {
+                   activeVue.next()
+            },
+
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+           $.ajax({
+              url:"/api/companyForm/",
+              type:"POST",
+              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+              {#data: $('#demo-loginForm').serialize(),//提示错误#}
+              {#data:vm.selected,#}
+              data:{company_name:companyVue.companyForm.company_name,quality:companyVue.companyForm.quality,industry:companyVue.companyForm.industry,scale:companyVue.companyForm.scale,address:companyVue.companyForm.address,description:companyVue.companyForm.description},
+              dataType:'JSON',
+              success:function (data) {
+                  if (data.status === "successful")
+                  {
+                      {#window.location.href='api/index/';#}
+                     companyVue.next();
+                  }
+                  else if(data.status === "warning"){
+                        companyVue.$message.warning(data.errs);
+                  }
+                  else {
+                      var error_list=JSON.parse(data.errs);
+                      console.log(error_list)
+                      var msg=''
+                      for (let key in error_list){
+                          msg=msg+key+error_list[key][0].message+";"
+                      }
+                      companyVue.$message.warning(msg);
+                  }
+              }
+           })
+          }
+          else {
+            this.$message.error('公司基本信息保存失败');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+        },
+        },
+     })
+ var positionVue=new Vue(
+     {
+         el: '#position',
+         data() {
+
+             return {
+                 isShowPosition: false,
+             }
+         }
+     })
+{#var positionVue=new Vue(#}
+{#    {#}
+{#        el:'#position',#}
+{#        data()#}
+{#        {#}
+{##}
+{#              return{#}
+{#                 positionForm:#}
+{#                 {#}
+{#                      release_time: '',#}
+{#                      workplace: '',#}
+{#                      pay:'',#}
+{#                      count:'',#}
+{#                      education_requirement:'',#}
+{#                     description:'',#}
+{##}
+{#                 },#}
+{#                rules:#}
+{#                {#}
+{#                    position_name: [ { required: true, message: '请填写职位名称', trigger: 'blur' } ],#}
+{#                  release_time: [ { required: true, message: '请选择发布时间', trigger: 'change' } ],#}
+{##}
+{#                  workplace: [ { required: true, message: '请填写工作地址', trigger: 'blur' } ],#}
+{##}
+{#                pay: [ { required: true, message: '请填写薪资', trigger: 'blur' } ],#}
+{##}
+{#                    count: [ { required: true, message: '请填写需求人数', trigger: 'blur' } ],#}
+{#                    education_requirement: [ { required: true, message: '请选择学历要求', trigger: 'blur'}],#}
+{##}
+{#                    description: [ { required: true, message: '请填写职位描述', trigger: 'blur' } ],#}
+{##}
+{#                },#}
+{#                  isShowPosition:false,#}
+{##}
+{#            }#}
+{#        },#}
+{#    methods: {#}
+{##}
+{#      positionAdd(formName) {#}
+{#        this.$refs[formName].validate((valid) => {#}
+{#          if (valid) {#}
+{#           $.ajax({#}
+{#              url:"/api/position_add/",#}
+{#              type:"POST",#}
+{#              headers:{"X-CSRFToken":$.cookie('csrftoken')},#}
+{#              data: $('#demo-loginForm').serialize(),//提示错误#}
+{#              data:vm.selected,#}
+{#              data:{position_name:positionVue.positionForm.position_name,release_time:positionVue.positionForm.release_time,workplace:positionVue.positionForm.workplace,pay:positionVue.positionForm.pay,count:positionVue.positionForm.count,education_requirement:positionVue.positionForm.education_requirement,description:positionVue.positionForm.description},#}
+{#              dataType:'JSON',#}
+{#              success:function (data) {#}
+{#                  if (data.status === "successful")#}
+{#                  {#}
+{#                      window.location.href='api/index/';#}
+{#                  }#}
+{#                  else if(data.status === "warning"){#}
+{#                        positionVue.$message.warning(data.errs);#}
+{#                  }#}
+{#                  else {#}
+{#                      var error_list=JSON.parse(data.errs);#}
+{#                      console.log(error_list)#}
+{#                      var msg=''#}
+{#                      for (let key in error_list){#}
+{#                          msg=msg+key+error_list[key][0].message+";"#}
+{#                      }#}
+{#                      positionVue.$message.warning(msg);#}
+{#                  }#}
+{#              }#}
+{#           })#}
+{#          }#}
+{#          else {#}
+{#            this.$message.error('职位发布失败失败');#}
+{#            return false;#}
+{#          }#}
+{#        });#}
+{#      },#}
+{#      resetPositionForm(formName) {#}
+{#        this.$refs[formName].resetFields();#}
+{#      },#}
+{##}
+{#        },#}
+{##}
+{#        delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号#}
+{##}
+{#     })#}
+</script>
+
+
+</body>
+</html>

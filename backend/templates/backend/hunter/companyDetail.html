@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>人才招聘</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/qrcode.min.js"></script>
+     <style>
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 120px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
+       .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+      }
+      .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+      }
+
+    </style>
+
+	</head>
+    <body>
+	<div class="box-wrap">
+		<header role="banner" id="fh5co-header">
+			<div class="container">
+				<nav class="navbar navbar-default">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="fh5co-navbar-brand">
+								<a class="fh5co-logo" href="index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+							</div>
+						</div>
+						<div class="col-md-6">
+                            <div id="nav">
+                                <el-menu
+                              :default-active="activeIndex2"
+                              class="el-menu-demo"
+                              mode="horizontal"
+                              @select="handleSelect"
+                              background-color="#ffffff"
+                              text-color="#000000"
+                              active-text-color="#6F00D2">
+                                <el-menu-item index="1"><el-link href="/api/index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+                                <el-menu-item index="2" ><el-link href="/api/allPositionSearch" icon="el-icon-search">职位搜索</el-link></el-menu-item>
+                                <el-menu-item index="3" > <el-link href="/api/resumeCenter" icon="el-icon-document">简历中心</el-link></el-menu-item>
+                                <el-menu-item index="4" ><el-link href="/api/myDeliver/" icon="el-icon-s-promotion">投递反馈</el-link></el-menu-item>
+                                <el-menu-item index="5" > <el-link href="/api/myCollect" icon="el-icon-star-on">我的收藏</el-link></el-menu-item>
+
+                            </el-menu>
+                        </div>
+						</div>
+						<div class="col-md-3">
+                             <ul class="social">
+                                <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                <li><a href="/api/resumeCenter/"><i class="el-icon-s-custom"></i></a></li>
+                                <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                             </ul>
+						</div>
+					</div>
+				</nav>
+		  </div>
+		</header>
+		<!-- END: header -->
+		<section id="position">
+
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+<div id="module389" _indexclass="formIndex3" _moduletype="1" _modulestyle="109" _moduleid="389" class="form form389 formIndex3 formStyle109 fk-formFullmeasure " title="" _sys="0" _banid="" style="height: 998px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="0" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0" fmslidestyle="0" fmpage="1" iscarousel="0" displaytime="4" carouselspeed="1" cuscarousel="0">
+<div class="fillContentRelative" style="position:absolute; z-index:-1; height:100%; width:100%;display:none;"></div>
+    <div style="position: static;" class="fullmeasureOuterContentPage fullmeasureOuterContentPage1 J_fullmeasurePageShow" page="1">
+        <div class="fullmeasureOuterContentBg fullmeasureOuterContentBg389 fullmeasureStyle12">
+
+        </div><div class="fullmeasureOuterContent fullmeasureOuterContent389">
+<div class="fullmeasureContent fullmeasureContent389" id="fullmeasureContent389_1" moduleid="389">
+    <div class="fullmeasureContentBg fullmeasureContentBg389"></div>
+    <div class="J_zoneEnableAll J_fullmeasurePackContent elemZone elemZoneModule fk-formPack" moduleid="389" id="fk-inFullmeasureListZone389-1">
+        <div class="fk-elemZoneBg J_zoneContentBg"></div>
+        <div id="module375" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="375" class="form form375 formStyle86 siteEditor  animateModule " title="" _sys="0" _banid="" style="position:absolute;top:2px;left:1px;width:635px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="389" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+        <div class="lightModuleOuterContent lightModuleOuterContent375">
+            <div class="fk-editor simpleText fk-editor-break-word  ">
+                <span style="line-height: 50px;"><font color="#333333" face="微软雅黑, Microsoft YaHei">
+                    <span style="font-size: 32px;"><b>{{company.company_name}}</b></span></font>
+                    <div><font color="#333333" face="微软雅黑, microsoft yahei">
+                        <span style="font-size: 24px;">{{company.quality}}-{{company.industry}}-{{company.address}}</span>
+                    </font><font face="fontface__alibabasans-medium__119__1227887646108">
+                        <span style="font-size: 32px;"><br></span></font>
+                    </div></span>
+            </div>
+        </div>
+</div>
+
+
+        <div id="module376" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="376" class="form form376 formStyle86 siteEditor  animateModule " title="" _sys="0" _banid="" style="font-size:50px;position:absolute;top:95px;left:671px;width:400px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="389" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent376"><div class="fk-editor simpleText fk-editor-break-word  "><div style="text-align: right;"><font color="#999999"><span style="font-size: 14px;">状态：{% if company.status == '0' %}待审核{% elif company.status == '1' %}已审核{% elif company.status == '2' %}信息变更待审核{% endif %}</span></font></div></div></div>
+</div>
+
+        <div id="module388" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="376" class="form form376 formStyle86 siteEditor  animateModule " title="" _sys="0" _banid="" style="position:absolute;top:76px;left:671px;width:400px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="389" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent376"><div class="fk-editor simpleText fk-editor-break-word  "><div style="text-align: right;"><font color="#999999"><span style="font-size: 14px;">规模：{{company.scale}}。</span></font></div></div></div>
+</div>
+<div id="module390" bannertitle="图片" _indexclass="" _moduletype="1" _modulestyle="79" _moduleid="390" class="form form390 formStyle79 animateModule " title="" _sys="0" _banid="" style="position:absolute;top:182px;left:1px;width:1200px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="389" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent390"><div class="floatImg floatImg_J floatImg_J_special"><a hidefocus="true" class="J_floatImg_jump f_floatImg_jump ">
+<div class="floatImgWrap"><div class="forMargin"><img id="float_img_390" class=" lazyload_transparent float_in_img J_defImage " data-original="//21097352.s61i.faiusr.com/2/AD0IiNeHChACGAAg69LC7wUo2ouhgwcwsAk4gwQ.jpg" src="/static/image/AD0IiNeHChACGAAg69LC7wUo2ouhgwcwsAk4gwQ.jpg" alt="AD0IiNeHChACGAAg69LC7wUo2ouhgwcwsAk4gwQ"></div></div></a>
+</div></div>
+</div>
+<div id="module391" bannertitle="图片" _indexclass="" _moduletype="1" _modulestyle="79" _moduleid="391" class="form form391 formStyle79 animateModule " title="" _sys="0" _banid="" style="position:absolute;top:289px;left:605px;width:500px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="389" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent391"><div class="floatImg floatImg_J floatImg_J_special"><a hidefocus="true" class="J_floatImg_jump f_floatImg_jump ">
+<div class="floatImgWrap"><div class="forMargin"><img id="float_img_391" style="width: 500px;height: 350px" class=" lazyload_transparent float_in_img J_defImage " data-original="//21097352.s61i.faiusr.com/4/AD0IiNeHChAEGAAgnNPC7wUokLaf_QUwiQM44gE.png" src="/static/image/AD0IiNeHChAEGAAgnNPC7wUokLaf_QUwiQM44gE.png" alt="AD0IiNeHChAEGAAgnNPC7wUokLaf_QUwiQM44gE"></div></div></a>
+</div></div>
+</div>
+<div id="module392" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="392" class="form form392 formStyle86 siteEditor  animateModule " title="" _sys="0" _banid="" style="position:absolute;top:339px;left:622px;width:300px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="389" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent392"><div class="fk-editor simpleText fk-editor-break-word  "><span style="font-size: 28px; color: rgb(53, 53, 53);"><b>Introduce:</b></span></div></div>
+</div>
+<div id="module393" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="393" class="form form393 formStyle86 siteEditor  animateModule " title="" _sys="0" _banid="" style="position:absolute;top:429px;left:622px;width:413px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="389" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent393"><div class="fk-editor simpleText fk-editor-break-word  "><span style="font-size: 14px; line-height: 30px; display: inline-block; color: rgb(102, 102, 102);">{{ company.description }}</span></div></div>
+</div>
+</div></div></div>
+					</div>
+				</div>
+                     <p style="font-weight:bold; font-size:34px">   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POSITION :</p>
+{% if positions %}
+{% for position in positions %}
+<a href="{% url 'positionDetailPost' position.id %}">
+                        <table
+ style="height: 120px;width: 1000px;margin: auto;border-collapse: collapse;
+border-spacing: 0;
+table-layout: fixed;">
+	<tr style="text-align: center;">
+		<td>
+            <span style="line-height: 30px; display: inline-block;">
+                <span style="font-size: 24px; color: 	#5F9EA0;">
+                    <b>{{position.position_name}}</b>
+                </span>
+            </span>
+        </td>
+        <td>
+            <span style="line-height: 30px;">
+                <span style="font-size: 24px;color: 	#5F9EA0;">
+                    <b>{{position.workplace}}</b>
+                </span>
+            </span>
+        </td>
+        <td>
+            <span style="line-height: 30px;">
+                <span style="font-size: 24px;color: 	#5F9EA0;">
+                    <b>{{position.pay}}</b></span>
+            </span>
+        </td>
+    </tr>
+	<tr style="text-align: center;" >
+		<td>
+            <span style="font-size: 20px; color: 	#5F9EA0; background-color: initial;">
+                {{position.education_requirement}}
+            </span>
+        </td>
+        <td>
+            <span style="font-size: 20px; color: 	#5F9EA0; background-color: initial;">
+                {{position.sex}}
+            </span>
+        </td>
+        <td>
+
+            <span style="font-size: 20px; color: 	#5F9EA0; background-color: initial;">
+                {{position.count}}人
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" height="10px">
+        <img id="float_img_369" style="width: 900px;" class="lazyload_transparent float_in_img J_defImage" data-original="//21097352.s61i.faiusr.com/4/AD0IiNeHChAEGAAgs8-C7wUo4Me8uwUwsAk4DQ.png" src="/static/image/AD0IiNeHChAEGAAgs8-C7wUo4Me8uwUwsAk4DQ.png" alt="AD0IiNeHChAEGAAgs8-C7wUo4Me8uwUwsAk4DQ" data-imgloaded="true">
+        </td>
+    </tr>
+</table>
+</a>
+{% endfor %}
+{% endif %}
+                    </div>
+                </div></div>
+        </section>
+			</div>
+		</section>
+	</div>
+
+
+    <script>
+
+
+    var navVue= new Vue({
+        el:'#nav',
+        data() {
+            return {
+            activeIndex2: '6',
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+
+        },
+    })
+    var initVue=new Vue({
+            el:'#position',
+
+
+            data() {
+            return {
+
+                position:[],
+                multipleSelection: [],
+  dialogVisible: false,
+
+                }
+            },
+
+
+            methods: {
+
+
+
+
+
+
+
+                getList()
+                        {
+                             $.ajax({
+                                  url:"/api/position/",
+                                  type:"post",
+                                  headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                                  success:function (data) {
+                                      var position_list=JSON.parse(data.position_list);
+                                      initVue.position_list=[];
+                                      for(let i = 0; i < position_list.length; i++) {
+                                          initVue.position_list.push({id:position_list[i].pk,position_name:position_list[i].fields.position_name,company_name:position_list[i].fields.company_name,release_time:position_list[i].fields.release_time,workplace:position_list[i].fields.workplace,pay:position_list[i].fields.pay,count:position_list[i].fields.count,sex:position_list[i].fields.sex,education_requirement:position_list[i].fields.education_requirement,description:position_list[i]})
+                                      };
+                                  }
+                             })
+                        },
+                 getMyResume() {
+                     $.ajax({
+                         url: "/api/resumeCenter/",
+                         type: "post",
+                         headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                         success: function (data) {
+                             var resume_list = JSON.parse(data.resume_list);
+                             initVue.resume_list = [];
+                             for (let i = 0; i < resume_list.length; i++) {
+                                 initVue.resume_list.push({
+                                     id: resume_list[i].pk,
+                                     resume_name: resume_list[i].fields.resume_name,
+
+
+                                 })
+                             }
+                             ;
+                         }
+                     })
+                 },
+                positionSearch()
+                {
+                     $.ajax({
+                          url:"/api/positionSearch/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                         data:{'category':initVue.category,'keyword':initVue.keyword},
+                          success:function (data) {
+                              var position_list=JSON.parse(data.position_list);
+                              initVue.position_list=[];
+                              for(let i = 0; i < position_list.length; i++) {
+                                  initVue.position_list.push({id:position_list[i].pk,position_name:position_list[i].fields.position_name,release_time:position_list[i].fields.release_time,workplace:position_list[i].fields.workplace,pay:position_list[i].fields.pay,count:position_list[i].fields.count,sex:position_list[i].fields.sex,education_requirement:position_list[i].fields.education_requirement,description:position_list[i]})
+                              };
+                          }
+                     })
+                },
+                positionCollect()
+                {
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+                    }
+                     $.ajax({
+                          url:"/api/positionCollect/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                         data:{'id_list':JSON.stringify(initVue.id_list)},
+                          success:function (data) {
+                              if(data.status=="successful"){
+                                 initVue.$message({type: 'success',message: "收藏成功!"});
+
+                              }
+                              else if(data.status === "warning"){
+                                    initVue.$message.warning(data.errs);
+                              }
+                              initVue.toggleSelection()
+                          }
+                     })
+                },
+                    toPositionDeliver(){
+                     this.centerDialogVisible = true;
+                },
+                 positionDeliver(formName) {
+                this.$refs[formName].validate((valid) => {
+                  if (valid) {
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+                    }
+                     $.ajax({
+                          url:"/api/positionDeliver/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                         data:{'id_list':JSON.stringify(initVue.id_list),'resume_id':initVue.ResumeForm.resume_id},
+                          success:function (data) {
+                              if(data.status=="successful"){
+                                  initVue.centerDialogVisible = false;
+                                  initVue.$message({type: 'success',message: "申请成功!"});
+                              }
+                              else if(data.status === "warning"){
+                                    initVue.$message.warning(data.errs);
+                              }
+                              initVue.toggleSelection()
+                          }
+                     })
+                  } else {
+                    console.log('error submit!!');
+                    return false;
+                  }
+                });
+
+            },
+
+            },
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+    </script>
+
+</body>
+</html>

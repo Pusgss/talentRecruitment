@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>人才招聘</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+     <style>
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 120px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
+
+         ul li{
+
+display: inline;
+list-style-type: none;
+padding: 5px 5px;}
+
+
+    </style>
+	</head>
+    <body>
+	<div class="box-wrap">
+		<header role="banner" id="fh5co-header">
+			<div class="container">
+				<nav class="navbar navbar-default">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="fh5co-navbar-brand">
+								<a class="fh5co-logo" href="index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+							</div>
+						</div>
+						<div class="col-md-6">
+                            <div id="nav">
+                                <el-menu
+                              :default-active="activeIndex2"
+                              class="el-menu-demo"
+                              mode="horizontal"
+                              @select="handleSelect"
+                              background-color="#ffffff"
+                              text-color="#000000"
+                              active-text-color="#6F00D2">
+                                <el-menu-item index="1"><el-link href="/api/index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+                                <el-menu-item index="2" ><el-link href="/api/allPositionSearch" icon="el-icon-search">职位搜索</el-link></el-menu-item>
+                                <el-menu-item index="3" > <el-link href="/api/resumeCenter" icon="el-icon-document">简历中心</el-link></el-menu-item>
+                                <el-menu-item index="4" ><el-link href="/api/myDeliver/" icon="el-icon-s-promotion">投递反馈</el-link></el-menu-item>
+                                <el-menu-item index="5" > <el-link href="/api/myCollect" icon="el-icon-star-on">我的收藏</el-link></el-menu-item>
+
+                            </el-menu>
+                        </div>
+						</div>
+						<div class="col-md-3">
+                             <ul class="social">
+                                <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                <li><a href="/api/resumeCenter/"><i class="el-icon-s-custom"></i></a></li>
+                                <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                             </ul>
+						</div>
+					</div>
+				</nav>
+		  </div>
+		</header>
+
+        	<div id='app' style="width:1000px;margin:0 auto;">
+<el-card>
+
+                    <el-card style="background-color: yellowgreen;width:900px">
+			<div style=" float:left;">
+<span>已选择:</span>
+                 <template v-if='condition.length'>
+			<span v-for='(item,index) in condition' class='active'>
+
+                [[item.name]]&nbsp;|&nbsp;
+            </span>
+                     </template>
+            </div>
+                <div style="float:right;">
+                 <el-button  style=" border-color: yellowgreen;Border-radiu: 12px;height:40PX" @click="conditionSearch"  icon="el-icon-search">搜索</el-button>
+			</div>
+</el-card>
+<div style="height: 20px"></div>
+		        <template v-if='category.length'>
+                    <div class='nav' v-for='(items,index) in category'>
+                        <div class='mutil-query-title' v-if='items.name' :key="items.id">[[items.name]]
+                            <span style='margin-left: 20px;' @click='allIn(index)'>全选</span>|<span @click='remove(index)'>清空</span>
+                        </div>
+
+                        <ul v-if='items.items.length' >
+                            <li v-for='(item,key) in items.items'>
+                                <span :class="{'active':item.active}" @click='handle(index,key)' :key='item.id' style="font-size: 14px">[[item.name]]</span>
+
+                            </li>
+                        </ul>
+                        <el-divider></el-divider>
+                    </div>
+		        </template>
+           </el-card>
+            </div>
+        <div style="height:40px">
+
+        </div>
+
+
+           <div id="position_list" style="margin:0 auto;">
+		<!-- END: header -->
+
+
+		<section id="work">
+			<div class="container">
+                    <el-select v-model="category" >
+                            <el-option label="行业" value="position_name"></el-option>
+                            <el-option label="地址" value="workplace"></el-option>
+            '        </el-select>
+                 <el-input v-model="keyword" type="text" name="photo" placeholder="关键字" style="width:300px" class="form-control" auto-complete="off" size="small"></el-input>
+                    <el-button  @click="positionSearch" type="primary" icon="el-icon-search">搜索</el-button>
+                    <el-button @click="toggleSelection()">取消选择</el-button>
+
+                 <el-button  @click="positionCollect" type="primary" :disabled="disable==0?true:false">收藏</el-button>
+                    <el-button  @click="toPositionDeliver" type="primary" :disabled="disable==0?true:false">申请</el-button>
+
+{#                <el-form label-position="left" inline class="demo-table-expand">#}
+{#                        <el-form-item>#}
+{#                        <el-select v-model="category" >#}
+{#                            <el-option label="行业" value="position_name"></el-option>#}
+{#                            <el-option label="地址" value="workplace"></el-option>#}
+{#            '           </el-select>#}
+{#        </el-form-item>#}
+{#            <el-form-item >#}
+{#                <el-input v-model="keyword" type="text" name="photo" placeholder="关键字" class="form-control" auto-complete="off" ></el-input>#}
+{#            </el-form-item>#}
+{#            <el-form-item >#}
+{#                 <el-button  @click="positionSearch" type="primary" icon="el-icon-search">搜索</el-button>#}
+{#            </el-form-item>#}
+{#            <el-form-item >#}
+{#                <el-button @click="toggleSelection()">取消选择</el-button>#}
+{#            </el-form-item>#}
+{#            <el-form-item >#}
+{#                 <el-button  @click="positionCollect" type="primary" :disabled="disable==0?true:false">收藏</el-button>#}
+{#            </el-form-item>#}
+{#            <el-form-item >#}
+{#                     <el-button  @click="toPositionDeliver" type="primary" :disabled="disable==0?true:false">申请</el-button>#}
+{#            </el-form-item>#}
+{##}
+{#        </el-form></div>#}
+
+				<div class="row">
+
+
+
+					<div class="col-md-12">
+
+
+                         <el-dialog :visible.sync="centerDialogVisible">
+                             <h3>请选择投递的简历</h3>
+                                        <el-form :model="ResumeForm" :rules="rules" ref="ResumeForm" label-width="80px" >
+
+                                           <el-form-item label="简历" prop="resume_id">
+                                          <el-select v-model="ResumeForm.resume_id"  placeholder="请选择简历" >
+                                        <el-option v-for="item in resume_list" :key="item.resume_name" :label="item.resume_name" :value="item.id">
+                                        </el-option>
+                                      </el-select>
+
+
+                                    </el-form-item >
+
+                                        <el-form-item>
+                                            <el-button @click="closeDialog()">取消</el-button>
+                                            <el-button type="primary" @click="positionDeliver('ResumeForm')">立即申请</el-button>
+                                       </el-form-item>
+                                            </el-form>
+                                    </el-dialog>
+                         <template>
+                            <el-table
+                                ref="multipleTable"
+                                :data="position_list"
+                                tooltip-effect="dark"
+                                style="width: 100%"
+                                @selection-change="handleSelectionChange">
+                                <el-table-column
+                                  type="selection"
+                                  width="55">
+                                </el-table-column>
+                                <el-table-column
+                                  label="日期"
+                                  width="200">
+                                  <template slot-scope="scope">[[ scope.row.release_time]]</template>
+                                </el-table-column>
+                                    <el-table-column
+                        prop="position_name"
+                  label="职位名称"
+                  width="200">
+                    <template slot-scope="scope">
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/positionDetail?id='+scope.row.id">[[scope.row.position_name]]</a>
+                    </template>
+                </el-table-column>
+
+                                  <el-table-column
+                                  prop="company_name"
+                                  label="公司名称"
+                                  width="250">
+                                </el-table-column>
+                                <el-table-column
+                                  prop="workplace"
+                                  label="地址"
+                                  width="200"
+                                  show-overflow-tooltip>
+                                </el-table-column>
+                                  <el-table-column
+                                  prop="pay"
+                                  label="薪资"
+                                  width="200"
+                                  show-overflow-tooltip>
+                                </el-table-column>
+                            </el-table>
+                             <div style="margin-top: 20px">
+                {#    <el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>#}
+
+                            </div>
+                              <el-pagination v-show="total>0"
+                          @size-change="handleSizeChange"
+                          @current-change="handleCurrentChange"
+                          :current-page="currentPage"
+                          :page-size="pageSize"
+                          layout="total, sizes, prev, pager, next, jumper"
+                          :total="total">
+                    </el-pagination>
+                        </template>
+					</div>
+				</div></div>
+        </section>
+           </div>
+
+                 </div>
+	</div>
+    <script>
+        var initVue=new Vue({
+            el:'#position_list',
+            data() {
+            return {
+                category:'workplace',
+                keyword:'',
+                position_list:[],
+                multipleSelection: [],
+                id_list:[],
+                disable:0,
+                centerDialogVisible: false,
+                resume_list:[],//数组
+                ResumeForm:{resume_id:'',},
+                rules:
+                {
+                    resume_id:[{required: true, message: '请选择简历', trigger: 'change'},],
+                },
+                 total:0,
+                  pageSize:20,
+                  currentPage: 1,
+                flag:'getList',
+                {#判断是那种搜索#}
+            }
+            },
+            created: function () {
+
+                     this.getList(this.currentPage,this.pageSize);
+                     this.getMyResume();
+                     if (this.multipleSelection.length==0){
+                         this.disable=0
+                     }
+            },
+            methods: {
+                toggleSelection(rows) {
+                    if (rows) {
+                      rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                      });
+                    }
+                    else {
+                      this.$refs.multipleTable.clearSelection();
+                    }
+                },
+                handleSelectionChange(val) {
+                    this.multipleSelection = val;
+                    console.log(this.multipleSelection);
+                    if(this.multipleSelection.length==0)
+                    {
+                        this.disable=0;
+                    }
+                    else
+                    {
+                        this.disable=1;
+                    }
+                },
+                handleSizeChange(size) {
+                    this.pageSize = size;
+                    if(this.flag=='getList'){
+                        this.getList(this.currentPage,this.pageSize);
+                    }
+                    else if(this.flag=='positionSearch'){
+                        this.positionSearch();
+                    }
+                    else{
+                        app.conditionSearch()
+                    }
+                },
+                handleCurrentChange(currentpage) {
+                    this.currentPage = currentPage;
+                     if(flag=='getList'){
+                        this.getList(this.currentPage,this.pageSize);
+                    }
+                    else if(flag=='positionSearch'){
+                        this.positionSearch();
+                    }
+                    else{
+                        app.conditionSearch()
+                    }
+                },
+                getList(currentPage,pageSize)
+                        {
+                             $.ajax({
+                                  url:"/api/allPositionSearch/",
+                                  type:"post",
+                                 data: {'page':currentPage,'pageSize':pageSize },
+                                  headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                                  success:function (data) {
+                                      var position_list=JSON.parse(data.position_list);
+                                      initVue.total=data.total;
+                                      initVue.position_list=[];
+                                      for(let i = 0; i < position_list.length; i++) {
+                                          initVue.position_list.push({
+                                              id:position_list[i].pk,
+                                              position_name:position_list[i].fields.position_name,
+                                              company_name:position_list[i].fields.company_name,
+                                              release_time:position_list[i].fields.release_time,
+                                              workplace:position_list[i].fields.workplace,
+                                              pay:position_list[i].fields.pay,
+                                              count:position_list[i].fields.count,sex:position_list[i].fields.sex,
+                                              education_requirement:position_list[i].fields.education_requirement,
+
+                                          })
+                                      };
+                                  }
+                             })
+                        },
+                 getMyResume() {
+                     $.ajax({
+                         url: "/api/resumeCenter/",
+                         type: "post",
+                         headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                         success: function (data) {
+                             var resume_list = JSON.parse(data.resume_list);
+                             initVue.resume_list = [];
+                             for (let i = 0; i < resume_list.length; i++) {
+                                 initVue.resume_list.push({
+                                     id: resume_list[i].pk,
+                                     resume_name: resume_list[i].fields.resume_name,
+
+
+                                 })
+                             }
+                             ;
+                         }
+                     })
+                 },
+                positionSearch()
+                {
+                     $.ajax({
+                          url:"/api/positionSearch/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                         data:{'page':initVue.currentPage,'pageSize':initVue.pageSize,'category':initVue.category,'keyword':initVue.keyword},
+                          success:function (data) {
+                              initVue.flag='positionSearch';
+                              initVue.total=data.total;
+                              var position_list=JSON.parse(data.position_list);
+                              initVue.position_list=[];
+                              for(let i = 0; i < position_list.length; i++) {
+                                  initVue.position_list.push({id:position_list[i].pk,position_name:position_list[i].fields.position_name,release_time:position_list[i].fields.release_time,workplace:position_list[i].fields.workplace,pay:position_list[i].fields.pay,count:position_list[i].fields.count,sex:position_list[i].fields.sex,education_requirement:position_list[i].fields.education_requirement,description:position_list[i]})
+                              };
+                          }
+                     })
+                },
+                positionCollect()
+                {
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+                    }
+                     $.ajax({
+                          url:"/api/positionCollect/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                         data:{'id_list':JSON.stringify(initVue.id_list)},
+                          success:function (data) {
+                              if(data.status=="successful"){
+                                 initVue.$message({type: 'success',message: "收藏成功!"});
+
+                              }
+                              else if(data.status === "warning"){
+                                    initVue.$message.warning(data.errs);
+                              }
+                              initVue.toggleSelection()
+                          }
+                     })
+                },
+                    toPositionDeliver(){
+                     this.centerDialogVisible = true;
+                },
+                 positionDeliver(formName) {
+                this.$refs[formName].validate((valid) => {
+                  if (valid) {
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+                    }
+                     $.ajax({
+                          url:"/api/positionDeliver/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                         data:{'id_list':JSON.stringify(initVue.id_list),'resume_id':initVue.ResumeForm.resume_id},
+                          success:function (data) {
+                              if(data.status=="successful"){
+                                  initVue.centerDialogVisible = false;
+                                  initVue.$message({type: 'success',message: "申请成功!"});
+                              }
+                              else if(data.status === "warning"){
+                                    initVue.$message.warning(data.errs);
+                              }
+                              initVue.toggleSelection()
+                          }
+                     })
+                  } else {
+                    console.log('error submit!!');
+                    return false;
+                  }
+                });
+
+            },
+                 closeDialog(){
+                    this.centerDialogVisible=false;
+                },
+
+            },
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+        var navVue= new Vue({
+            el:'#nav',
+            data() {
+              return {
+                activeIndex2: '2'
+              };
+            },
+            methods: {
+              handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+              }
+            },
+        })
+
+        var app =new Vue({
+	el:'#app',
+	data(){
+	    return{
+            count:0,
+            list:[],
+            category: [
+
+                    {
+                        name: '学历',
+                        items: [
+                            {
+                                name: '专科',
+                                active: false
+                            },
+                            {
+                                name: '本科',
+                                active: false
+                            },
+                            {
+                                name: '硕士',
+                                active: false
+                            },
+                            {
+                                name: '博士',
+                                active: false
+                            }
+                        ]
+                    },
+                    {
+                        name: '薪资',
+                        items: [
+                            {
+                                name: '3000-3999',
+                                active: false
+                            },
+                            {
+                                name: '4000-5999',
+                                active: false
+                            },
+                            {
+                                name: '6000-7999',
+                                active: false
+                            },
+                            {
+                                name: '8000-9999',
+                                active: false
+                            },
+                            {
+                                name: '10000-15000',
+                                active: false
+
+                            }
+                        ]
+                    },
+                    {
+                        name: '性别要求',
+                        items: [
+                            {
+                                name: '男',
+                                active: false
+                            },
+                            {
+                                name: '女',
+                                active: false
+                            },
+                            {
+                                name: '不限',
+                                active: false
+                            },
+
+
+                        ]
+                    },
+                    {
+                        name: '地点',
+                        items: [
+                            {
+                                name: '北京',
+                                active: false
+                            },
+                            {
+                                name: '上海',
+                                active: false
+                            },
+                            {
+                                name: '深圳',
+                                active: false
+                            },
+                            {
+                                name: '天津',
+                                active: false
+                            }
+                        ]
+                    }
+                ],
+
+
+                condition:[],
+
+        }
+    },
+	methods:{
+		handle:function(index,key){
+			console.log(key);
+			var tag=true;
+			var item=this.category[index].items;
+			item.filter(function(v,i){//参数为某个元素、表示元素的位置
+				if(i==key){//根据列表的下标找到对应name
+
+					// 有相同的条件name在条件列表中进行删除
+					app.condition.filter(function(v2,i){
+						if(v.name==v2.name){
+						    v.active=false;
+							console.log(v.name);
+							console.log(i);
+							app.condition.splice(i,1);
+							console.log(app.condition);
+							app.count--;
+							tag=false;
+
+						}
+					});
+					// 没有相同的条件进行添加
+					if(tag){
+                        v.active=true;
+						// target：要更改的数据源(可以是对象或者数组)
+						// key：要更改的具体数据
+						// value ：重新赋的值
+						Vue.set(app.condition,app.count++,v);
+console.log(app.condition[app.count-1]);
+
+						tag=true;
+					}
+				}
+			});
+
+		},
+		remove:function(index){
+			var item=this.category[index].items;
+			item.filter(function (v1,key) {
+				//将条件状态设置为无效
+				v1.active=false;
+				//存在相同条件直接在condition删除
+				app.condition.filter(function(v2,i){
+					if(v1.name==v2.name){
+						app.condition.splice(i,1);
+						app.count--;
+					}
+				});
+			});
+		},
+		allIn:function(index){
+			var item=this.category[index].items;
+			item.filter(function (v,key) {
+				v.active=true;
+				//存在相同先删除再添加
+				app.condition.filter(function(v2,i){
+					if(v.name==v2.name){
+						app.condition.splice(i,1);
+						app.count--;
+					}
+				});
+
+				//不同直接进行添加
+				Vue.set(app.condition,app.count++,v);
+			});
+
+		},
+         conditionSearch()
+                        {
+                            this.list=[];
+                            for(let i=0;i< 4;i++){
+
+                          for(let j=0;j<this.category[i].items.length;j++)
+                          {
+
+                              if(this.category[i].items[j].active==true){
+
+                                  if(this.category[i].name=='学历')
+                                  {
+                                      this.list.push({'education_requirement' : this.category[i].items[j].name});
+                                  }
+                                  else if(this.category[i].name=='薪资')
+                                  {
+                                      this.list.push({'pay' : this.category[i].items[j].name});
+                                  }
+                                  else if(this.category[i].name=='性别要求')
+                                  {
+                                      this.list.push({'sex' : this.category[i].items[j].name});
+                                  }
+                                   else if(this.category[i].name=='地点')
+                                  {
+                                      this.list.push({'workplace' : this.category[i].items[j].name});
+                                  }
+                              }
+                          }
+                        }
+                            console.log(this.list);
+                           console.log(app.condition);
+                            console.log(app.category);
+                             $.ajax({
+                                  url:"/api/conditionSearch/",
+                                  type:"post",
+                                 data: {'page':initVue.currentPage,'pageSize':initVue.pageSize,'condition':JSON.stringify(app.list )},
+                                  headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                                  success:function (data) {
+                                       initVue.flag='conditionSearch';
+                                      var position_list = JSON.parse(data.position_list);
+                                      initVue.total=data.total;
+                                      initVue.position_list = [];
+                                      for (let i = 0; i < position_list.length; i++) {
+                                          initVue.position_list.push({
+                                              id: position_list[i].pk,
+                                              position_name: position_list[i].fields.position_name,
+                                              company_name: position_list[i].fields.company_name,
+                                              release_time: position_list[i].fields.release_time,
+                                              workplace: position_list[i].fields.workplace,
+                                              pay: position_list[i].fields.pay,
+                                              count: position_list[i].fields.count,
+                                              sex: position_list[i].fields.sex,
+                                              education_requirement: position_list[i].fields.education_requirement,
+                                              description: position_list[i]
+                                          })
+                                      };
+
+                                  }
+                             })
+                        },
+	}
+            ,
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+
+});
+    </script>
+
+</body>
+</html>

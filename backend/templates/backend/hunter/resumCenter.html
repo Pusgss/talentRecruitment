@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>人才招聘</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+     <style>
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 120px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
+       .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+      }
+      .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+      }
+
+    </style>
+	</head>
+    <body>
+	<div class="box-wrap">
+		<header role="banner" id="fh5co-header">
+			<div class="container">
+				<nav class="navbar navbar-default">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="fh5co-navbar-brand">
+								<a class="fh5co-logo" href="index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+							</div>
+						</div>
+						<div class="col-md-6">
+                            <div id="nav">
+                                <el-menu
+                              :default-active="activeIndex2"
+                              class="el-menu-demo"
+                              mode="horizontal"
+                              @select="handleSelect"
+                              background-color="#ffffff"
+                              text-color="#000000"
+                              active-text-color="#6F00D2">
+                                <el-menu-item index="1"><el-link href="/api/index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+                                <el-menu-item index="2" ><el-link href="/api/allPositionSearch" icon="el-icon-search">职位搜索</el-link></el-menu-item>
+                                <el-menu-item index="3" > <el-link href="/api/resumeCenter" icon="el-icon-document">简历中心</el-link></el-menu-item>
+                                <el-menu-item index="4" ><el-link href="/api/myDeliver/" icon="el-icon-s-promotion">投递反馈</el-link></el-menu-item>
+                                <el-menu-item index="5" > <el-link href="/api/myCollect" icon="el-icon-star-on">我的收藏</el-link></el-menu-item>
+
+                            </el-menu>
+                        </div>
+						</div>
+						<div class="col-md-3">
+                             <ul class="social">
+                                <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                <li><a href="/api/resumeCenter/"><i class="el-icon-s-custom"></i></a></li>
+                                <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                             </ul>
+						</div>
+					</div>
+				</nav>
+		  </div>
+		</header>
+		<!-- END: header -->
+		<section id="work">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+                            <div id="module319" _indexclass="formIndex2" _moduletype="1" _modulestyle="109" _moduleid="319" class="form form319 formIndex2 formStyle109 fk-formFullmeasure " title="" _sys="0" _banid="" style="height: 834px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="0" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0" fmslidestyle="0" fmpage="1" iscarousel="0" displaytime="4" carouselspeed="1" cuscarousel="0">
+<div class="fillContentRelative" style="position:absolute; z-index:-1; height:100%; width:100%;display:none;"></div><div style="position: static;" class="fullmeasureOuterContentPage fullmeasureOuterContentPage1 J_fullmeasurePageShow" page="1">			<div class="fullmeasureOuterContentBg fullmeasureOuterContentBg319 fullmeasureStyle12"></div><div class="fullmeasureOuterContent fullmeasureOuterContent319">
+<div class="fullmeasureContent fullmeasureContent319" id="fullmeasureContent319_1" moduleid="319"><div class="fullmeasureContentBg fullmeasureContentBg319"></div><div class="J_zoneEnableAll J_fullmeasurePackContent elemZone elemZoneModule fk-formPack" moduleid="319" id="fk-inFullmeasureListZone319-1"><div class="fk-elemZoneBg J_zoneContentBg"></div><div id="module337" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="337" class="form form337 formStyle86 siteEditor" title="" _sys="0" _banid="" style="position: absolute; top:32px; left: 1px; width: 435px; height: 110px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent337"><div class="fk-editor simpleText fk-editor-break-word  "><span style="line-height: 50px;"><font color="#333333" face="微软雅黑, Microsoft YaHei"><span style="font-size: 32px;"><b>TEMPLATE</b></span></font><div><font color="#333333" face="微软雅黑, microsoft yahei"><span style="font-size: 32px;">简历模板</span></font><font face="fontface__alibabasans-medium__119__1227887646108"><span style="font-size: 32px;"><br></span></font></div></span></div></div>
+</div>
+<div id="module338" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="338" class="form form338 formStyle86 siteEditor" title="" _sys="0" _banid="" style="position: absolute; top: 106px; left: 670px; width: 528px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent338"><div class="fk-editor simpleText fk-editor-break-word  "><div style="text-align: right;"><span style="font-size: 14px; background-color: initial;"><span style="color: rgb(153, 153, 153);">做出独一无二的简历，展示最好的自己</span></span></div></div></div>
+</div>
+<div id="module339" bannertitle="图片" _indexclass="" _moduletype="1" _modulestyle="79" _moduleid="339" class="form form339 formStyle79" title="" _sys="0" _banid="" style="position:absolute;top:212px;left:0px;width:270px;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent339"><div class="floatImg floatImg_J floatImg_J_special"><a hidefocus="true" class="J_floatImg_jump f_floatImg_jump ">
+<div class="floatImgWrap"><div class="forMargin"><img id="float_img_339" class="lazyload_transparent float_in_img J_defImage" style="width: 250px ;height: 410px;" src="/static/image/temp1.png" alt="模板一" data-imgloaded="true"></div></div></a>
+</div></div>
+</div>
+<div id="module348" bannertitle="图片" _indexclass="" _moduletype="1" _modulestyle="79" _moduleid="348" class="form form348 formStyle79" title="" _sys="0" _banid="" style="position: absolute; top: 212px; left: 617px; width: 270px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent348"><div class="floatImg floatImg_J floatImg_J_special"><a hidefocus="true" class="J_floatImg_jump f_floatImg_jump ">
+<div class="floatImgWrap"><div class="forMargin"><img id="float_img_348" class="lazyload_transparent float_in_img J_defImage"  style="width: 250px ;height: 410px;" src="/static/image/temp2.png" alt="模板二"  data-imgloaded="true"></div></div></a>
+</div></div>
+</div>
+<div id="module344" bannertitle="图片" _indexclass="" _moduletype="1" _modulestyle="79" _moduleid="344" class="form form344 formStyle79" title="" _sys="0" _banid="" style="position: absolute; top: 212px; left: 308px; width: 270px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent344"><div class="floatImg floatImg_J floatImg_J_special"><a hidefocus="true" class="J_floatImg_jump f_floatImg_jump ">
+<div class="floatImgWrap"><div class="forMargin"><img id="float_img_344" class="lazyload_transparent float_in_img J_defImage" data-original="//21097352.s61i.faiusr.com/2/AD0IiNeHChACGAAg5L-C7wUo1tm2HzCOAjifAw.jpg" src="//21097352.s61i.faiusr.com/2/AD0IiNeHChACGAAg5L-C7wUo1tm2HzCOAjifAw.jpg.webp" alt="AD0IiNeHChACGAAg5L-C7wUo1tm2HzCOAjifAw" data-imgloaded="true"></div></div></a>
+</div></div>
+</div>
+<div id="module347" bannertitle="图片" _indexclass="" _moduletype="1" _modulestyle="79" _moduleid="347" class="form form347 formStyle79" title="" _sys="0" _banid="" style="position: absolute; top: 212px; left: 927px; width: 270px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent347"><div class="floatImg floatImg_J floatImg_J_special"><a hidefocus="true" class="J_floatImg_jump f_floatImg_jump ">
+<div class="floatImgWrap"><div class="forMargin"><img id="float_img_347" class="lazyload_transparent float_in_img J_defImage" data-original="//21097352.s61i.faiusr.com/2/AD0IiNeHChACGAAg8r-C7wUojt3ghgMwjgI4nwM.jpg" src="//21097352.s61i.faiusr.com/2/AD0IiNeHChACGAAg8r-C7wUojt3ghgMwjgI4nwM.jpg.webp" alt="AD0IiNeHChACGAAg8r-C7wUojt3ghgMwjgI4nwM" data-imgloaded="true"></div></div></a>
+</div></div>
+</div>
+
+<div id="module345" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="345" class="form form345 formStyle86 siteEditor" title="" _sys="0" _banid="" style="position: absolute; top: 239px; left: 330px; width: 200px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent345"><div class="fk-editor simpleText fk-editor-break-word  "><font color="#ffffff"><span style="font-size: 22px;">简历模板一</span></font></div></div>
+</div>
+<div id="module352" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="352" class="form form352 formStyle86 siteEditor" title="" _sys="0" _banid="" style="position: absolute; top: 239px; left: 949px; width: 200px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent352"><div class="fk-editor simpleText   "><font color="#ffffff"><span style="font-size: 22px;">简历模板二</span></font></div></div>
+</div>
+
+<div id="module346" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="346" class="form form346 formStyle86 siteEditor" title="" _sys="0" _banid="" style="position: absolute; top: 303px; left: 330px; width: 200px; height: 96px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent346"><div class="fk-editor simpleText fk-editor-break-word  "><span style="line-height: 31px;"><span style="color: rgb(254, 254, 254); font-size: 22px;"><span style="font-size: 30px;"><b></b></span><span style="font-size: 30px;"><b>-</b></span><div>TEMPLATE FIRST</div></span></span></div></div>
+</div>
+<div id="module350" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="350" class="form form350 formStyle86 siteEditor" title="" _sys="0" _banid="" style="position: absolute; top: 303px; left: 949px; width: 182px; height: 67px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="319" _intabpack="0" _inaccordionpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+<div class="lightModuleOuterContent lightModuleOuterContent350"><div class="fk-editor simpleText   "><span style="line-height: 31px;"><span style="color: rgb(254, 254, 254); font-size: 30px;"><b></b></span><span style="color: rgb(254, 254, 254); font-size: 30px;"><b>-</b></span><div style=""><font color="#fefefe"><span style="font-size: 22px;">TEMPLATE SECOND</span></font></div></span></div></div>
+</div>
+</div></div></div>
+<div class="clearfloat clearfloat319"></div>
+</div></div>
+
+
+
+                       <div id="resumeCenter">
+        <template>
+   <el-tabs v-model="activeName" >
+    <el-tab-pane label="简历中心" name="first">
+        <template>
+            <el-table
+            ref="multipleTable"
+            :data="resume_list"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+                <el-table-column
+                  type="selection"
+                  width="55">
+                </el-table-column>
+                <el-table-column
+                  label="更新时间"
+                  width="200">
+                  <template slot-scope="scope">[[ scope.row.refresh_time]]</template>
+                </el-table-column>
+                <el-table-column
+                  label="收到面试邀请"
+                  width="200">
+                  <template slot-scope="scope">[[ scope.row.interviewCount]]</template>
+                </el-table-column>
+                   <el-table-column
+                  label="被浏览次数"
+                  width="200">
+                  <template slot-scope="scope">[[ scope.row.count]]</template>
+                </el-table-column>
+                <el-table-column
+                        prop="resume_name"
+                  label="简历名称"
+                  width="150">
+                    <template slot-scope="scope">
+
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/resume_show?id='+scope.row.id">[[scope.row.resume_name]]</a>
+                    </template>
+                </el-table-column>
+                 <el-table-column label="操作">
+                            <template slot-scope="scope" min-width="250">
+                                <a :href="'/api/pdf?id='+scope.row.id" target="_blank">pdf下载</a>
+                                </template>
+                        </el-table-column>
+            </el-table>
+
+        </template>
+        <div style="height: 50px">
+            <el-button @click="toggleSelection()">取消选择</el-button>
+            <el-button  @click="resumeCenterDelete" type="primary" :disabled="disable==0?true:false">删除</el-button>
+            <el-button  @click="resume_add" type="primary" >创建简历</el-button>
+            {#            <el-form label-position="left" inline class="demo-table-expand">#}
+{#                <el-form-item >#}
+{#                    <el-button @click="toggleSelection()">取消选择</el-button>#}
+{#                </el-form-item>#}
+{#                <el-form-item >#}
+{#                     <el-button  @click="resumeCenterDelete" type="primary" :disabled="disable==0?true:false">删除</el-button>#}
+{#                </el-form-item>#}
+{#                <el-form-item >#}
+{#                     <el-button  @click="resume_add" type="primary" >创建简历</el-button>#}
+{#                </el-form-item>#}
+{#            </el-form>#}
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+    </el-tab-pane>
+
+  </el-tabs>
+</template>
+         <el-dialog :visible.sync="centerDialogVisible">
+                        <el-form :model="ResumeForm" :rules="rules" ref="ResumeForm" label-width="80px" >
+                    <el-form-item label="简历名称" prop="resume_name">
+                        <el-input type="text" name="resume_name" placeholder="请输入简历名称" class="form-control" auto-complete="off" v-model="ResumeForm.resume_name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="期望职位地点" prop="expected_work_city">
+                        <el-input type="text" name="expected_work_city" placeholder="请输入期望职位地点" class="form-control" auto-complete="off" v-model="ResumeForm.expected_work_city"></el-input>
+                    </el-form-item>
+                    <el-form-item label="期望职位" prop="desired_position">
+                        <el-input type="text" name="desired_position" placeholder="请输入期望职位" class="form-control" auto-complete="off" v-model="ResumeForm.desired_position"></el-input>
+                    </el-form-item>
+                    <el-form-item label="期望工资（月薪）" prop="expected_salary">
+                        <el-select v-model="ResumeForm.expected_salary" placeholder="请选择期望工资">
+                            <el-option label="3000-3999" value="3000-3999"></el-option>
+                            <el-option label="4000-5999" value="4000-5999"></el-option>
+                            <el-option label="6000-7999" value="6000-7999"></el-option>
+                            <el-option label="8000-9999" value="8000-9999"></el-option>
+                            <el-option label="10000-150000" value="10000-150000"></el-option>
+            '           </el-select>
+                    </el-form-item >
+                    <el-form-item label="自我评价" prop="self_assessment">
+                        <el-input type="textarea" name="self_assessment" placeholder="请输入自我评价" class="form-control" auto-complete="off" v-model="ResumeForm.self_assessment"></el-input>
+                    </el-form-item>
+                              <el-form-item label="模板" prop="temp">
+                                        <el-select v-model="ResumeForm.temp" placeholder="请选择模板">
+                                            <el-option label="模板一" value="temp1"></el-option>
+                                            <el-option label="模板二" value="temp2"></el-option>
+                                    </el-select>
+                                    </el-form-item >
+                            </el-form>
+                        <div>
+                            <el-button @click="closeDialog()">取消</el-button>
+                            <el-button type="primary" @click="sumbitEditRow('ResumeForm')">确定</el-button>
+                        </div>
+		            </el-dialog>
+    </div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+    <script>
+    var navVue= new Vue({
+        el:'#nav',
+        data() {
+            return {
+
+            activeIndex2: '3',
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+
+        },
+    })
+    var resumeCenterVue=new Vue({
+        el:'#resumeCenter',
+        data(){
+            return{
+                resume_list:[],
+                multipleSelection: [],
+                id_list:[],
+                disable:0,//按钮知否可编辑
+                activeName: 'first',
+                centerDialogVisible: false,
+                id:'1',
+                ResumeForm:
+                    {
+                        resume_name:'',
+                        expected_work_city: '',
+                        desired_position: '',
+                        expected_salary:'',
+                        self_assessment:'',
+                        temp:'',
+
+                    },
+                rules:
+                {
+                    resume_name:[{required: true, message: '请填写简历名称', trigger: 'blur'},],
+                    expected_work_city:[{required: true, message: '请填写期望工作城市', trigger: 'blur'},],
+                    desired_position:[{required: true, message: '请填写期望职位', trigger: 'blur'},],
+                    expected_salary:[{required: true, message: '请填写期望薪资', trigger: 'blur'},],
+                    self_assessment:[{required: true, message: '请填写自我评价', trigger: 'blur'},],
+                    temp:[{required: true, message: '请选择模板', trigger: 'change'},],
+                },
+            }
+
+        },
+        created: function () {
+            this.getMyResume();
+            if (this.multipleSelection.length == 0) {
+                this.disable = 0;//删除、申请按钮不可编辑
+            }
+        },
+        methods:{
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                }
+                else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                if(this.multipleSelection.length==0)
+                {
+                    this.disable=0;
+                }
+                else
+                {
+                    this.disable=1;
+                }
+
+
+            },
+             getMyResume() {
+                 $.ajax({
+                     url: "/api/resumeCenter/",
+                     type: "post",
+                     headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                     success: function (data) {
+                         var resume_list = JSON.parse(data.resume_list);
+                         resumeCenterVue.resume_list = [];
+                         for (let i = 0; i < resume_list.length; i++) {
+                             resumeCenterVue.resume_list.push({
+                                 id: resume_list[i].pk,
+                                 resume_name: resume_list[i].fields.resume_name,
+                                 refresh_time: resume_list[i].fields.refresh_time.replace('T',' '),
+                                 count:data.count[i],
+                                 interviewCount:data.interviewCount[i],
+                             })
+                         };
+                     }
+                 })
+             },
+            resumeCenterDelete(){
+                console.log(this.resume_list.length)
+                if(this.resume_list.length==1){
+                    this.$message.warning('对不起，目前你只有一份简历，不能进行删除操作。');
+                    return;
+                }
+                if(this.multipleSelection.length==this.resume_list.length){
+                     this.$message.warning('对不起，您必须保留一份简历，不能全部删除。');
+                     return;
+                }
+                var r=confirm("删除简历后，企业无法查看到你已投递的简历，请谨慎删除！")
+                    if (r==true) {
+                        console.log()
+                        for (let i = 0; i < this.multipleSelection.length; i++) {
+                            this.id_list.push(this.multipleSelection[i].id);
+
+                        }
+                        $.ajax({
+                                url: "/api/resumeCenterDelete/",
+                                type: "post",
+                                headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                                data: {'id_list': JSON.stringify(resumeCenterVue.id_list)},
+                                success: function (data) {
+                                    if (data.status == "successful") {
+                                        resumeCenterVue.$message({type: 'success', message: "删除成功!"});
+                                        resumeCenterVue.getMyResume();
+                                    } else if (data.status === "warning") {
+                                        resumeCenterVue.$message.warning(data.errs);
+                                    }
+                                    resumeCenterVue.toggleSelection()
+                                }
+                            })
+                    }
+                    else {return;}
+            },
+            resume_add(){
+                if (this.resume_list.length<=2){
+                this.centerDialogVisible = true;}
+                else{
+                    this.$message.warning('最多创建三份简历');
+                }
+            },
+            sumbitEditRow(formName) {
+                this.$refs[formName].validate((valid) => {
+          if (valid) {
+               $.ajax({
+                      url:"/api/resume_add/",
+                      type:"POST",
+                      headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                      data:{"resume_name":resumeCenterVue.ResumeForm.resume_name,"expected_work_city":resumeCenterVue.ResumeForm.expected_work_city,"desired_position":resumeCenterVue.ResumeForm.desired_position,"expected_salary":resumeCenterVue.ResumeForm.expected_salary,"self_assessment":resumeCenterVue.ResumeForm.self_assessment,"temp":resumeCenterVue.ResumeForm.temp},
+                      dataType:'JSON',
+                      success:function (data) {
+                          if (data.status === "successful")
+                          {
+                              resumeCenterVue.centerDialogVisible = false;
+                              resumeCenterVue.$message({type: 'success',message: "保存成功!"});
+                              resumeCenterVue.getMyResume();
+
+                          }
+                          else if(data.status === "warning"){
+                                resumeCenterVue.$message.warning(data.errs);
+                          }
+                          else {
+                              var error_list=JSON.parse(data.errs);
+                              console.log(error_list)
+                              var msg=''
+                              for (let key in error_list){
+                                  msg=msg+key+error_list[key][0].message+";"
+                              }
+                              resumeCenterVue.$message.warning(msg);
+                          }
+                      }
+                  })
+
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
+                },
+                closeDialog(){
+                    this.centerDialogVisible=false;
+                },
+
+            },
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,382 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+ <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <title>公司信息完善</title>
+<style>
+    <!-- css代码 -->
+.pannel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1502;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.pannel-inner {
+  position: absolute;
+  background-color: white;
+  left: 40%;
+  top: 30%;
+  width: 20%;
+  /* border: solid #409eff 1px; */
+  padding: 0 17px 17px 17px;
+  font-size: 18px;
+}
+.pannel-header {
+  margin-bottom: 7px;
+  text-align: center;
+}
+       .text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .box-card {
+    width: 480px;
+  }
+    .box-card{
+            position: fixed;
+            width: 800px;
+            height: 200px;
+            {#background: blue;#}
+            top:50%;
+            left: 50%;
+            margin-top: -200px;
+            margin-left:-450px ;
+
+        }
+</style>
+</head>
+
+
+<body>
+<div id="active">
+  <el-steps :active="active" finish-status="success">
+  <el-step title="基本信息"></el-step>
+  <el-step title="简历完善"></el-step>
+  <el-step title="注册完成 "></el-step>
+</el-steps>
+    </div>
+   <div id="hunter" v-show="isShowHunter">
+
+{#<el-button style="margin-top: 12px;" @click="next">下一步</el-button>#}
+    <el-row>
+      <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="8">
+        <h3 style="text-align: center;">基本信息</h3>
+        <el-form  :model="HunterForm" :rules="rules" ref="HunterForm" label-width="80px" >
+                    <el-form-item label="姓名" prop="user_name">
+                    <el-input  v-model="HunterForm.user_name" autocomplete="off" clearable>
+                    </el-input>
+                    </el-form-item>
+                        <el-form-item label="性别" prop="sex">
+                            <el-radio v-model="HunterForm.sex" label="0">男</el-radio>
+                            <el-radio v-model="HunterForm.sex" label="1">女</el-radio>
+                        </el-form-item>
+                        <el-form-item label="生日" prop="birthday">
+                            <el-date-picker v-model="HunterForm.birthday"  type="date" placeholder="选择出生日期" value-format="yyyy-MM-dd"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="所在城市" prop="city">
+                            <el-input type="text" name="city" placeholder="请输入所在城市" class="form-control" auto-complete="off" v-model="HunterForm.city" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="通讯地址" prop="Correspondence_address">
+                            <el-input type="text" name="Correspondence_address" placeholder="请输入通讯地址" class="form-control" auto-complete="off" v-model="HunterForm.Correspondence_address"></el-input>
+                        </el-form-item>
+                        <el-form-item label="户口所在地" prop="registered_permanent_residence">
+                            <el-input type="text" name="registered_permanent_residence" placeholder="请输入户口所在地" class="form-control" auto-complete="off" v-model="HunterForm.registered_permanent_residence" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="qq" prop="qq">
+                            <el-input type="text" name="qq" placeholder="请输入qq" class="form-control" auto-complete="off" v-model="HunterForm.qq" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item label="学历" prop="education_background">
+                                 <el-select v-model="HunterForm.education_background" placeholder="请选择学历">
+                            <el-option label="专科" value="专科"></el-option>
+                            <el-option label="本科" value="本科"></el-option>
+                            <el-option label="硕士" value="硕士"></el-option>
+                            <el-option label="博士" value="博士"></el-option>
+                            <el-option label="其他" value="其他"></el-option>
+                      </el-select> </el-form-item>
+                     <el-form-item>
+            <el-button type="primary" @click="AddHunter('HunterForm')">下一步</el-button>
+            <el-button @click="ResetForm('HunterForm')">重置</el-button>
+          </el-form-item>
+                </el-form>
+
+      </el-col>
+    </el-row>
+  </div>
+   <div id="resume" v-show="isShowResume">
+    <el-row>
+      <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="8">
+        <h3 style="text-align: center;">职位要求</h3>
+          <el-form :model="ResumeForm" :rules="rules" ref="ResumeForm" label-width="80px" >
+
+                    <el-form-item label="期望职位地点" prop="expected_work_city">
+                        <el-input type="text" name="expected_work_city" placeholder="请输入期望职位地点" class="form-control" auto-complete="off" v-model="ResumeForm.expected_work_city"></el-input>
+                    </el-form-item>
+                    <el-form-item label="期望职位" prop="desired_position">
+                        <el-input type="text" name="desired_position" placeholder="请输入期望职位" class="form-control" auto-complete="off" v-model="ResumeForm.desired_position"></el-input>
+                    </el-form-item>
+                    <el-form-item label="期望工资（月薪）" prop="expected_salary">
+                        <el-select v-model="ResumeForm.expected_salary" placeholder="请选择期望工资">
+                            <el-option label="3000-3999" value="3000-3999"></el-option>
+                            <el-option label="4000-5999" value="4000-5999"></el-option>
+                            <el-option label="6000-7999" value="6000-7999"></el-option>
+                            <el-option label="8000-9999" value="8000-9999"></el-option>
+                            <el-option label="10000-150000" value="10000-150000"></el-option>
+                       </el-select>
+                    </el-form-item >
+              <el-button round @click="add('在校情况:')" >在校情况</el-button>
+		   <el-button round @click="add('技能特长:')" >技能特长</el-button>
+              <el-button round @click="add('性格:')">性格</el-button>
+
+                    <el-form-item label="自我评价" prop="self_assessment">
+                        <el-input type="textarea" name="self_assessment" :rows="6" placeholder="请输入自我评价" class="form-control" auto-complete="off" v-model="ResumeForm.self_assessment"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+            <el-button type="primary" @click="ResumeAdd('ResumeForm')">下一步</el-button>
+            <el-button @click="resetResumeForm('ResumeForm')">重置</el-button>
+              <a href="{% url 'index' %}">跳过</a>
+          </el-form-item>
+                </el-form>
+
+      </el-col>
+    </el-row>
+  </div>
+<div id="finish" v-show="isShowFinish">
+    <el-row>
+      <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="8">
+          <el-card  class="box-card" style="text-align: center">
+  <div  class="text item">
+       恭喜您，注册完成！
+    马上开启找工作之旅,找到满意的工作。
+      <br>
+        <el-button @click="next">立即体验</el-button>
+  </div>
+
+</el-card>
+      </el-col>
+    </el-row>
+
+</div>
+
+<script>
+ var activeVue=new Vue(
+    {
+        el:'#active',
+        data() {
+            return{
+                active:0,
+            }
+        }
+
+        ,
+
+     })
+
+    var hunterVue=new Vue(
+    {
+        el:'#hunter',
+        data()
+        {
+              return{
+                 HunterForm:
+                 {
+                     user_name: '',
+                      sex:'',
+                    birthday:'',
+                    city:'',
+                    Correspondence_address:'',
+                    registered_permanent_residence:'',
+                    education_background:'',
+                    qq:'',
+                 },
+                rules:
+                {
+                    user_name: [{ required: true, message: '请输入用户名', trigger: 'blur' },     ],
+                  sex: [{required: true, message: '请选择性别', trigger: 'change'},],
+                    birthday: [{required: true, message: '请选择生日', trigger: 'change'},],
+                    city: [{required: true, message: '请填写所在城市', trigger: 'blur'},],
+                    Correspondence_address:[{required: true, message: '请填写通讯地址', trigger: 'blur'},],
+                    registered_permanent_residence:[{required: true, message: '请填写户口所在地', trigger: 'blur'},],
+                    education_background:[{required: true, message: '请选择学历', trigger: 'change'},],
+                    qq:[{required: true, message: '请填写qq', trigger: 'blur'},],
+                },
+                isShowHunter:true,
+
+
+            }
+        },
+    methods: {
+                  next() {
+                    if (activeVue.active++ > 2) activeVue.active = 0;
+                    this.isShowHunter=false;
+                    resumeVue.isShowResume=true;
+            },
+
+      AddHunter(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+          $.ajax({
+                                  url:"/api/hunter_add/",
+                                  type:"POST",
+                                  headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                                  {#data: $('#education_experience_form_edit').serialize(),#}//提示错误
+                                  {#data:vm.selected,#}
+                                  data:{"user_name":hunterVue.HunterForm.user_name,"sex":hunterVue.HunterForm.sex,"birthday":hunterVue.HunterForm.birthday,"city":hunterVue.HunterForm.city,"Correspondence_address":hunterVue.HunterForm.Correspondence_address,"registered_permanent_residence":hunterVue.HunterForm.registered_permanent_residence,"education_background":hunterVue.HunterForm.education_background,"qq":hunterVue.HunterForm.qq,},
+                                  dataType:'JSON',
+                                  success:function (data) {
+                                        if (data.status === "successful")
+                                        {
+                                            {#hunterVue.$message({type: 'success',message: "保存成功!"});#}
+                                            hunterVue.next();
+                                        }
+                                        else {
+                                            var error_list=JSON.parse(data.errs);
+                                            console.log(error_list)
+                                            var msg=''
+                                            for (let key in error_list){
+                                               msg=msg+key+error_list[key][0].message+";"
+                                            }
+                                            hunterVue.$message.warning(msg);
+                                        }
+                                  }
+                              })
+          }
+          else {
+            this.$message.error('基本信息保存失败');
+            return false;
+          }
+        });
+      },
+      ResetForm(formName) {
+        this.$refs[formName].resetFields();
+        },
+        },
+     })
+var resumeVue=new Vue(
+    {
+        el:'#resume',
+        data()
+        {
+
+              return{
+                 ResumeForm:
+                 {
+                      expected_work_city:'',
+                    desired_position:'',
+                    expected_salary:'',
+                    self_assessment:'',
+
+                 },
+                rules:
+                {
+                 expected_work_city:[{required: true, message: '请填写期望工作城市', trigger: 'blur'},],
+                    desired_position:[{required: true, message: '请填写期望职位', trigger: 'blur'},],
+                    expected_salary:[{required: true, message: '请填写期望薪资', trigger: 'blur'},],
+                    self_assessment:[{  max: 200, message: '最多输入200位字符', trigger: 'blur' },
+                    {required: true, message: '请填写自我评价', trigger: 'blur'},],
+
+                },
+                  isShowResume:false,
+
+            }
+        },
+    methods: {
+
+      ResumeAdd(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+           $.ajax({
+                                      url:"/api/resume_add/",
+                                      type:"POST",
+                                      headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                                      {#data: $('#education_experience_form_edit').serialize(),#}//提示错误
+                                      {#data:vm.selected,#}
+                                      data:{"resume_name":'简历一',"expected_work_city":resumeVue.ResumeForm.expected_work_city,"desired_position":resumeVue.ResumeForm.desired_position,"expected_salary":resumeVue.ResumeForm.expected_salary,"self_assessment":resumeVue.ResumeForm.self_assessment},
+                                      dataType:'JSON',
+                                      success:function (data) {
+                                          if (data.status === "successful")
+                                          {
+                                                resumeVue.next()
+
+                                          }
+                                          else {
+                                              var error_list=JSON.parse(data.errs);
+                                              console.log(error_list)
+                                              var msg=''
+                                              for (let key in error_list){
+                                                  msg=msg+key+error_list[key][0].message+";"
+                                              }
+                                              resumeVue.$message.warning(msg);
+                                          }
+                                      }
+                                  })
+          }
+          else {
+            this.$message.error('职位发布失败失败');
+            return false;
+          }
+        });
+      },
+        add(label){
+          console.log(label);
+					this.ResumeForm.self_assessment=this.ResumeForm.self_assessment+'\n'+label;
+				},
+      resetResumeForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+        next() {
+                    if (activeVue.active++ > 2) activeVue.active = 0;
+                    active++ ;
+                    this.isShowResume=false;
+                    finishVue.isShowFinish=true
+            }
+
+        },
+
+        delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+     })
+    var finishVue=new Vue(
+    {
+        el:'#finish',
+        data()
+        {
+
+              return{
+                  isShowFinish:false,
+
+            }
+        },
+    methods: {
+            next(){
+                window.location.href='http://localhost:8000/api/index/';
+            }
+
+        },
+
+        delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+     })
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>人才招聘</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+     <style>
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 120px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
+       .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+      }
+      .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+      }
+
+
+    </style>
+	</head>
+    <body>
+	<div class="box-wrap">
+		<header role="banner" id="fh5co-header">
+			<div class="container">
+				<nav class="navbar navbar-default">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="fh5co-navbar-brand">
+								<a class="fh5co-logo" href="index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+							</div>
+						</div>
+						<div class="col-md-6">
+                            <div id="nav">
+                                <el-menu
+                              :default-active="activeIndex2"
+                              class="el-menu-demo"
+                              mode="horizontal"
+                              @select="handleSelect"
+                              background-color="#ffffff"
+                              text-color="#000000"
+                              active-text-color="#6F00D2">
+                                 <el-menu-item ><el-link href="/api/company_index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+              <el-menu-item index="2" ><el-link href="/api/company_show/" icon="el-icon-document">职位管理</el-link></el-menu-item>
+              <el-menu-item index="3" ><el-link href="/api/resumeManage/" icon="el-icon-s-promotion">简历管理</el-link></el-menu-item>
+              <el-menu-item index="4" ><el-link href="/api/getAllResume/" icon="el-icon-search">人才搜索</el-link></el-menu-item>
+              <el-menu-item index="5">  <el-link href="/api/getResumeCollect/" icon="el-icon-star-on">人才库</el-link>  </el-menu-item>
+
+                            </el-menu>
+                        </div>
+						</div>
+						<div class="col-md-3">
+                              <ul class="social">
+                                    <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                    <li><a href="/api/company_show/"><i class="el-icon-s-custom"></i></a></li>
+                                    <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                                 </ul>
+						</div>
+					</div>
+				</nav>
+		  </div>
+		</header>
+		<!-- END: header -->
+		<section id="work">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+                          <div id="resumeManage">
+
+</template>
+        <template>
+          <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane  name="unHandel">
+                <span slot="label">
+             <i class="el-icon-info" style="margin:0 20px 0 20px">
+                 <el-badge :value=deliverCount class="item">
+                 <span style="padding-left: 8px">待处理</span>
+{#                 <span style="padding-left: 8px; color:red">[[deliverCount]]</span>#}
+                 </el-badge>
+             </i>
+
+         </span>
+        <template>
+            <el-table
+            ref="multipleTable1"
+            :data="resume_deliver_list"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+                <el-table-column
+                  type="selection"
+                  width="55">
+                </el-table-column>
+                <el-table-column
+                  prop="position_name"
+                  label="职位名称"
+                  width="120">
+                </el-table-column>
+                </el-table-column>
+                <el-table-column
+                  prop="user_name"
+                  label="姓名"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+                  <el-table-column
+                  prop="sex"
+                  label="性别"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+                   <el-table-column
+                  prop="education_background"
+                  label="学历"
+                  width="80">
+                </el-table-column>
+                  <el-table-column
+                  prop="age"
+                  label="年龄"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+
+
+                     <el-table-column
+                        prop="resume_name"
+                  label="简历"
+                  width="160" show-overflow-tooltip align="center">
+                    <template slot-scope="scope">
+                        <p  style="font-size: 14px" v-if="scope.row.resume_name=='简历已被删除'">[[scope.row.resume_name]]</p>
+                          <p v-else style="font-size: 14px;">
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/resumeDetail?id='+scope.row.resume_id" target="_blank">[[scope.row.resume_name]]</a>
+                        </p>
+                    </template>
+                </el-table-column>
+                   <el-table-column
+                  prop="time"
+                  label="投递日期"
+                  width="160">
+                </el-table-column>
+            </el-table>
+        </template>
+        <div style="height: 50px">
+
+
+                    <el-button @click="toggleSelection1()">取消选择</el-button>
+
+                    <el-button @click="toChecked()" :disabled="disable==0?true:false">标记为有意向</el-button>
+
+                    <el-button @click="toImproper()" :disabled="disable==0?true:false">标记为不合适</el-button>
+
+                     <el-button  @click="toInterview()"  :disabled="disable==0?true:false">邀请面试</el-button>
+
+        </div>
+                </el-tab-pane>
+{#            <el-tab-pane label="已查阅" name="checked">#}
+                <el-tab-pane  name="checked" stretch="true">
+         <span slot="label">
+             <i class="el-icon-zoom-in" style="margin:0 20px 0 20px">
+                  <el-badge :value=checkedCount class="item">
+                 <span style="padding-left: 8px">已查阅</span>
+{#                 <span style="padding-left: 8px; color:red">[[checkedCount]]</span>#}
+                  </el-badge>
+             </i>
+
+         </span>
+                <template>
+            <el-table
+            ref="multipleTable2"
+            :data="resume_deliver_list"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+                <el-table-column
+                  type="selection"
+                  width="55">
+                </el-table-column>
+                <el-table-column
+                  prop="position_name"
+                  label="职位名称"
+                  width="120">
+                </el-table-column>
+                </el-table-column>
+                <el-table-column
+                  prop="user_name"
+                  label="姓名"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+                  <el-table-column
+                  prop="sex"
+                  label="性别"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+                   <el-table-column
+                  prop="education_background"
+                  label="学历"
+                  width="80">
+                </el-table-column>
+                  <el-table-column
+                  prop="age"
+                  label="年龄"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+
+                        <el-table-column
+                        prop="resume_name"
+                  label="简历"
+                  width="160" show-overflow-tooltip align="center">
+                    <template slot-scope="scope">
+                        <p  style="font-size: 14px" v-if="scope.row.resume_name=='简历已被删除'">[[scope.row.resume_name]]</p>
+                          <p v-else style="font-size: 14px;">
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/resumeDetail?id='+scope.row.resume_id" target="_blank">[[scope.row.resume_name]]</a>
+                        </p>
+                    </template>
+                </el-table-column>
+                   <el-table-column
+                  prop="time"
+                  label="投递日期"
+                  width="160">
+                </el-table-column>
+            </el-table>
+        </template>
+                <div style="height: 50px">
+
+                    <el-button @click="toggleSelection2()">取消</el-button>
+
+                    <el-button @click="toImproper()" :disabled="disable==0?true:false">标记为不合适</el-button>
+
+                     <el-button  @click="toInterview()"  :disabled="disable==0?true:false">邀请面试</el-button>
+
+        </div>
+            </el-tab-pane>
+            <el-tab-pane  name="interview">
+                <span slot="label">
+                     <i class="el-icon-s-claim" style="margin:0 20px 0 20px">
+                         <el-badge :value=interviewCount class="item">
+                         <span style="padding-left: 8px">面试邀请</span>
+                             </el-badge>
+        {#                 <span style="padding-left: 8px; color:red">[[interviewCount]]</span>#}
+                     </i>
+                </span>
+                <template>
+                    <el-table
+                ref="multipleTable3"
+                :data="resume_deliver_list"
+                tooltip-effect="dark"
+                style="width: 100%"
+                @selection-change="handleSelectionChange">
+
+                    </el-table-column>
+                    <el-table-column
+                      prop="position_name"
+                      label="职位名称"
+                      width="80">
+                    </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="user_name"
+                      label="姓名"
+                      width="80"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                      <el-table-column
+                      prop="sex"
+                      label="性别"
+                      width="80"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                       <el-table-column
+                      prop="education_background"
+                      label="学历"
+                      width="80">
+                    </el-table-column>
+                      <el-table-column
+                      prop="age"
+                      label="年龄"
+                      width="80"
+                      show-overflow-tooltip>
+                    </el-table-column>
+
+                      <el-table-column
+                        prop="resume_name"
+                  label="简历"
+                  width="160" show-overflow-tooltip align="center">
+                    <template slot-scope="scope">
+                        <p  style="font-size: 14px" v-if="scope.row.resume_name=='简历已被删除'">[[scope.row.resume_name]]</p>
+                          <p v-else style="font-size: 14px;">
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/resumeDetail?id='+scope.row.resume_id" target="_blank">[[scope.row.resume_name]]</a>
+                        </p>
+                    </template>
+                </el-table-column>
+                       <el-table-column
+                      prop="time"
+                      label="投递日期"
+                      width="160">
+                    </el-table-column>
+
+                    </el-table-column>
+                      <el-table-column
+                            prop="interviewTime"
+                      label="面试详情"
+                      width="150">
+                        <template slot-scope="scope">
+    {#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                            <a :href="'/api/interviewShow?id='+scope.row.interviewId">[[scope.row.interviewTime]]</a>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+                    <div style="color: lightpink">>>主动发送面试邀请</div>
+                    <el-table
+                ref="multipleTable5"
+                :data="company_interview_list"
+                tooltip-effect="dark"
+                style="width: 100%"
+                @selection-change="handleSelectionChange">
+
+                    <el-table-column
+                      prop="user_name"
+                      label="姓名"
+                      width="80"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                      <el-table-column
+                      prop="sex"
+                      label="性别"
+                      width="80"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                       <el-table-column
+                      prop="education_background"
+                      label="学历"
+                      width="80">
+                    </el-table-column>
+                      <el-table-column
+                      prop="age"
+                      label="年龄"
+                      width="80"
+                      show-overflow-tooltip>
+                    </el-table-column>
+
+                         <el-table-column
+                        prop="resume_name"
+                  label="简历"
+                  width="160" show-overflow-tooltip align="center">
+                    <template slot-scope="scope">
+                        <p  style="font-size: 14px" v-if="scope.row.resume_name=='简历已被删除'">[[scope.row.resume_name]]</p>
+                          <p v-else style="font-size: 14px;">
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/resumeDetail?id='+scope.row.resume_id" target="_blank">[[scope.row.resume_name]]</a>
+                        </p>
+                    </template>
+                </el-table-column>
+                       <el-table-column
+                      prop="time"
+                      label="发送邀请日期"
+                      width="160">
+                    </el-table-column>
+                      <el-table-column
+                            prop="interviewTime"
+                      label="面试详情"
+                      width="150">
+                        <template slot-scope="scope">
+    {#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                            <a :href="'/api/interviewShow?id='+scope.row.interviewId">[[scope.row.interviewTime]]</a>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+                </template>
+            </el-tab-pane>
+
+            <el-tab-pane  name="improper">
+                <span slot="label">
+                     <i class="el-icon-error" style="margin:0 20px 0 20px">
+                         <el-badge :value=improperCount class="item">
+                         <span style="padding-left: 8px">不合适</span>
+        {#                 <span style="padding-left: 8px; color:red">[[improperCount]]</span>#}
+                         </el-badge>
+                     </i>
+                 </span>
+                <template>
+                   <el-table
+            ref="multipleTable4"
+            :data="resume_deliver_list"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+
+                <el-table-column
+                  prop="position_name"
+                  label="职位名称"
+                  width="120">
+                </el-table-column>
+                </el-table-column>
+                <el-table-column
+                  prop="user_name"
+                  label="姓名"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+                  <el-table-column
+                  prop="sex"
+                  label="性别"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+                   <el-table-column
+                  prop="education_background"
+                  label="学历"
+                  width="80">
+                </el-table-column>
+                  <el-table-column
+                  prop="age"
+                  label="年龄"
+                  width="80"
+                  show-overflow-tooltip>
+                </el-table-column>
+
+                       <el-table-column
+                        prop="resume_name"
+                  label="简历"
+                  width="160" show-overflow-tooltip align="center">
+                    <template slot-scope="scope">
+                        <p  style="font-size: 14px" v-if="scope.row.resume_name=='简历已被删除'">[[scope.row.resume_name]]</p>
+                          <p v-else style="font-size: 14px;">
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/resumeDetail?id='+scope.row.resume_id" target="_blank">[[scope.row.resume_name]]</a>
+                        </p>
+                    </template>
+                </el-table-column>
+                   <el-table-column
+                  prop="time"
+                  label="投递日期"
+                  width="160">
+                </el-table-column>
+            </el-table>
+                </template>
+            </el-tab-pane>
+          </el-tabs>
+        </template>
+         <el-dialog  width="70%" :visible.sync="centerDialogVisible" title="发送面试邀请"  >
+{#             <div style="float:left;width: 450px;height:480px; background-color: #3a8ee6">#}
+
+                        <el-form :model="InterviewForm" :rules="rules" ref="InterviewForm" label-width="80px" style="float:left;width: 450px;height:500px; background-color: #3a8ee6">
+                    <el-form-item label="面试时间" prop="time">
+                <el-date-picker   v-model="InterviewForm.time"  :picker-options="pickerOptions" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"  placeholder="选择日期时间">
+                </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="标题" prop="title">
+                        <el-input type="text" name="title" placeholder="请输入标题" class="form-control" auto-complete="off" v-model="InterviewForm.title"></el-input>
+                    </el-form-item>
+                    <el-form-item label="注意事项" prop="content">
+                        <el-input type="textarea"  :rows="2" name="content" placeholder="注意事项" class="form-control" auto-complete="off" v-model="InterviewForm.content"></el-input>
+                    </el-form-item>
+
+  <el-form-item >
+
+                            <el-button @click="closeDialog()">取消</el-button>
+                            <el-button type="primary" @click="interviewAdd('InterviewForm')">确定</el-button>
+
+                   </el-form-item>
+                        </el-form>
+{#                 </div>#}
+{#             <div style="float:left;width: 100px;height:480px;background-color:#fb1e1e ">#}
+{##}
+{#             </div>#}
+{#             <div style="float:left;width: 520px;height:500px;">#}
+  <el-table
+    :data="tableData" style="float:left;width: 520px;height:500px;">
+    <el-table-column
+      prop="date"
+      label="时间段"
+      width="120">
+    </el-table-column>
+
+      <el-table-column label="日期">
+          <el-table-column
+          prop="name"
+           :label = week[0]
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="province"
+          :label = week[1]
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="city"
+         :label = week[2]
+          width="80">
+        </el-table-column>
+
+        <el-table-column
+          prop="address"
+          :label = week[3]
+          width="80">
+        </el-table-column>
+          <el-table-column
+          prop="zip"
+         :label = week[4]
+          width="80">
+        </el-table-column>
+
+      </el-table-column>
+
+  </el-table>
+{##}
+{#             </div>#}
+
+		            </el-dialog>
+    </div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+        <script>
+    var navVue= new Vue({
+        el:'#nav',
+        data() {
+            return {
+
+            activeIndex2: '3',
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+
+        },
+    })
+    var resumeManageVue=new Vue({
+        el:'#resumeManage',
+        data(){
+            return{
+                deliverCount:0,
+                checkedCount:0,
+                interviewCount:0,
+                improperCount:0,
+                resume_deliver_list:[],
+                company_interview_list:[],//企业主动发送面试表格
+                multipleSelection: [],
+                id_list:[],
+                id:'',//面试邀请
+                disable:0,//按钮知否可编辑
+                activeName: 'unHandel',
+                centerDialogVisible: false,
+                InterviewForm:{
+                    time:'',
+                    title:'',
+                    content:'',
+                },
+
+                rules:
+                {
+                    time:[{required: true, message: '请填写面试时间', trigger: 'blur'},],
+                    title:[{required: true, message: '请填写邮件主题', trigger: 'blur'},],
+                    content:[{required: true, message: '请填写面试注意事项', trigger: 'blur'},],
+                },
+                pickerOptions: {
+                          disabledDate(time) {
+                              return time.getTime() < Date.now() - 8.64e7;
+                          }
+                  },
+                tableData: [],//面试标题
+          week:'yu',//星期数组
+            }
+
+        },
+        created: function () {
+            this.getPositionDeliverCount();
+            this.getPositionDeliver();
+
+            if (this.multipleSelection.length == 0) {
+                this.disable = 0;//删除、申请按钮不可编辑
+            }
+        },
+        methods:{
+            getInterview(){
+                $.ajax({
+                    url:'/api/interviewByWeek/',
+                    type:'POST',
+                    headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                    success:function (data) {
+                        console.log(data.interview_list_list);
+
+                        resumeManageVue.tableData = [];
+                        for (let i = 0; i < data.interview_list_list.length; i++) {
+ console.log(data.interview_list_list[i]);
+                                resumeManageVue.tableData.push({
+                                    date:'9:00~10:00',
+                                    name:data.interview_list_list[i][0],
+                                province:data.interview_list_list[i][1],
+                                city:data.interview_list_list[i][2],
+                                address:data.interview_list_list[i][3],
+                                zip:data.interview_list_list[i][4]});
+                                console.log(resumeManageVue.tableData[i]);
+
+                        };
+                        resumeManageVue.tableData[1].date='10:00~11:00';
+                         resumeManageVue.tableData[2].date='11:00~12:00';
+                        resumeManageVue.tableData[3].date='12:00~13:00';
+                        resumeManageVue.tableData[4].date='13:00~14:00';
+                        resumeManageVue.tableData[5].date='14:00~15:00';
+                        resumeManageVue.tableData[6].date='15:00~16:00';
+                        resumeManageVue.tableData[7].date='16:00~17:00';
+
+                        resumeManageVue.week=data.week_list;
+
+                    }
+                })
+
+            },
+         closeDialog(){
+                    this.centerDialogVisible=false;
+                },
+            toggleSelection1(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable1.toggleRowSelection(row);
+                    });
+                }
+                else {
+
+                    this.$refs.multipleTable1.clearSelection();
+                }
+            },
+            toggleSelection2(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable2.toggleRowSelection(row);
+                    });
+                }
+                else {
+
+                    this.$refs.multipleTable2.clearSelection();
+                }
+            },
+            toggleSelection3(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable3.toggleRowSelection(row);
+                    });
+                }
+                else {
+
+                    this.$refs.multipleTable3.clearSelection();
+                }
+            },
+            toggleSelection4(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable4.toggleRowSelection(row);
+                    });
+                }
+                else {
+
+                    this.$refs.multipleTable4.clearSelection();
+                }
+            },
+              toggleSelection5(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable5.toggleRowSelection(row);
+                    });
+                }
+                else {
+                    console.log('23234')
+                    this.$refs.multipleTable5.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(this.multipleSelection);
+                if(this.multipleSelection.length==0)
+                {
+                    this.disable=0;
+                }
+                else
+                {
+                    this.disable=1;
+                }
+            },
+             {#获取简历状态数量，作为上标#}
+             getPositionDeliverCount() {
+                 $.ajax({
+                     url: "/api/getPositionDeliverCount/",
+                     type: "post",
+                     headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                     success: function (data) {
+                         resumeManageVue.deliverCount=data.count[0];
+                         resumeManageVue.checkedCount=data.count[1];
+                         resumeManageVue.interviewCount=data.count[2];
+                         resumeManageVue.improperCount=data.count[3];
+                     }
+                 })
+             },
+            {#根据状态获取对应的职位信息#}
+             getPositionDeliver() {
+                 $.ajax({
+                     url: "/api/getPositionDeliver/",
+                     type: "post",
+                     headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                     data:{"activeName":this.activeName},
+                     success: function (data) {
+                         console.log(data);
+                         var hunter_position_list = JSON.parse(data.hunter_position_list);
+                         var company_resume_list = JSON.parse(data.company_resume_list);
+                         var position_list = JSON.parse(data.position_list);
+                         var hunter_list = JSON.parse(data.hunter_list);
+                         var resume_list = JSON.parse(data.resume_list);
+                         var interview_list = JSON.parse(data.interview_list);
+                         console.log(interview_list);
+                         resumeManageVue.resume_deliver_list = [];
+                         console.log(hunter_position_list);
+                         let i = 0;
+                         for (i = 0; i < hunter_position_list.length; i++) {
+                             resumeManageVue.resume_deliver_list.push({
+                                 id: hunter_position_list[i].pk,
+                                 position_name: position_list[i].fields.position_name,
+                                 release_time: position_list[i].fields.release_time,
+                                 workplace: position_list[i].fields.workplace,
+                                 pay: position_list[i].fields.pay,
+                                 count: position_list[i].fields.count,
+                                 education_requirement: position_list[i].fields.education_requirement,
+                                 description: position_list[i].fields.description,
+                                 user_name:hunter_list[i].fields.user_name,
+                                 {#sex:hunter_list[i].fields.sex,#}
+                                 age:resumeManageVue.getAge(hunter_list[i].fields.birthday),
+                                 city:hunter_list[i].fields.city,
+                                 Correspondence_address:hunter_list[i].fields.Correspondence_address,
+                                 registered_permanent_residence:hunter_list[i].fields.registered_permanent_residence,
+                                 education_background:hunter_list[i].fields.education_background,
+                                 qq:hunter_list[i].fields.qq,
+                                 resume_id:resume_list[i].pk,
+                                 resume_name:resume_list[i].fields.resume_name,
+                                 time:hunter_position_list[i].fields.time.replace('T',' '),
+                             });
+                              if(hunter_list[i].fields.sex=='0'){
+                                    resumeManageVue.resume_deliver_list[i].sex="男";
+
+                                }
+                                else if(hunter_list[i].fields.sex=='1'){
+                                    resumeManageVue.resume_deliver_list[i].sex="女";
+
+                                }
+                             if(resumeManageVue.activeName=='interview'){
+                                 resumeManageVue.resume_deliver_list[i].interviewId=interview_list[i].pk;
+                                 resumeManageVue.resume_deliver_list[i].interviewTime=interview_list[i].fields.time.replace('T',' ');
+
+                             }
+                         };
+                         {#获取公司主动邀请面试#}
+                         var j=i;
+                          resumeManageVue.company_interview_list = [];
+                         for (let i = 0; i < company_resume_list.length; i++) {
+
+                             resumeManageVue.company_interview_list.push({
+
+                                 id: company_resume_list[i].pk,
+                                 user_name:hunter_list[j+i].fields.user_name,
+                                 sex:hunter_list[j+i].fields.sex,
+                                 age:resumeManageVue.getAge(hunter_list[j+i].fields.birthday),
+                                 city:hunter_list[j+i].fields.city,
+                                 Correspondence_address:hunter_list[j+i].fields.Correspondence_address,
+                                 registered_permanent_residence:hunter_list[j+i].fields.registered_permanent_residence,
+                                 education_background:hunter_list[j+i].fields.education_background,
+                                 qq:hunter_list[j+i].fields.qq,
+                                 resume_name:resume_list[j+i].fields.resume_name,
+                                 time:company_resume_list[i].fields.time.replace('T',' '),
+                                 interviewId:interview_list[j+i].pk,
+                                 interviewTime:interview_list[j+i].fields.time.replace('T',' '),
+                             });
+                             {#if(resumeManageVue.activeName=='interview'){#}
+                             {#    resumeManageVue.company_interview_list[j+i].interviewId=interview_list[j+i].pk;#}
+                             {#    resumeManageVue.company_interview_list[j+i].interviewTime=interview_list[j+i].fields.time.replace('T',' ');#}
+                             {##}
+
+                         };
+
+                     }
+                 })
+             },
+             handleClick(tab, event) {
+                console.log(tab, event);
+                this.getPositionDeliver();
+            },
+
+
+            toChecked()
+                {
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+
+                    }
+                     $.ajax({
+                          url:"/api/resumeManage/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                          data:{'id_list':JSON.stringify(resumeManageVue.id_list),'handelMethod':'checked'},
+                          success:function (data) {
+                              if(data.status=="successful"){
+
+                                  resumeManageVue.getPositionDeliver();
+                                  resumeManageVue.toggleSelection1();
+                                 resumeManageVue.$message({type: 'success',message: "标记成功!"});
+                              resumeManageVue.getPositionDeliverCount();
+                              }
+                              else if(data.status === "warning"){
+                                    resumeManageVue.$message.warning(data.errs);
+                              }
+
+
+                          }
+                     })
+                },
+            toImproper()
+                {
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+
+                    }
+                     $.ajax({
+                          url:"/api/resumeManage/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                          data:{'id_list':JSON.stringify(resumeManageVue.id_list),'handelMethod':'improper'},
+                          success:function (data) {
+                              if(data.status=="successful"){
+                                  resumeManageVue.toggleSelection1();
+                                  resumeManageVue.toggleSelection2();
+                                  resumeManageVue.getPositionDeliver();
+                                 resumeManageVue.$message({type: 'success',message: "标记成功!"});
+                              resumeManageVue.getPositionDeliverCount();
+                              }
+                              else if(data.status === "warning"){
+                                    resumeManageVue.$message.warning(data.errs);
+                              }
+
+                          }
+                     })
+                },
+            toInterview(){this.centerDialogVisible = true;
+            this.getInterview();},
+            interviewAdd(formName){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                      if (this.multipleSelection.length > 1) {
+                          this.$message.warning("请选择一个求职者发送面试邀请");
+                      } else {
+                          this.id = this.multipleSelection[0].id;
+
+                      }
+                        $.ajax({
+                  url: "/api/interviewAdd/",
+                  type: "post",
+                  headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                  data: {
+                      'id': resumeManageVue.id,
+                      'time': resumeManageVue.InterviewForm.time,
+                      'title': resumeManageVue.InterviewForm.title,
+                      'content': resumeManageVue.InterviewForm.content,
+                  },
+                  dataType:'JSON',
+                  success: function (data) {
+                      console.log(data);
+                      if (data.status == "successful") {
+                          resumeManageVue.centerDialogVisible = false;
+                          resumeManageVue.toggleSelection1();
+                          resumeManageVue.toggleSelection2();
+                          resumeManageVue.getPositionDeliver();
+                          resumeManageVue.$message({type: 'success', message: "邀请成功!"});
+                          resumeManageVue.getPositionDeliverCount();
+                      } else if (data.status === "warning") {
+                          resumeManageVue.$message.warning(data.errs);
+                      }
+                      else {
+                                console.log(data.status);
+                              console.log(data.errs);
+                              var error_list=JSON.parse(data.errs);
+                              var msg='';
+                              for (let key in error_list){
+                                  msg=msg+key+error_list[key][0].message+";";
+                              }
+                              resumeManageVue.$message.warning(msg);
+                          }
+
+
+                  }
+              })
+                    }
+                    else {
+                        console.log('error submit!!');
+                        return false;
+                     }
+                })
+            },
+            getAge(strAge) {
+                var birArr = strAge.split("-");
+                var birYear = birArr[0];
+                var birMonth = birArr[1];
+                var birDay = birArr[2];
+
+                d = new Date();
+                var nowYear = d.getFullYear();
+                var nowMonth = d.getMonth() + 1; //记得加1
+                var nowDay = d.getDate();
+                var returnAge;
+
+                if (birArr == null) {
+                    return false
+                };
+                var d = new Date(birYear, birMonth - 1, birDay);
+                if (d.getFullYear() == birYear && (d.getMonth() + 1) == birMonth && d.getDate() == birDay) {
+                    if (nowYear == birYear) {
+                        returnAge = 0; //
+                    } else {
+                        var ageDiff = nowYear - birYear; //
+                        if (ageDiff > 0) {
+                            if (nowMonth == birMonth) {
+                                var dayDiff = nowDay - birDay; //
+                                if (dayDiff < 0) {
+                                    returnAge = ageDiff - 1;
+                                } else {
+                                    returnAge = ageDiff;
+                                }
+                            } else {
+                                var monthDiff = nowMonth - birMonth; //
+                                if (monthDiff < 0) {
+                                    returnAge = ageDiff - 1;
+                                } else {
+                                    returnAge = ageDiff;
+                                }
+                            }
+                        } else {
+                            return  "出生日期晚于今天，数据有误"; //返回-1 表示出生日期输入错误 晚于今天
+                        }
+                    }
+                    return returnAge;
+                } else {
+                    return ("输入的日期格式错误！");
+                }
+        }
+            },
+
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+
+
+    </script>
+</body>
+</html>

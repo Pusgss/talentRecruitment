@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>人才招聘</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+     <style>
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 120px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
+       .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+      }
+      .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+      }
+.el-table .success-row {
+    color: black !important;
+}
+
+.el-table .warning-row {
+    color: #DCDCDC !important;
+}
+    </style>
+	</head>
+    <body>
+	<div class="box-wrap">
+		<header role="banner" id="fh5co-header">
+			<div class="container">
+				<nav class="navbar navbar-default">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="fh5co-navbar-brand">
+								<a class="fh5co-logo" href="index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+							</div>
+						</div>
+						<div class="col-md-6">
+                            <div id="nav">
+                                <el-menu
+                              :default-active="activeIndex2"
+                              class="el-menu-demo"
+                              mode="horizontal"
+                              @select="handleSelect"
+                              background-color="#ffffff"
+                              text-color="#000000"
+                              active-text-color="#6F00D2">
+                                <el-menu-item index="1"><el-link href="/api/index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+                                <el-menu-item index="2" ><el-link href="/api/allPositionSearch" icon="el-icon-search">职位搜索</el-link></el-menu-item>
+                                <el-menu-item index="3" > <el-link href="/api/resumeCenter" icon="el-icon-document">简历中心</el-link></el-menu-item>
+                                <el-menu-item index="4" ><el-link href="/api/myDeliver/" icon="el-icon-s-promotion">投递反馈</el-link></el-menu-item>
+                                <el-menu-item index="5" > <el-link href="/api/myCollect" icon="el-icon-star-on">我的收藏</el-link></el-menu-item>
+
+                            </el-menu>
+                        </div>
+						</div>
+						<div class="col-md-3">
+                             <ul class="social">
+                                <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                <li><a href="/api/resumeCenter/"><i class="el-icon-s-custom"></i></a></li>
+                                <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                             </ul>
+						</div>
+					</div>
+				</nav>
+		  </div>
+		</header>
+		<!-- END: header -->
+		<section id="work">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+                        <div id="myCollect">
+        <template>
+   <el-tabs v-model="activeName"  >
+    <el-tab-pane label="职位收藏" name="first">
+        <template>
+            <el-table
+            ref="multipleTable"
+            :data="position_list"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange" :row-class-name="tableRowClassName">
+                <el-table-column
+                  type="selection"
+                  width="55">
+                </el-table-column>
+                <el-table-column
+                  label="发布日期"
+                  width="120">
+                  <template slot-scope="scope">[[ scope.row.release_time]]</template>
+                </el-table-column>
+                      <el-table-column
+                        prop="position_name"
+                  label="职位名称"
+                  width="120">
+                    <template slot-scope="scope">
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/positionDetail?id='+scope.row.id"> [[scope.row.position_name]]</a>
+                    </template>
+                </el-table-column>
+                  <el-table-column
+                  prop="company_name"
+                  label="公司名称"
+                  width="120">
+                      <template slot-scope="scope">
+{#                        <el-link href="'/api/resume_show?id='id" type="info">[[scope.row.resume_name]]</el-link>#}
+                        <a :href="'/api/companyDetail?id='+scope.row.company_id"> [[scope.row.company_name]]</a>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                  prop="workplace"
+                  label="地址"
+                  show-overflow-tooltip>
+                </el-table-column>
+                  <el-table-column
+                  prop="pay"
+                  label="薪资"
+                  show-overflow-tooltip>
+                </el-table-column>
+                <el-table-column
+                  label="状态"
+                  width="120"
+                prop="is_delete">
+
+                </el-table-column>
+            </el-table>
+
+
+        </template>
+        <div style="height: 50px">
+
+                    <el-button @click="toggleSelection()">取消选择</el-button>
+
+                     <el-button  @click="myCollectDelete" type="primary" :disabled="disable==0?true:false">删除</el-button>
+
+                     <el-button  @click="positionDeliver" type="primary" :disabled="disable==0?true:false">申请</el-button>
+
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp只保留近60天收藏信息
+        </div>
+        </el-tab-pane>
+
+  </el-tabs>
+</template>
+    </div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+       <script>
+    var navVue= new Vue({
+        el:'#nav',
+        data() {
+            return {
+
+            activeIndex2: '5',
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+
+        },
+    })
+    var myCollectVue=new Vue({
+        el:'#myCollect',
+        data(){
+            return{
+                position_list:[],
+                multipleSelection: [],
+                id_list:[],
+                disable:0,//按钮知否可编辑
+                activeName: 'first',
+            }
+
+        },
+        created: function () {
+            this.getMyCollect();
+            if (this.multipleSelection.length == 0) {
+                this.disable = 0;//删除、申请按钮不可编辑
+            }
+        },
+        methods:{
+
+tableRowClassName({row, rowIndex }) {
+
+    if (row.is_delete == ' ') {
+
+        return 'success-row';
+
+    } else if (row.is_delete == "已失效") {
+
+        return 'warning-row';
+
+    }
+
+    return '';
+},
+
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                }
+                else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                if(this.multipleSelection.length==0)
+                {
+                    this.disable=0;
+                }
+                else
+                {
+                    this.disable=1;
+                }
+
+            },
+             getMyCollect() {
+                 $.ajax({
+                     url: "/api/myCollect/",
+                     type: "post",
+                     headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                     success: function (data) {
+                         var position_list = JSON.parse(data.position_list);
+                          var company_list = JSON.parse(data.company_list);
+                         myCollectVue.position_list = [];
+                         console.log(position_list);
+                         for (let i = 0; i < position_list.length; i++) {
+                             myCollectVue.position_list.push({
+                                 id: position_list[i].pk,
+                                 position_name: position_list[i].fields.position_name,
+                                 release_time: position_list[i].fields.release_time,
+                                 workplace: position_list[i].fields.workplace,
+                                 pay: position_list[i].fields.pay,
+                                 count: position_list[i].fields.count,
+                                 sex: position_list[i].fields.sex,
+                                 education_requirement: position_list[i].fields.education_requirement,
+                                 description: position_list[i].fields.description,
+                                 company_name:position_list[i].fields.company_name,
+                                 company_id:company_list[i].pk,
+                             });
+                             if(position_list[i].fields.is_delete=='0'){
+
+                                 myCollectVue.position_list[i].is_delete=' ';
+                             }
+                             {#1.2都是失效#}
+                            else{ myCollectVue.position_list[i].is_delete='已失效';
+
+                             }
+                         };
+                     }
+                 })
+             },
+            myCollectDelete(){
+                for(let i = 0; i < this.multipleSelection.length; i++)
+                {
+                    this.id_list.push(this.multipleSelection[i].id);
+
+                }
+                $.ajax({
+                     url: "/api/myCollectDelete/",
+                     type: "post",
+                     headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                     data:{'id_list':myCollectVue.id_list},
+                     success: function (data) {
+                         if(data.status=="successful"){
+                             myCollectVue.$message({type: 'success',message: "删除成功!"});
+                            myCollectVue.getMyCollect();
+                          }
+                          myCollectVue.toggleSelection()
+                     }
+                 })
+            },
+            positionDeliver()
+                {
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+
+                    }
+                     $.ajax({
+                          url:"/api/positionDeliver/",
+                          type:"post",
+                          headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                          data:{'id_list':JSON.stringify(myCollectVue.id_list)},
+                          success:function (data) {
+                              if(data.status=="successful"){
+                                 myCollectVue.$message({type: 'success',message: "申请成功!"});
+                              }
+                              else if(data.status === "warning"){
+                                    myCollectVue.$message.warning(data.errs);
+                              }
+                              myCollectVue.toggleSelection();
+                          }
+                     })
+                },
+            },
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+
+        })
+    </script>
+</body>
+</html>

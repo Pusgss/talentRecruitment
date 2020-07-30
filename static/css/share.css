@@ -1,0 +1,11 @@
+.shareInfo .shareCtrl{float:left;height:20px;line-height:20px;cursor:pointer}
+.shareInfo .shareCtrl .shareName{max-width:96px;overflow:hidden;-o-text-overflow:ellipsis;text-overflow:ellipsis;white-space:nowrap}
+.shareInfo .shareCtrl a{font-family:verdana;text-decoration:none;display:block;min-width:86px;float:left;margin:0 0 5px 0}
+.shareInfo .shareCtrl .shareLink{width:120px}
+.shareInfo .shareMt a{min-width:84px;margin:10px 0 5px 0}
+.shareInfo .sharePanel{width:90%;height:auto}
+.shareInfo .shareNotTitlePanel{height:auto}
+.shareInfo .shareIcon{float:left;height:20px;line-height:20px;width:20px;margin:0 2px 0 2px;cursor:pointer}
+.shareInfo .shareto{padding-left:10px;cursor:default}
+.productDetail .shareInfo .shareCtrl a{font-size:12px}
+.productDetail .shareInfo .shareto{font-size:12px}

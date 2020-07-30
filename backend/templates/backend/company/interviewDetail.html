@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>人才招聘</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400" rel="stylesheet" type="text/css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="/static/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+     <style>
+      .demo-table-expand {
+        font-size: 0;
+      }
+      .demo-table-expand label {
+        width: 120px;
+        color: #99a9bf;
+      }
+      .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+      }
+       .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+      }
+      .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+      }
+
+    </style>
+	</head>
+    <body>
+	<div class="box-wrap">
+		<header role="banner" id="fh5co-header">
+			<div class="container">
+				<nav class="navbar navbar-default">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="fh5co-navbar-brand">
+								<a class="fh5co-logo" href="index.html"><img src="/static/image/logo.png" alt="Closest Logo"></a>
+							</div>
+						</div>
+						<div class="col-md-6">
+                            <div id="nav">
+                                <el-menu
+                              :default-active="activeIndex2"
+                              class="el-menu-demo"
+                              mode="horizontal"
+                              @select="handleSelect"
+                              background-color="#ffffff"
+                              text-color="#000000"
+                              active-text-color="#6F00D2">
+                                 <el-menu-item ><el-link href="/api/company_index/" icon="el-icon-s-home" type="primary">主页</el-link></el-menu-item>
+              <el-menu-item index="2" ><el-link href="/api/company_show/" icon="el-icon-document">职位管理</el-link></el-menu-item>
+              <el-menu-item index="3" ><el-link href="/api/resumeManage/" icon="el-icon-s-promotion">简历管理</el-link></el-menu-item>
+              <el-menu-item index="4" ><el-link href="/api/getAllResume/" icon="el-icon-search">人才搜索</el-link></el-menu-item>
+              <el-menu-item index="5">  <el-link href="/api/getResumeCollect/" icon="el-icon-star-on">人才库</el-link>  </el-menu-item>
+
+                            </el-menu>
+                        </div>
+						</div>
+						<div class="col-md-3">
+                              <ul class="social">
+                                    <li><strong style="text-align: center;font-size:14px">{{ request.session.user_name }}</strong></li>
+                                    <li><a href="/api/company_show/"><i class="el-icon-s-custom"></i></a></li>
+                                    <li><a href="/api/logout"><i class="el-icon-s-tools"></i></a></li>
+                                 </ul>
+						</div>
+					</div>
+				</nav>
+		  </div>
+		</header>
+		<!-- END: header -->
+		<section id="work">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+                        <div id="interview" >
+                            <div class="fullmeasureOuterContent fullmeasureOuterContent364">
+                                <div class="fullmeasureContent fullmeasureContent364" id="fullmeasureContent364_1" moduleid="364">
+                                    <div class="fullmeasureContentBg fullmeasureContentBg364"></div>
+                                        <div class="J_zoneEnableAll J_fullmeasurePackContent elemZone elemZoneModule fk-formPack" moduleid="364" id="fk-inFullmeasureListZone364-1"><div class="fk-elemZoneBg J_zoneContentBg">
+
+                                        </div>
+                                        <div id="module366" bannertitle="图片" _indexclass="" _moduletype="1" _modulestyle="79" _moduleid="366" class="form form366 formStyle79" title="" _sys="0" _banid="" style="position: absolute; top: 21px; left: 0px; width: 615px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="364" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+                                            <div class="lightModuleOuterContent lightModuleOuterContent366">
+                                                <div class="floatImg floatImg_J floatImg_J_special"><a hidefocus="true" class="J_floatImg_jump f_floatImg_jump ">
+                                                    <div class="floatImgWrap">
+                                                    <div class="forMargin">
+                                                    <img id="float_img_366" class="lazyload_transparent float_in_img J_defImage" data-original="interview.png" src="/static/image/interview.png" alt="AD0InrrtBhAEGAAg4KrWywUo74v5gQUw5wQ4pQQ" data-imgloaded="true">
+                                                    </div>
+                                                    </div></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div id="module367" bannertitle="文本" _indexclass="" _moduletype="1" _modulestyle="86" _moduleid="367" class="form form367 formStyle86 siteEditor" title="" _sys="0" _banid="" style="position: absolute; top: 154px; left: 746px; width: 454px; height: 337px; animation: 0s ease 0s 1 normal none running none;" _side="0" _intab="0" _inmulmcol="0" _infullmeasure="0" _inpack="0" _inpopupzone="0" _infullmeasurepack="364" _intabpack="0" _autoheight="0" _global="false" _independent="false" data-scrollbar="0">
+                                        <div class="lightModuleOuterContent lightModuleOuterContent367">
+                                            <div class="fk-editor simpleText fk-editor-break-word  ">
+                                                 <span style="line-height: 25px;"><font style="color: rgb(76, 76, 76);" color="#4c4c4c"><span style="font-size: 24px;"><b><font style="color: rgb(48, 131, 235);" color="#3083eb">{{ interview.title }}</font></b>
+                                                 </span>
+                                                 <div style="font-size: 14px;"><br></div>
+                                                 <div style="font-size: 14px;">{{ interview.time }}
+                                                 </div>
+                                                <div style="font-size: 14px;"><br>
+                                                </div>
+                                                <div>
+                                                    <span style="font-size: 24px;"><b><font style="color: rgb(48, 131, 235);" color="#3083eb">-</font></b>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span style="font-size: 24px;"><b><font style="color: rgb(48, 131, 235);" color="#3083eb"><br></font></b></span>
+                                                </div>
+                                                <div>
+                                                    <span style="font-size: 14px;">{{ interview.content }}<br></span>
+                                                </div></font>
+                                                </span>
+                                                <div>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+				</div>
+			</div>
+		</section>
+	</div>
+        <script>
+    var navVue= new Vue({
+        el:'#nav',
+        data() {
+            return {
+
+            activeIndex2: '3',
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+
+
+        },
+    })
+
+
+    </script>
+</body>
+</html>

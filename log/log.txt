@@ -1,0 +1,22 @@
+
+INFO %(module)s 2020-05-09 14:56:15,205 PC-20190710BOLQ 127.0.0.1 ��ȡʧ�� 
+INFO %(module)s 2020-05-09 15:01:49,454 PC-20190710BOLQ 127.0.0.1 获取失败 
+INFO %(module)s 2020-05-09 16:22:31,443 PC-20190710BOLQ 127.0.0.1 获取失败 
+INFO %(module)s 2020-05-09 16:27:16,175 PC-20190710BOLQ 127.0.0.1 获取失败 
+INFO %(module)s 2020-05-09 16:30:39,559 PC-20190710BOLQ 127.0.0.1 获取失败 
+INFO %(module)s 2020-05-09 18:57:47,342 PC-20190710BOLQ 127.0.0.1 获取失败 
+INFO %(module)s 2020-05-09 18:59:41,525 PC-20190710BOLQ 127.0.0.1 获取失败 
+INFO %(module)s 2020-05-09 20:49:52,454 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 获取失败 
+INFO %(module)s 2020-05-09 21:12:51,487 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 美国 
+INFO %(module)s 2020-05-09 21:49:35,907 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 中国 
+INFO %(module)s 2020-05-09 22:01:29,538 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 中国 
+INFO %(module)s 2020-05-09 22:04:55,070 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 中国 
+INFO %(module)s 2020-05-09 22:07:38,160 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 中国 
+INFO %(module)s 2020-05-10 13:59:55,100 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 中国 
+INFO %(module)s 2020-05-10 20:18:45,596 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 中国 
+INFO %(module)s 2020-05-10 20:33:58,610 PC-20190710BOLQ.www.tendawifi.com 192.168.0.103 中国 
+WARNING %(module)s 2020-05-11 22:24:14,200 'list' object has no attribute 'id'  
+ERROR%(asctime)serror message 
+[ERROR][2020-05-11 23:36:08,264][views.py][positionCollect][1064] > error message 
+[WARNING][2020-05-11 23:36:59,069][views.py][positionCollect][1065] > 'list' object has no attribute 'id' 
+[WARNING][2020-05-22 23:19:55,528][views.py][positionCollect][1115] > 'list' object has no attribute 'id' 

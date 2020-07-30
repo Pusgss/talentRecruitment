@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+    <link href="//cdn.bootcss.com/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 导入 CSS 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 导入Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <title>人才招聘</title>
+    <style>
+        .el-header {
+            background-color: #B3C0D1;
+            color: #333;
+            line-height: 60px;
+          }
+        .el-aside {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="users">
+        <el-container style=" border: 1px solid #eee">
+            <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+                 <el-menu background-color="#111111"
+              text-color="white"
+              active-text-color="#C0C0C0"
+                 default-active="1"
+      class="el-menu-vertical-demo">
+                    <el-submenu index="1">
+                        <template slot="title"><i class="el-icon-message"></i><el-link href="/api/users/">会员信息管理</el-link></template>
+                        <el-menu-item-group>
+{#                          <template slot="title">待处理事务</template>#}
+
+                            <el-menu-item index="1-1"><el-link href="/api/admin_index/" color="yellow">待处理事务</el-link></el-menu-item>
+
+                        </el-menu-item-group>
+
+                    </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title"><i class="el-icon-menu"></i><el-link href="/api/positions/">招聘信息管理</el-link></template>
+
+                      </el-submenu>
+                    <el-submenu index="3">
+                        <template slot="title"><i class="el-icon-setting"></i><el-link href="/api/news/">网站公告管理</el-link></template>
+
+                    </el-submenu>
+                     <el-submenu index="4">
+                         <template slot="title"><i class="el-icon-platform-eleme"></i><el-link href="/api/echarts/">数据分析</el-link></template>
+
+                    </el-submenu>
+                        <el-submenu index="5">
+                         <template slot="title"><i class="el-icon-guide"></i><el-link href="/api/logout/">登出</el-link></template>
+
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+            <el-container>
+                <el-header style="text-align: right; font-size: 12px">
+                    <el-button  @click="toAdminAdd" type="primary" :disabled="activeName==3?false:true">新建</el-button>
+                    <el-button  @click="users_del" type="danger" icon="el-icon-delete" :disabled="disable==0?true:false">删除</el-button>
+{#                    <el-dropdown>#}
+                    <i class="el-icon-setting" style="margin-right: 15px"></i>
+{#                        <el-dropdown-menu slot="dropdown">#}
+{#                          <el-dropdown-item>查看</el-dropdown-item>#}
+{#                          <el-dropdown-item>新增</el-dropdown-item>#}
+{#                          <el-dropdown-item>删除</el-dropdown-item>#}
+{#                        </el-dropdown-menu>#}
+
+{#                     </el-dropdown>#}
+                  <span style="text-align: right; font-size: 18px">用户</span>
+                </el-header>
+
+                <el-main>
+                    <el-tabs v-model="activeName" @tab-click="handleClick">
+                        <el-tab-pane label="求职者" name="1">
+                            <el-table ref="multipleTable"
+                                        :data="user_list"
+                                        tooltip-effect="dark"
+                                        style="width: 100%"
+                                        @selection-change="handleSelectionChange" stripe style="width:100%" v-loading="listLoading">
+                                <el-table-column type="selection" width="55"></el-table-column>
+                                <!-- <el-table-column type="index" prop="id" label="编号" width="100" sortable></el-table-column> -->
+                                <el-table-column prop="user_name" label="姓名" width="100" sortable></el-table-column>
+                                <el-table-column prop="user_email" label="邮箱" width="200" sortable></el-table-column>
+                                <el-table-column prop="user_phone" label="手机号" width="140" sortable></el-table-column>
+                                <el-table-column prop="creat_time" label="注册时间" min-width="100" sortable></el-table-column>
+                                <el-table-column  label="头像" width="100" sortable></el-table-column>
+        {#                            <template   slot-scope="scope">#}
+        {#                                <img :src="scope.row.photo"  min-width="70" height="70" />#}
+        {#                            </template>#}
+
+                                <el-table-column prop="sex" label="性别" width="100" sortable></el-table-column>
+                                <el-table-column prop="birthday" label="生日" min-width="120" sortable></el-table-column>
+                                <el-table-column prop="city" label="所在城市" min-width="80" sortable></el-table-column>
+                                <el-table-column prop="Correspondence_address" label="通讯地址" min-width="80" sortable></el-table-column>
+                                <el-table-column prop="registered_permanent_residence" label="户口所在地" min-width="180" sortable></el-table-column>
+                                <el-table-column prop="education_background" label="学历" min-width="100" sortable></el-table-column>
+                                <el-table-column prop="qq" label="qq" min-width="100" sortable></el-table-column>
+                                <el-table-column prop="expected_work_city" label="期望工作城市" min-width="100" sortable></el-table-column>
+                                <el-table-column prop="desired_position" label="期望职位" min-width="100" sortable></el-table-column>
+                                <el-table-column prop="expected_salary" label="期望工资" min-width="100" sortable></el-table-column>
+                                <el-table-column prop="self_assessment" label="自我评价" min-width="500" sortable></el-table-column>
+
+                                <el-table-column label="操作">
+                                    <template slot-scope="scope" min-width="200">
+                                        <el-button size="small" type="success" @click="handleHunterEdit(scope.$index,scope.row)">编辑</el-button>
+                                        <el-button type="danger" size="small" @click="handleDel(scope.$index,scope.row)">删除</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <span class="demonstration"></span>
+                            <el-dialog :visible.sync="hunterEditDialogVisible">
+                                <el-form  :model="userForm">
+                                    <el-form-item label="编号" prop="id" v-show="false">
+                                         <el-input type="text" v-model="userForm.id" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                     <el-form-item label="姓名" prop="user_name">
+                                         <el-input type="text" v-model="userForm.user_name" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                    <el-form-item label="邮箱" prop="user_email">
+                                        <el-input type="text" v-model="userForm.user_email" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                     <el-form-item label="手机号" prop="user_phone">
+                                        <el-input type="text" v-model="userForm.user_phone" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                     <el-form-item label="注册时间" prop="creat_time">
+                                        <el-input type="text" v-model="userForm.creat_time" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                    <el-form-item label="头像" prop="photo">
+                                                <el-avatar shape="square"  :src="userForm.photo"></el-avatar>
+                                      </el-form-item >
+                                     <el-form-item label="性别" prop="sex">
+
+                                            <el-radio v-model="userForm.sex" label="0">男</el-radio>
+                                            <el-radio v-model="userForm.sex" label="1">女</el-radio>
+
+                                     </el-form-item >
+                                     <el-form-item label="生日" prop="birthday">
+                                           <el-input type="text" v-model="userForm.birthday" autocomplete="off"  clearable></el-input>
+
+                                    </el-form-item >
+                                     <el-form-item label="所在城市" prop="city">
+                                         <el-input type="text" v-model="userForm.city" autocomplete="off"  clearable></el-input>
+                                      </el-form-item >
+                                     <el-form-item label="通讯地址" prop="Correspondence_address">
+                                           <el-input type="text" v-model="userForm.Correspondence_address" autocomplete="off"  clearable></el-input>
+                                        </el-form-item >
+                                     <el-form-item label="户口所在地" prop="registered_permanent_residence">
+                                          <el-input type="text" v-model="userForm.registered_permanent_residence" autocomplete="off"  clearable></el-input>
+                                     </el-form-item >
+                                     <el-form-item label="学历" prop="education_background">
+                                          <el-select v-model="userForm.education_requirement" placeholder="请选择类型">
+                                            <el-option label="专科" value="专科"></el-option>
+                                            <el-option label="本科" value="本科"></el-option>
+                                            <el-option label="硕士" value="硕士"></el-option>
+                                            <el-option label="博士" value="博士"></el-option>
+                                            <el-option label="其他" value="其他"></el-option>
+                                        </el-select>
+                                     </el-form-item >
+                                     <el-form-item label="qq" prop="qq">
+                                            <el-input type="text" v-model="userForm.qq" autocomplete="off"  clearable></el-input>
+                                     </el-form-item >
+                                     <el-form-item label="期望工作城市" prop="expected_work_city">
+                                          <el-input type="text" v-model="userForm.expected_work_city" autocomplete="off"  clearable></el-input>
+                                     </el-form-item >
+                                    <el-form-item label="期望职位" prop="desired_position">
+                                           <el-input type="text" v-model="userForm.desired_position" autocomplete="off"  clearable></el-input>
+                                      </el-form-item >
+                                     <el-form-item label="期望工资" prop="expected_salary">
+                                          <el-input type="text" v-model="userForm.expected_salary" autocomplete="off"  clearable></el-input>
+                                      </el-form-item >
+                                    <el-form-item label="自我评价" prop="self_assessment">
+                                         <el-input type="textarea" v-model="userForm.self_assessment" autocomplete="off"  clearable></el-input>
+                                     </el-form-item >
+                                </el-form>
+                                <div>
+                                    <el-button @click="closeHunterDialog()">取消</el-button>
+                                    <el-button type="primary" @click="hunterEdit()">确定</el-button>
+                                </div>
+                            </el-dialog>
+                        </el-tab-pane>
+                        <el-tab-pane label="企业" name="2">
+                            <el-table ref="multipleTable"
+                                        :data="user_list"
+                                        tooltip-effect="dark"
+                                        style="width: 100%"
+                                        @selection-change="handleSelectionChange" stripe style="width:100%" v-loading="listLoading">
+                                        <el-table-column type="selection" width="55"></el-table-column>
+                                        <!-- <el-table-column type="index" prop="id" label="编号" width="100" sortable></el-table-column> -->
+                                        <el-table-column prop="company_name" label="公司名称" width="100" sortable></el-table-column>
+                                        <el-table-column prop="user_email" label="邮箱" width="200" sortable></el-table-column>
+                                        <el-table-column prop="user_phone" label="手机号" width="140" sortable></el-table-column>
+                                        <el-table-column prop="quality" label="公司性质" min-width="100" sortable></el-table-column>
+                                        <el-table-column prop="industry" label="所属行业" width="100" sortable></el-table-column>
+                                        <el-table-column prop="scale" label="规模" min-width="120" sortable></el-table-column>
+                                        <el-table-column prop="address" label="公司地址" min-width="80" sortable></el-table-column>
+                                        <el-table-column prop="description" label="公司介绍" min-width="500" sortable></el-table-column>
+                                        <el-table-column prop="status" label="是否审核" min-width="180" sortable></el-table-column>
+                                        <el-table-column label="操作">
+                                            <template slot-scope="scope" min-width="200">
+                                                <el-button size="small" type="success" @click="handleCompanyEdit(scope.$index,scope.row)">编辑</el-button>
+                                                <el-button type="danger" size="small" @click="handleDel(scope.$index,scope.row)">删除</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                            <span class="demonstration"></span>
+                            <el-dialog :visible.sync="companyEditDialogVisible">
+                                <el-form  :model="userForm">
+                                    <el-form-item label="编号" prop="id" v-show="false">
+                                         <el-input type="text" v-model="userForm.id" autocomplete="off"  clearable></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="公司名称" prop="company_name">
+                                         <el-input type="text" v-model="userForm.company_name" autocomplete="off"  clearable></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="邮箱" prop="user_email">
+                                        <el-input type="text" v-model="userForm.user_email" autocomplete="off"  clearable></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="手机号" prop="user_phone">
+                                        <el-input type="text" v-model="userForm.user_phone" autocomplete="off"  clearable></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="公司性质" prop="quality">
+                                        <el-select v-model="userForm.quality" placeholder="请选择公司性质">
+                                            <el-option label="外资（欧美）" value="外资（欧美）"></el-option>
+                                            <el-option label="外资（非欧美）" value="外资（非欧美）"></el-option>
+                                            <el-option label="合资" value="合资"></el-option>
+                                            <el-option label="国企" value="国企"></el-option>
+                                            <el-option label="民营公司" value="民营公司"></el-option>
+                                            <el-option label="上市公司" value="上市公司"></el-option>
+                                            <el-option label="创业公司" value="创业公司"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item label="所属行业" prop="industry">
+                                           <el-input type="text" v-model="userForm.industry" autocomplete="off"  clearable></el-input>
+                                    </el-form-item >
+                                    <el-form-item label="所在城市" prop="scale">
+                                        <el-select v-model="userForm.scale" placeholder="请选择公司规模">
+                                            <el-option label="少于50人" value="少于50人"></el-option>
+                                            <el-option label="50-150人" value="50-150人"></el-option>
+                                            <el-option label="150-500人" value="150-500人"></el-option>
+                                            <el-option label="500-1000人" value="500-1000人"></el-option>
+                                            <el-option label="1000-5000人" value="1000-5000人"></el-option>
+                                            <el-option label="5000-10000人" value="5000-10000人"></el-option>
+                                            <el-option label="10000人以上" value="10000人以上"></el-option>
+                                        </el-select>
+                                    </el-form-item >
+                                    <el-form-item label="公司地址" prop="address">
+                                        <el-input type="text" v-model="userForm.address" autocomplete="off"  clearable></el-input>
+                                    </el-form-item >
+                                    <el-form-item label="公司介绍" prop="description">
+                                        <el-input type="textarea" v-model="userForm.description" autocomplete="off"  clearable></el-input>
+                                    </el-form-item >
+                                    <el-form-item label="是否审核" prop="status">
+                                        <el-radio v-model="userForm.status" label="0">否</el-radio>
+                                        <el-radio v-model="userForm.status" label="1">是</el-radio>
+                                    </el-form-item >
+                                </el-form>
+                                <div>
+                                    <el-button @click="closeCompanyDialog()">取消</el-button>
+                                    <el-button type="primary" @click="companyEdit()">确定</el-button>
+                                </div>
+                            </el-dialog>
+                        </el-tab-pane>
+                        <el-tab-pane label="管理员" name="3">
+                            <el-table ref="multipleTable"
+                                :data="user_list"
+                                tooltip-effect="dark"
+                                style="width: 100%"
+                                @selection-change="handleSelectionChange" stripe style="width:100%" v-loading="listLoading">
+                                <el-table-column type="selection" width="55"></el-table-column>
+                                <!-- <el-table-column type="index" prop="id" label="编号" width="100" sortable></el-table-column> -->
+                                 <el-table-column prop="user_email" label="邮箱" width="200" sortable></el-table-column>
+                                <el-table-column prop="user_phone" label="手机号" width="140" sortable></el-table-column>
+                                <el-table-column prop="user_password" label="密码" min-width="100" sortable></el-table-column>
+                                <el-table-column prop="creat_time" label="创建时间" min-width="100" sortable></el-table-column>
+                                <el-table-column prop="last_login_time" label="最后登录时间" min-width="100" sortable></el-table-column>
+                                <el-table-column label="操作">
+                                    <template slot-scope="scope" min-width="200">
+                                        <el-button size="small" type="success" @click="handleAdminEdit(scope.$index,scope.row)">编辑</el-button>
+                                        <el-button type="danger" size="small" @click="handleDel(scope.$index,scope.row)">删除</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <span class="demonstration"></span>
+                            <el-dialog :visible.sync="adminEditDialogVisible">
+                                <h3>修改管理员信息</h3>
+                                <el-form  :model="userForm">
+                                    <el-form-item label="邮箱" prop="user_email">
+                                        <el-input type="text" v-model="userForm.user_email" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                     <el-form-item label="手机号" prop="user_phone">
+                                        <el-input type="text" v-model="userForm.user_phone" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                     <el-form-item label="密码" prop="user_password">
+                                          <el-input type="user_password" v-model="userForm.user_password" autocomplete="off" show-password clearable></el-input>
+                                     </el-form-item>
+                                </el-form>
+                                <div>
+                                    <el-button @click="closeAdminDialog()">取消</el-button>
+                                    <el-button type="primary" @click="adminEdit()">确定</el-button>
+                                </div>
+		                    </el-dialog>
+                            <el-dialog :visible.sync="addDialogVisible">
+                                <el-form  :model="adminForm" :rules="adminRules" ref="adminForm" label-width="100px" id="demo-loginForm" class="demo-loginForm">
+                                    <h3>新建管理员</h3>
+                                    <el-form-item label="邮箱" prop="user_email">
+                                        <el-input type="text" v-model="adminForm.user_email" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                     <el-form-item label="手机号" prop="user_phone">
+                                        <el-input type="text" v-model="adminForm.user_phone" autocomplete="off"  clearable></el-input>
+                                     </el-form-item>
+                                      <el-form-item label="密码" prop="user_password">
+                                          <el-input type="user_password" v-model="adminForm.user_password" autocomplete="off" show-password clearable></el-input>
+                                     </el-form-item>
+                                </el-form>
+                                <div>
+                                    <el-button @click="closeAddDialog()">取消</el-button>
+                                    <el-button type="primary" @click="adminAdd('adminForm')">添加</el-button>
+                                </div>
+		                    </el-dialog>
+                        </el-tab-pane>
+                    </el-tabs>
+                    <el-pagination v-show="total>0"
+                          @size-change="handleSizeChange"
+                          @current-change="handleCurrentChange"
+                          :current-page="currentPage"
+                          :page-size="pageSize"
+                          layout="total, sizes, prev, pager, next, jumper"
+                          :total="total">
+                    </el-pagination>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+    <script>
+        var userVue=new Vue(
+        {
+            el:'#users',
+            data() {
+                 var checkPhone = (rule, value, callback) => {
+                    const phoneReg = /^1[3|4|5|7|8][0-9]{9}$/
+                    if (!value) {
+                      return callback(new Error('电话号码不能为空'))
+                    }
+                    setTimeout(() => {
+                      // Number.isInteger是es6验证数字是否为整数的方法,但是我实际用的时候输入的数字总是识别成字符串
+                      // 所以我就在前面加了一个+实现隐式转换
+
+                      if (!Number.isInteger(+value)) {
+                        callback(new Error('请输入数字值'))
+                      } else {
+                        if (phoneReg.test(value)) {
+                          callback()
+                        } else {
+                          callback(new Error('电话号码格式不正确'))
+                        }
+                      }
+                    }, 100)
+                  }
+            var checkEmail = (rule, value, callback) => {
+                const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+                if (!value) {
+                  return callback(new Error('邮箱不能为空'))
+                }
+                setTimeout(() => {
+                  if (mailReg.test(value)) {
+                    callback()
+                  } else {
+                    callback(new Error('请输入正确的邮箱格式'))
+                  }
+                }, 100)
+              }
+                  return {
+                      msg: 'Welcome to Your Vue.js App',
+                      hunterEditDialogVisible: false,
+                      companyEditDialogVisible: false,
+                      adminEditDialogVisible: false,
+                      addDialogVisible:false,
+                      userForm: [],
+
+                      pickerOptions: {
+                          disabledDate(time) {
+                              return time.getTime() > Date.now();
+                          }
+                      },
+                      user_list:[],
+                      total:0,
+                      pageSize:20,
+                      listLoading:false,
+                      currentPage: 1,
+                      multipleSelection: [],
+                      disable:0,
+                      id_list:[],
+                      activeName: '1',
+                      adminForm:{
+                          user_email:'',
+                          user_phone:'',
+                          user_password:'',
+                      },
+                      adminRules:
+                          {
+                              user_email: [ { required: true, message: '请填写邮箱', trigger: 'blur'},
+                                            { validator: checkEmail, trigger: 'blur' } ],
+                              user_phone: [ { required: true, message: '请填写手机号', trigger: 'blur'},
+                                            { validator: checkPhone, trigger: 'blur' }      ],
+                              user_password: [{ required: true, message: '请输入密码', trigger: 'blur' },
+                                { min: 6, max: 20, message: '请输入6-20位字符', trigger: 'blur' },]
+                          },
+                  };
+            },
+            created()
+            {
+                this.showTable(this.currentPage,this.pageSize);
+                if (this.multipleSelection.length==0){
+                         this.disable=0;
+                     }
+            },
+            methods:
+            {
+                toggleSelection(rows) {
+                    if (rows) {
+                      rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                      });
+                    }
+                    else {
+                      this.$refs.multipleTable.clearSelection();
+                    }
+                },
+                handleSelectionChange(val) {
+                    this.multipleSelection = val;
+                    if(this.multipleSelection.length==0)
+                    {
+                        this.disable=0;
+                    }
+                    else
+                    {
+                        this.disable=1;
+                    }
+                },
+                handleSizeChange(size) {
+                    this.pageSize = size;
+                    this.showTable(this.currentPage,this.pageSize);
+                },
+                handleCurrentChange(currentpage) {
+                    this.currentPage = currentPage;
+                    console.log(this.currentPage);  //点击第几页
+                    this.showTable(this.currentPage,this.pageSize);
+                },
+                  handleClick(tab, event) {
+                console.log(tab, event);
+                this.showTable(this.currentPage,this.pageSize);
+            },
+                showTable(currentPage,pageSize){
+                    this.listLoading = true;
+                    $.ajax({
+                        url: "/api/users/",
+                        type: "post",
+                        headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                        data: {'page':currentPage,'pageSize':pageSize,'user_type':this.activeName},
+                        success: function (data) {
+                            userVue.listLoading = false;
+                            userVue.total=data.total
+                            userVue.user_list = [];
+                            if(userVue.activeName=='1') {
+                                var user_list = JSON.parse(data.user_list);
+                                var hunter_list = JSON.parse(data.hunter_list);
+                                var resume_list = JSON.parse(data.resume_list);
+                                for (let i = 0; i < user_list.length; i++) {
+                                    userVue.user_list.push({
+                                        id: user_list[i].pk,
+                                        user_name: hunter_list[i].fields.user_name,
+                                        user_email: user_list[i].fields.user_email,
+                                        user_phone: user_list[i].fields.user_phone,
+                                        photo: '/media/' + hunter_list[i].fields.photo,
+                                        sex: hunter_list[i].fields.sex,
+                                        birthday: hunter_list[i].fields.birthday,
+                                        city: hunter_list[i].fields.city,
+                                        Correspondence_address: hunter_list[i].fields.Correspondence_address,
+                                        registered_permanent_residence: hunter_list[i].fields.registered_permanent_residence,
+                                        education_background: hunter_list[i].fields.education_background,
+                                        qq: hunter_list[i].fields.qq,
+                                        expected_work_city: resume_list[i].fields.expected_work_city,
+                                        desired_position: resume_list[i].fields.desired_position,
+                                        expected_salary: resume_list[i].fields.expected_salary,
+                                        self_assessment: resume_list[i].fields.self_assessment,
+                                    })
+                                }
+                            }
+                            else if(userVue.activeName=='2'){
+                                var user_list = JSON.parse(data.user_list);
+                                var company_list = JSON.parse(data.company_list);
+
+                                for (let i = 0; i < user_list.length; i++) {
+                                    userVue.user_list.push({
+                                        id: user_list[i].pk,
+                                        company_name: company_list[i].fields.company_name,
+                                        user_email: user_list[i].fields.user_email,
+                                        user_phone: user_list[i].fields.user_phone,
+                                        quality: company_list[i].fields.quality,
+                                        industry: company_list[i].fields.industry,
+                                        scale: company_list[i].fields.scale,
+                                        address: company_list[i].fields.address,
+                                        description: company_list[i].fields.description,
+                                        status: company_list[i].fields.status,
+                                    })
+                                }
+                            }
+                            else if(userVue.activeName=='3') {
+                                var user_list = JSON.parse(data.user_list);
+                                for (let i = 0; i < user_list.length; i++) {
+                                    userVue.user_list.push({
+                                        id: user_list[i].pk,
+                                        user_email: user_list[i].fields.user_email,
+                                        user_phone: user_list[i].fields.user_phone,
+                                        user_password: user_list[i].fields.user_password,
+                                        creat_time: user_list[i].fields.creat_time.replace('T',' '),
+                                        last_login_time: user_list[i].fields.last_login_time.replace('T',' '),
+                                    });
+                                }
+                            }
+                        }
+                    })
+                },
+                users_del(){
+                    for(let i = 0; i < this.multipleSelection.length; i++)
+                    {
+                        this.id_list.push(this.multipleSelection[i].id);
+
+                    }
+                    $.ajax({
+                         url: "/api/users_del/",
+                         type: "post",
+                         headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                         data:{'id_list':JSON.stringify(this.id_list)},
+                         success: function (data) {
+                             if(data.status=="successful"){
+                                 userVue.$message({type: 'success',message: "删除成功!"});
+                                 userVue.showTable(userVue.currentPage,userVue.pageSize);
+                              }
+                              userVue.toggleSelection()
+                         }
+                     })
+                },
+                handleDel(index, row){
+                    var r=confirm("您确定要删除?")
+                    if (r==true)
+                    {
+                       $.ajax({
+                           url: "/api/user_del/" + row.id,
+                           type: "POST",
+                           headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                           error: function (xhr, err) {
+                                alert('请求失败，请检查，' + err + '!')
+                           },
+                           success: function (data) {
+                               if (data.status === 'successful') {
+                                   toastr.success("删除成功")
+                                   userVue.user_list.splice(index,1);
+                                        //调用方式
+                                   {#location.reload(true)#}
+                               } else if (data.status === 'fail') {
+                                   toastr.error("删除失败");
+                               }
+                           }
+                       })
+                    }
+                    else {
+                        return;
+                    }
+                 },
+                    toAdminAdd(){
+                    this.addDialogVisible = true;
+                },
+                adminAdd(formName) {
+                    this.$refs[formName].validate((valid) => {
+                      if (valid) {
+                          $.ajax({
+                              url: "/api/adminAdd/",
+                              type: "post",
+                              headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                              data: {"user_email":this.adminForm.user_email,
+                                    "user_phone":this.adminForm.user_phone,
+                                    "user_password":this.adminForm.user_password,},
+                              dataType:'JSON',
+                              success: function (data) {
+                                  console.log(data);
+                                  userVue.adminForm.user_email='';
+                                userVue.adminForm.user_phone='';
+                                    userVue.adminForm.user_password='';
+                                  if (data.status === "successful")
+                                        {
+                                            userVue.addDialogVisible = false;
+                                            userVue.$message({type: 'success',message: "保存成功!"});
+                                            userVue.showTable(userVue.currentPage,userVue.pageSize);
+                                        }
+                                  else if(data.status === "warning"){
+                                        userVue.$message.warning(data.errs);
+                                  }
+                                  else {
+                                        var error_list=JSON.parse(data.errs);
+                                        var msg=''
+                                        for (let key in error_list){
+                                           msg=msg+key+error_list[key][0].message+";"
+                                        }
+                                        userVue.$message.warning(msg);
+                                    }
+                              }
+
+
+                        })
+                      }
+                    })
+                },
+
+                handleHunterEdit(index, row) {
+                    this.hunterEditDialogVisible = true;
+                    this.userForm = Object.assign({}, row);//重置对象
+                    _index = index;
+                },
+                handleCompanyEdit(index, row) {
+                    this.companyEditDialogVisible = true;
+                    this.userForm = Object.assign({}, row);//重置对象
+                    _index = index;
+                },
+                handleAdminEdit(index, row) {
+                    this.adminEditDialogVisible = true;
+                    this.userForm = Object.assign({}, row);//重置对象
+                    _index = index;
+                },
+                closeHunterDialog(){
+                    this.hunterEditDialogVisible=false;
+                },
+                closeCompanyDialog(){
+                    this.companyEditDialogVisible=false;
+                },
+                closeAdminDialog(){
+                    this.adminEditDialogVisible=false;
+                },
+
+                {#hunterAdd() {#}
+                {#        $.ajax({#}
+                {#              url:"/api/hunter_add/",#}
+                {#              type:"POST",#}
+                {#              headers:{"X-CSRFToken":$.cookie('csrftoken')},#}
+                {#              data:{"user_name":this.userForm.user_name,#}
+                {#                  "user_email":this.userForm.user_email,#}
+                {#                  "user_phone":this.userForm.user_phone,#}
+                {#                  "sex":this.userForm.sex,#}
+                {#                  "birthday":this.userForm.birthday,#}
+                {#                  "city":this.userForm.city,#}
+                {#                  "Correspondence_address":this.userForm.Correspondence_address,#}
+                {#                  "registered_permanent_residence":this.userForm.registered_permanent_residence,#}
+                {#                  "education_background":this.userForm.education_background,#}
+                {#              "qq":this.userForm.qq,#}
+                {#              "expected_work_city":this.userForm.expected_work_city,#}
+                {#              "desired_position":this.userForm.desired_position,#}
+                {#              "expected_salary":this.userForm.expected_salary,#}
+                {#              "self_assessment":this.userForm.self_assessment},#}
+                {#              dataType:'JSON',#}
+                {#              success:function (data) {#}
+                {#                    if (data.status === "successful")#}
+                {#                    {#}
+                {#                            userVue.user_list.push({user_name: userVue.userForm.user_name,#}
+                {#                          user_email:userVue.userForm.user_email,#}
+                {#                            user_phone: userVue.userForm.user_phone,#}
+                {#                         quality :userVue.userForm.sex,#}
+                {#                           birthday:userVue.userForm.birthday,#}
+                {#                            city : userVue.userForm.city,#}
+                {#                            Correspondence_address:userVue.userForm.Correspondence_address,#}
+                {#                           registered_permanent_residence:userVue.userForm.registered_permanent_residence,#}
+                {#                            education_background :userVue.userForm.education_background,#}
+                {#                            qq :userVue.userForm.qq,#}
+                {#                          expected_work_city : userVue.userForm.expected_work_city,#}
+                {#                           desired_position : userVue.userForm.desired_position,#}
+                {#                            expected_salary : userVue.userForm.expected_salary,#}
+                {#                           self_assessment: userVue.userForm.self_assessment,});#}
+                {##}
+                {#                        userVue.addDialogVisible = false;#}
+                {#                        userVue.$message({type: 'success',message: "保存成功!"});#}
+                {##}
+                {#                    }#}
+                {#                    else {#}
+                {#                        var error_list=JSON.parse(data.errs);#}
+                {#                        console.log(error_list)#}
+                {#                        var msg=''#}
+                {#                        for (let key in error_list){#}
+                {#                           msg=msg+key+error_list[key][0].message+";"#}
+                {#                        }#}
+                {#                        userVue.$message.warning(msg);#}
+                {#                    }#}
+                {#              }#}
+                {#        })#}
+
+                hunterEdit() {
+                        $.ajax({
+                              url:"/api/hunter_edit/"+userVue.userForm.id,
+                              type:"POST",
+                              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                              data:{"user_name":this.userForm.user_name,
+                                  "user_email":this.userForm.user_email,
+                                  "user_phone":this.userForm.user_phone,
+                                  "sex":this.userForm.sex,
+                                  "birthday":this.userForm.birthday,
+                                  "city":this.userForm.city,
+                                  "Correspondence_address":this.userForm.Correspondence_address,
+                                  "registered_permanent_residence":this.userForm.registered_permanent_residence,
+                                  "education_background":this.userForm.education_background,
+                              "qq":this.userForm.qq,
+                              "expected_work_city":this.userForm.expected_work_city,
+                              "desired_position":this.userForm.desired_position,
+                              "expected_salary":this.userForm.expected_salary,
+                              "self_assessment":this.userForm.self_assessment},
+                              dataType:'JSON',
+                              success:function (data) {
+                                    if (data.status === "successful")
+                                    {
+                                        var editData = _index;
+
+                                            userVue.user_list[editData].user_name = userVue.userForm.user_name;
+                                            userVue.user_list[editData].user_email = userVue.userForm.user_email;
+                                            userVue.user_list[editData].user_phone = userVue.userForm.user_phone;
+                                            userVue.user_list[editData].quality = userVue.userForm.sex;
+                                            userVue.user_list[editData].birthday = userVue.userForm.birthday;
+                                            userVue.user_list[editData].city = userVue.userForm.city;
+                                            userVue.user_list[editData].Correspondence_address = userVue.userForm.Correspondence_address;
+                                            userVue.user_list[editData].registered_permanent_residence = userVue.userForm.registered_permanent_residence;
+                                            userVue.user_list[editData].education_background = userVue.userForm.education_background;
+                                            userVue.user_list[editData].qq = userVue.userForm.qq;
+                                            userVue.user_list[editData].expected_work_city = userVue.userForm.expected_work_city;
+                                            userVue.user_list[editData].desired_position = userVue.userForm.desired_position;
+                                            userVue.user_list[editData].expected_salary = userVue.userForm.expected_salary;
+                                            userVue.user_list[editData].self_assessment = userVue.userForm.self_assessment;
+
+
+                                        userVue.hunterEditDialogVisible = false;
+                                        userVue.$message({type: 'success',message: "保存成功!"});
+
+                                    }
+                                    else {
+                                        var error_list=JSON.parse(data.errs);
+                                        console.log(error_list)
+                                        var msg=''
+                                        for (let key in error_list){
+                                           msg=msg+key+error_list[key][0].message+";"
+                                        }
+                                        userVue.$message.warning(msg);
+                                    }
+                              }
+                        })
+                },
+                companyEdit() {
+                        $.ajax({
+                              url:"/api/companyEditByAdmin/"+userVue.userForm.id,
+                              type:"POST",
+                              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                              data:{"company_name":this.userForm.company_name,
+                                  "user_email":this.userForm.user_email,
+                                  "user_phone":this.userForm.user_phone,
+                                  "quality":this.userForm.quality,
+                                  "industry":this.userForm.industry,
+                                  "scale":this.userForm.scale,
+                                  "address":this.userForm.address,
+                                  "description":this.userForm.description,
+                                  "status":this.userForm.status},
+                              dataType:'JSON',
+                              success:function (data) {
+                                    if (data.status === "successful")
+                                    {
+                                        var editData = _index;
+
+                                            userVue.user_list[editData].company_name = userVue.userForm.company_name;
+                                            userVue.user_list[editData].user_email = userVue.userForm.user_email;
+                                            userVue.user_list[editData].user_phone = userVue.userForm.user_phone;
+                                            userVue.user_list[editData].quality = userVue.userForm.quality;
+                                            userVue.user_list[editData].industry = userVue.userForm.industry;
+                                            userVue.user_list[editData].scale = userVue.userForm.scale;
+                                            userVue.user_list[editData].address = userVue.userForm.address;
+                                            userVue.user_list[editData].description = userVue.userForm.description;
+                                            userVue.user_list[editData].status = userVue.userForm.status;
+
+                                        userVue.companyEditDialogVisible = false;
+                                        userVue.$message({type: 'success',message: "保存成功!"});
+
+                                    }
+                                    else {
+                                        var error_list=JSON.parse(data.errs);
+                                        console.log(error_list)
+                                        var msg=''
+                                        for (let key in error_list){
+                                           msg=msg+key+error_list[key][0].message+";"
+                                        }
+                                        userVue.$message.warning(msg);
+                                    }
+                              }
+                        })
+                },
+                adminEdit() {
+                        $.ajax({
+                              url:"/api/adminEdit/"+userVue.userForm.id,
+                              type:"POST",
+                              headers:{"X-CSRFToken":$.cookie('csrftoken')},
+                              data:{
+                                  "user_email":this.userForm.user_email,
+                                  "user_phone":this.userForm.user_phone,
+                                  "user_password":this.userForm.user_password,
+                                },
+                              dataType:'JSON',
+                              success:function (data) {
+                                    if (data.status === "successful")
+                                    {
+                                        var editData = _index;
+                                            userVue.user_list[editData].user_email = userVue.userForm.user_email;
+                                            userVue.user_list[editData].user_phone = userVue.userForm.user_phone;
+                                            userVue.user_list[editData].user_password = userVue.userForm.user_password;
+                                        userVue.adminEditDialogVisible = false;
+                                        userVue.$message({type: 'success',message: "保存成功!"});
+
+                                    }
+                                    else {
+                                        var error_list=JSON.parse(data.errs);
+                                        console.log(error_list)
+                                        var msg=''
+                                        for (let key in error_list){
+                                           msg=msg+key+error_list[key][0].message+";"
+                                        }
+                                        userVue.$message.warning(msg);
+                                    }
+                              }
+                        })
+                },
+
+                closeAddDialog(){
+                    this.addDialogVisible=false;
+                },
+            },
+            delimiters: ['[[', ']]']//Django模板与Vue.js 冲突/ 这句可以指定 {[ ]} 为插值表达式的新符号
+        })
+    </script>
+</body>
+</html>
